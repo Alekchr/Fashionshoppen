@@ -46,8 +46,6 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private Pane RegisterPane;
     @FXML
-    private Button BTNRegister;
-    @FXML
     private TextField LoginEmail;
     @FXML
     private TextField LoginPW;
