@@ -1,9 +1,10 @@
-package source;
+package Domain;
 
 import services.ServerRequest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import services.ServicesFacade;
 
 /**
  *
@@ -11,23 +12,24 @@ import java.sql.Statement;
  */
 public class Customer extends User
 {
-
+    
     private String address = " ";
     private String phoneNr = " ";
 
     public Customer(String email, String password)
     {
         super(email, password);
-
+        
     }
 
-    ServerRequest SR = new ServerRequest();
+    
 
     public Customer(String firstName, String lastName, String email, String password)
     {
         super(firstName, lastName, email, password);
         this.address = " ";
         this.phoneNr = " ";
+        
     }
 
     private void setAddress(String address)
@@ -50,7 +52,9 @@ public class Customer extends User
         return phoneNr;
     }
 
-    public void registerCustomer(User user)
+    
+    @Override
+    public void registerUser(User user)
     {
 
         String firstName = user.getFirstName();
@@ -58,22 +62,25 @@ public class Customer extends User
         String email = user.getEmail();
         String password = user.getPassword();
 
-        SR.saveUser(firstName, lastName, email, password);
+        sf.registerUser(firstName, lastName, email, password);
 
     }
 
-    public Customer loginCustomer(User user)
+    @Override
+    public Customer loginUser(User user)
     {
         Customer customer = null;
+        customer.setUser_id(0);
         try
         {
-            ResultSet rs = SR.loginUser(user.getEmail(), user.getPassword());
+            ResultSet rs = sf.loginUser(user.getEmail(), user.getPassword());
             while (rs.next())
             {
                 customer = new Customer(rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("password"));
+                customer.setUser_id(rs.getInt("user_id"));
             }
 
-            rs = SR.loginCustomer(user.getEmail());
+            rs = sf.loginCustomer(customer.getUser_id());
 
             while (rs.next())
             {

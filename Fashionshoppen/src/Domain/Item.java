@@ -1,11 +1,11 @@
 
-package source;
+package Domain;
 
 /**
  *
  * @author aleksander
  */
-public class Login
+public class Item
 {
     
 }

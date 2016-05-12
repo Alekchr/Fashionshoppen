@@ -47,8 +47,8 @@ public class ServerRequest
         
         
         try {
-            PreparedStatement st = con.prepareStatement(query);
-            ResultSet rs = st.executeQuery();
+            st = con.createStatement();
+            rs = st.executeQuery(query);
 
             
             while (rs.next()) {
@@ -64,8 +64,8 @@ public class ServerRequest
         String query = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER('%" + name + "%')";
         
         try {
-            PreparedStatement st = con.prepareStatement(query);
-            ResultSet rs = st.executeQuery();
+            st = con.createStatement();
+            rs = st.executeQuery(query);
 
             
             while (rs.next()) {
@@ -77,11 +77,11 @@ public class ServerRequest
         } 
     }
 
-    public void saveUser(String firstName, String lastName, String email, String password)
+    public void registerUser(String firstName, String lastName, String email, String password)
     {
         try
         {
-            Statement st = con.createStatement();
+            st = con.createStatement();
             String query = "INSERT INTO users (firstname, lastname, email, password) VALUES (" + "'"
                     + firstName + "', " + "'" + lastName + "', " + "'" + email + "', " + "'" + password + "')";
             String query2 = "INSERT INTO customer (email) VALUES (" + "'"
@@ -103,7 +103,7 @@ public class ServerRequest
         try
         {
 
-            Statement st = con.createStatement();
+            st = con.createStatement();
             String query = "SELECT * FROM users WHERE LOWER(email) = LOWER('" + email + "') AND password = '" + password + "'";
 
             rs = st.executeQuery(query);
@@ -116,14 +116,14 @@ public class ServerRequest
         return rs;
     }
 
-    public ResultSet loginCustomer(String email)
+    public ResultSet loginCustomer(int user_id)
     {
 
         try
         {
 
-            Statement st = con.createStatement();
-            String query = "SELECT * FROM customer WHERE LOWER(email) = LOWER('" + email + "')";
+            st = con.createStatement();
+            String query = "SELECT * FROM customer WHERE LOWER(user_id) = LOWER('" + user_id + "')";
             rs = st.executeQuery(query);
 
         }

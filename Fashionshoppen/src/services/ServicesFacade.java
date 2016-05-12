@@ -5,6 +5,8 @@
  */
 package services;
 
+import java.sql.ResultSet;
+
 
 /**
  *
@@ -36,6 +38,17 @@ public final class ServicesFacade {
     public void browseCategory(String category, String name){
         sr.browseCategory(category, name);
     }
-        
     
+    public ResultSet loginUser(String email, String password){
+    return sr.loginUser(email, password);
+    
+    }
+    
+    public void registerUser(String firstName, String lastName, String email, String password){
+     sr.registerUser(firstName, lastName, email, password);
+    }
+        
+    public ResultSet loginCustomer(int user_id){
+     return sr.loginCustomer(user_id);
+    }
 }

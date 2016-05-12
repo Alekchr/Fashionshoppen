@@ -21,9 +21,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import services.ServerRequest;
-import source.Customer;
-import source.Catalog;
-import source.Webshop;
+import Domain.Customer;
+import Domain.Catalog;
+import Domain.Webshop;
 
 /**
  *

@@ -1,19 +1,23 @@
-package source;
+package Domain;
+
+import services.ServicesFacade;
 
 /**
  *
  * @author aleksander
  */
-public abstract class User
+public abstract class User implements UserManager
 {
-
+    private int user_id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    ServicesFacade sf = new ServicesFacade();
 
     public User(String firstName, String lastName, String email, String password)
     {
+        this.user_id = 0;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -24,6 +28,17 @@ public abstract class User
     public User(String email, String password)
     {
         this("", "", email, password);
+        
+    }
+    
+    public int getUser_id()
+    {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id)
+    {
+        this.user_id = user_id;
     }
 
     public String getFirstName()
@@ -65,5 +80,6 @@ public abstract class User
     {
         this.password = password;
     }
+
 
 }
