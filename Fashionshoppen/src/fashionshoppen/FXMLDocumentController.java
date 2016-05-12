@@ -50,16 +50,6 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TextField LoginPW;
     @FXML
-    private Button BTNLogin;
-    @FXML
-    private Label LblLogin;
-    @FXML
-    private Label LblNewReg;
-    @FXML
-    private Tab TabMainpage;
-    @FXML
-    private Tab TabLogin;
-    @FXML
     private TextField TFsearch;
     @FXML
     private TabPane MainTabPane;
@@ -73,8 +63,6 @@ public class FXMLDocumentController implements Initializable
     private TextField regPW1;
     @FXML
     private TextField regPW2;
-    @FXML
-    private Button searchBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
