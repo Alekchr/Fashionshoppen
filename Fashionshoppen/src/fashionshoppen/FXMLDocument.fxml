@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fashionshoppen.FXMLDocumentController">
+   <children>
+      <TabPane fx:id="MainTabPane" layoutX="28.0" layoutY="-8.0" prefHeight="800.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab fx:id="TabMainpage" text="Mainpage">
+            <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: WHITE;">
+                     <children>
+                        <Button fx:id="BTNHclothes" layoutX="109.0" layoutY="100.0" mnemonicParsing="false" onAction="#showHClothes" text="Herre" />
+                        <Button fx:id="BTNDclothes" layoutX="28.0" layoutY="100.0" mnemonicParsing="false" onAction="#showDClothes" text="Dame" />
+                        <ComboBox fx:id="CBCloth" layoutX="28.0" layoutY="154.0" prefWidth="150.0" promptText=" " visibleRowCount="20" />
+                        <ComboBox fx:id="CBShoes" layoutX="189.0" layoutY="154.0" prefWidth="150.0" promptText=" " />
+                        <ComboBox fx:id="CBAcc" layoutX="352.0" layoutY="154.0" prefWidth="150.0" promptText=" " visibleRowCount="15" />
+                        <Label fx:id="LblLogin" layoutX="494.0" layoutY="14.0" onMouseClicked="#handleLogin" text="Login" />
+                        <Label layoutX="546.0" layoutY="14.0" onMouseClicked="#handleShowBasket" text="Indkøbskurv" />
+                        <TextField fx:id="TFsearch" layoutX="164.0" layoutY="16.0" prefHeight="29.0" prefWidth="223.0" promptText="Søg efter produkt" />
+                        <Button fx:id="searchBtn" layoutX="396.0" layoutY="17.0" mnemonicParsing="false" onAction="#handleSearch" text="Søg" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="TabLogin" text="Login">
+                <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: WHITE;">
+                     <children>
+                         <TextField fx:id="LoginEmail" layoutX="235.0" layoutY="105.0" promptText="Email" />
+                              <TextField fx:id="LoginPW" layoutX="235.0" layoutY="153.0" promptText="Password" />
+                              <Button fx:id="BTNLogin" layoutX="287.0" layoutY="192.0" mnemonicParsing="false" onAction="#handleLoginUser" text="Log ind" />
+                              <Label layoutX="275.0" layoutY="248.0" text="Ikke Medlem?" />
+                              <Label fx:id="LblNewReg" layoutX="278.0" layoutY="269.0" onMouseClicked="#handleCreateCustomer" text="Opret bruger" underline="true" />
+                        <Pane fx:id="RegisterPane" layoutX="82.0" layoutY="33.0" prefHeight="447.0" prefWidth="640.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           
+                            <children>
+                              <TextField fx:id="regFirstName" layoutX="235.0" layoutY="70.0" promptText="Fornavn" />
+                              <TextField fx:id="regLastName" layoutX="235.0" layoutY="118.0" promptText="Efternavn" />
+                              <TextField fx:id="regEmail" layoutX="235.0" layoutY="166.0" promptText="Email" />
+                              <TextField fx:id="regPW1" layoutX="235.0" layoutY="211.0" promptText="Password" />
+                              <TextField fx:id="regPW2" layoutX="235.0" layoutY="256.0" promptText="Bekræft Password" />
+                              <Button fx:id="BTNRegister" layoutX="269.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleRegister" text="Opret bruger" />
+                              
+                           </children>
+                        </Pane>
+                     </children></AnchorPane>
+               </content>
+          </Tab>
+            <Tab text="ProductPage">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
