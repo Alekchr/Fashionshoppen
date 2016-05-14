@@ -16,6 +16,12 @@ public class Employee extends User
         super(firstName, lastName, email, password);
     }
     
+        public Employee(String email, String password)
+    {
+        super(email, password);
+        
+    }
+    
     @Override
     public Employee loginUser(User user)
     {

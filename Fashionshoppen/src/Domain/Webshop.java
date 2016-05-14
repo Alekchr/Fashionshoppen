@@ -54,12 +54,6 @@ public final class Webshop
         sf.browseProductName(name);
     }
 
-    public User loginUser(User user)
-    {
-        return um.loginUser(user);
-
-    }
-
     public void registerCustomer(String firstName, String lastName, String email, String password)
     {
 
@@ -67,18 +61,16 @@ public final class Webshop
         um.registerUser(customer);
     }
 
-    public void checkUserType(String email)
+    public void checkUserType(String email, String password)
     {
         customer = new Customer(email, password);
-        Customer returnedCustomer = (Customer) webshop.loginUser(customer);
+        Customer returnedCustomer = (Customer) um.loginUser(customer);
         if (returnedCustomer == null)
         {
-            employee = new Customer(email, password);
-            Customer returnedCustomer = (Employee) webshop.loginUser(customer);
-        }
-        else
-        {
-            System.out.println("" + returnedCustomer.getAddress());
+            employee = new Employee(email, password);
+            Employee returnedEmployee = (Employee) um.loginUser(employee);
         }
 
+
     }
+}

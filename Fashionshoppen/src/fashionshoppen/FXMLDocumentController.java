@@ -21,8 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import services.ServerRequest;
-import Domain.Customer;
-import Domain.Catalog;
+
 import Domain.Webshop;
 
 /**
@@ -64,8 +63,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TextField regPW2;
 
-    Customer customer;
-    Employee employee;
+   
     
     @Override
     public void initialize(URL url, ResourceBundle rb)

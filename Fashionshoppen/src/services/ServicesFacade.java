@@ -49,6 +49,6 @@ public final class ServicesFacade {
     }
         
     public ResultSet loginCustomer(int user_id){
-     return sr.loginCustomer(user_id);
+     return sr.checkLoginType();
     }
 }
