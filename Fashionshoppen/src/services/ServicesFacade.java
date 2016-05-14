@@ -48,7 +48,7 @@ public final class ServicesFacade {
      sr.registerUser(firstName, lastName, email, password);
     }
         
-    public ResultSet loginCustomer(int user_id){
-     return sr.checkLoginType();
+    public ResultSet loginCustomer(String email){
+     return sr.checkLoginType(email);
     }
 }

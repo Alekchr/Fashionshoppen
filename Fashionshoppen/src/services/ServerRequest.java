@@ -14,8 +14,8 @@ public class ServerRequest
 {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
-    String user = "postgres";
-    String password = "Snuden123";
+    String user = "aleksander";
+    String password = "a123456LA";
     Connection con = null;
     ResultSet rs;
     Statement st;
@@ -86,10 +86,8 @@ public class ServerRequest
             st = con.createStatement();
             query = "INSERT INTO users (firstname, lastname, email, password) VALUES (" + "'"
                     +  firstName + "', " + "'" + lastName + "', " + "'" + email + "', " + "'" + password + "')";
-            query2 = "INSERT INTO customer (email) VALUES (" + "'"
-                    + email + "')";
-            st.executeQuery(query);
-            st.executeQuery(query2);
+
+            st.execute(query);
 
         }
 

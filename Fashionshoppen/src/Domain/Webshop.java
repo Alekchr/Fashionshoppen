@@ -6,7 +6,6 @@
 package Domain;
 
 import services.ServicesFacade;
-
 /**
  *
  * @author jonaspedersen
@@ -23,7 +22,7 @@ public final class Webshop
     Product product;
     User user;
     ServicesFacade sf;
-    UserManager um;
+    
 
     public Webshop()
     {
@@ -58,19 +57,24 @@ public final class Webshop
     {
 
         customer = new Customer(firstName, lastName, email, password);
-        um.registerUser(customer);
+        customer.registerUser(customer);
     }
 
-    public void checkUserType(String email, String password)
+    public User checkUserType(String email, String password)
     {
+        Employee returnedEmployee = null;
         customer = new Customer(email, password);
-        Customer returnedCustomer = (Customer) um.loginUser(customer);
+        Customer returnedCustomer = (Customer) customer.loginUser(customer);
+        
         if (returnedCustomer == null)
         {
             employee = new Employee(email, password);
-            Employee returnedEmployee = (Employee) um.loginUser(employee);
+            returnedEmployee = (Employee) employee.loginUser(employee);
+            return employee;
         }
-
+        else {
+        return customer;
+        }
 
     }
 }

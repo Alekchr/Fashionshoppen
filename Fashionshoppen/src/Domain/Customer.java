@@ -80,7 +80,7 @@ public class Customer extends User
                 customer.setUser_id(rs.getInt("user_id"));
             }
 
-            rs = sf.loginCustomer(customer.getUser_id());
+            rs = sf.loginCustomer(customer.getEmail());
 
             while (rs.next())
             {
