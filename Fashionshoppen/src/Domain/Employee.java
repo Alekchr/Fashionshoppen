@@ -3,7 +3,6 @@ package Domain;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import services.ServicesFacade;
 
 /**
  *

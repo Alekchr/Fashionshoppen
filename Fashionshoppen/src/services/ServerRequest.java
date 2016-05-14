@@ -19,7 +19,9 @@ public class ServerRequest
     Connection con = null;
     ResultSet rs;
     Statement st;
-
+    String query;
+    String query2;
+    
     public ServerRequest()
     {
         //ProgressMonitor progressMonitor = new ProgressMonitor(null, "Please wait", "Loading", 0, 100);
@@ -43,7 +45,7 @@ public class ServerRequest
     }
     
         public void browseCategory(String category, String name){
-        String query = "SELECT * FROM products WHERE product_category = '" + category + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
+        query = "SELECT * FROM products WHERE product_category = '" + category + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
         
         
         try {
@@ -61,7 +63,7 @@ public class ServerRequest
     }
     
     public void browseProductName(String name){
-        String query = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER('%" + name + "%')";
+        query = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER('%" + name + "%')";
         
         try {
             st = con.createStatement();
@@ -82,9 +84,9 @@ public class ServerRequest
         try
         {
             st = con.createStatement();
-            String query = "INSERT INTO users (firstname, lastname, email, password) VALUES (" + "'"
-                    + firstName + "', " + "'" + lastName + "', " + "'" + email + "', " + "'" + password + "')";
-            String query2 = "INSERT INTO customer (email) VALUES (" + "'"
+            query = "INSERT INTO users (firstname, lastname, email, password) VALUES (" + "'"
+                    +  firstName + "', " + "'" + lastName + "', " + "'" + email + "', " + "'" + password + "')";
+            query2 = "INSERT INTO customer (email) VALUES (" + "'"
                     + email + "')";
             st.executeQuery(query);
             st.executeQuery(query2);
@@ -114,23 +116,28 @@ public class ServerRequest
             e.printStackTrace();
         }
         return rs;
-    }
+    } 
 
-    public ResultSet loginCustomer(int user_id)
+
+    public ResultSet checkLoginType(String email)
     {
-
         try
         {
 
             st = con.createStatement();
-            String query = "SELECT * FROM customer WHERE LOWER(user_id) = LOWER('" + user_id + "')";
+            query = "SELECT * FROM customer WHERE LOWE R(email) = LOWER('" + email + "')";
             rs = st.executeQuery(query);
-
+            if(rs == null)
+            {
+            query = "SELECT * FROM customer WHERE LOWER(email) = LOWER('" + email + "')";
+            rs = st.executeQuery(query);
+            }
         }
         catch (SQLException e)
         {
             e.printStackTrace();
         }
-        return rs;
+        
+    return rs;
     }
 }

@@ -64,6 +64,9 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TextField regPW2;
 
+    Customer customer;
+    Employee employee;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -71,7 +74,7 @@ public class FXMLDocumentController implements Initializable
         CBCloth.setVisible(false);
         CBShoes.setVisible(false);
         CBAcc.setVisible(false);
-
+        
     }
 
     @FXML
@@ -161,16 +164,8 @@ public class FXMLDocumentController implements Initializable
     {
         String email = LoginEmail.getText();
         String password = LoginPW.getText();
-        Customer customer = new Customer(email, password);
-        Customer returnedCustomer = customer.loginCustomer(customer);
-        if (returnedCustomer == null)
-        {
-            System.out.println("Failed");
-        }
-        else
-        {
-            System.out.println("" + returnedCustomer.getAddress());
-        }
+        
+
     }
 
     @FXML
@@ -182,8 +177,8 @@ public class FXMLDocumentController implements Initializable
         if (regPW1.getText().equals(regPW2.getText()))
         {
             String password = regPW1.getText();
-            Customer customer = new Customer(firstName, lastName, email, password);
-            customer.registerCustomer(customer);
+            
+            webshop.registerCustomer(firstName, lastName, email, password);
         }
         else
         {
@@ -201,6 +196,8 @@ public class FXMLDocumentController implements Initializable
 
     }
 
+    
+    
     @FXML
     private void handleSearch(ActionEvent event)
     {
