@@ -23,25 +23,25 @@ import javafx.scene.layout.Pane;
 import services.ServerRequest;
 
 import Domain.Webshop;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
  * @author aleksander
  */
-public class FXMLDocumentController implements Initializable
-{
+public class FXMLDocumentController implements Initializable {
 
+    private int checkboxCounter = 0;
+    private HashMap<CheckBox, String> cbMapGender;
+    private HashMap<CheckBox, String> cbMapCategory;
+    private Boolean isGenderSelected = false;
     private Webshop webshop;
-    @FXML
-    private ComboBox CBAcc;
-    @FXML
-    private ComboBox CBCloth;
-    @FXML
-    private ComboBox CBShoes;
-    @FXML
-    private Button BTNHclothes;
-    @FXML
-    private Button BTNDclothes;
+    private CheckBox[] cbArray;
     @FXML
     private Pane RegisterPane;
     @FXML
@@ -62,86 +62,91 @@ public class FXMLDocumentController implements Initializable
     private TextField regPW1;
     @FXML
     private TextField regPW2;
+    @FXML
+    private Tab TabMainpage;
+    @FXML
+    private Label LblLogin;
+    @FXML
+    private Button searchBtn;
+    @FXML
+    private AnchorPane productWindow;
+    @FXML
+    private Tab TabLogin;
+    @FXML
+    private Button BTNLogin;
+    @FXML
+    private Label LblNewReg;
+    @FXML
+    private Button BTNRegister;
+    @FXML
+    private CheckBox womanCB;
+    @FXML
+    private CheckBox unisexCB;
+    @FXML
+    private CheckBox manCB;
+    @FXML
+    private CheckBox tshirtCB;
+    @FXML
+    private CheckBox kjoleCB;
 
-   
-    
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         webshop = new Webshop();
-        CBCloth.setVisible(false);
-        CBShoes.setVisible(false);
-        CBAcc.setVisible(false);
+        cbMapGender = new HashMap();
+        cbMapCategory = new HashMap();
+        cbMapGender.put(womanCB, "'dame'");
+        cbMapGender.put(manCB, "'herre'");
+        cbMapGender.put(unisexCB, "'unisex'");
         
-    }
-
-    @FXML
-    private void showDClothes(ActionEvent event)
-    {
-        populateCBD();
-        CBCloth.setVisible(true);
-        CBCloth.setPromptText("Dametøj");
-        CBShoes.setVisible(true);
-        CBShoes.setPromptText("Damesko");
-        CBAcc.setVisible(true);
-        CBAcc.setPromptText("Accessories");
-        BTNDclothes.setDisable(true);
-        BTNHclothes.setDisable(false);
-    }
-
-    @FXML
-    private void showHClothes(ActionEvent event)
-    {
-        CBCloth.setVisible(true);
-        CBCloth.setPromptText("Herretøj");
-        CBShoes.setVisible(true);
-        CBShoes.setPromptText("Herresko");
-        CBAcc.setVisible(true);
-        CBAcc.setPromptText("Accessories");
-        populateCBH();
-        BTNHclothes.setDisable(true);
-        BTNDclothes.setDisable(false);
-    }
-
-    private void populateCBH()
-    {
-        CBCloth.getItems().clear();
-        CBShoes.getItems().clear();
-        CBAcc.getItems().clear();
-
-        CBCloth.getItems().addAll(
-                "Nyheder", "Jakker og frakker", "T-shirts", "Jeans", "Skjorter", "Bukser", "Shorts",
-                "Polo", "Badeshorts", "Trøjer", "Undertøj", "Strømper", "Jakkesæt");
-
-        CBShoes.getItems().addAll(
-                "Nyheder", "Hjemmesko", "Sandaler", "Sneakers", "Støvler");
-
-        CBAcc.getItems().addAll(
-                "Nyheder", "Tasker", "Handsker", "Punge", "Huer og kasketter", "Bælter", "Ure", "Butterfly",
-                "Smykker", "Hatte", "Kortholder", "Halstørklæder");
+        cbMapCategory.put(tshirtCB, "'t-shirt'");
+        cbMapCategory.put(kjoleCB, "'kjole'");
 
     }
 
-    private void populateCBD()
-    {
-        CBCloth.getItems().clear();
-        CBShoes.getItems().clear();
-        CBAcc.getItems().clear();
-
-        CBCloth.getItems().addAll(
-                "Nyheder", "Kjoler", "Bukser", "Jakker og frakker", "Nederdele", "Jeans", "Nattøj", "Badetøj", "Bluser",
-                "Skjorter", "Toppe", "Shorts", "T-shirts", "Tunika", "Lingerie", "Strømpebukser", "Undertøj", "Heldragt");
-
-        CBShoes.getItems().addAll(
-                "Nyheder", "Støvler", "Sandaler", "Ballerina Sko", "Sneakers", "Gummistøvler", "Stiletter", "Støvletter",
-                "Hjemmesko");
-
-        CBAcc.getItems().addAll(
-                "Nyheder", "Tasker", "Punge", "Smykker", "Bælter", "Tørklæder", "Ure",
-                "Handsker", "Hatte", "Huer og kasketter", "Mobil- og tabletholder", "Solbriller");
-
-    }
-
+//    private void showDClothes(ActionEvent event)
+//    {
+//        populateCBD();
+//
+//    }
+//    private void populateCBH()
+//    {
+//        CBCloth.getItems().clear();
+//        CBShoes.getItems().clear();
+//        CBAcc.getItems().clear();
+//
+//        CBCloth.getItems().addAll(
+//                "Nyheder", "Jakker og frakker", "T-shirts", "Jeans", "Skjorter", "Bukser", "Shorts",
+//                "Polo", "Badeshorts", "Trøjer", "Undertøj", "Strømper", "Jakkesæt");
+//
+//        CBShoes.getItems().addAll(
+//                "Nyheder", "Hjemmesko", "Sandaler", "Sneakers", "Støvler");
+//
+//        CBAcc.getItems().addAll(
+//                "Nyheder", "Tasker", "Handsker", "Punge", "Huer og kasketter", "Bælter", "Ure", "Butterfly",
+//                "Smykker", "Hatte", "Kortholder", "Halstørklæder");
+//
+//    }
+//
+//    private void populateCBD()
+//    {
+//        CBCloth.getItems().clear();
+//        CBShoes.getItems().clear();
+//        CBAcc.getItems().clear();
+//
+//        CBCloth.getItems().addAll(
+//                "Nyheder", "Kjoler", "Bukser", "Jakker og frakker", "Nederdele", "Jeans", "Nattøj", "Badetøj", "Bluser",
+//                "Skjorter", "Toppe", "Shorts", "T-shirts", "Tunika", "Lingerie", "Strømpebukser", "Undertøj", "Heldragt");
+//
+//        CBShoes.getItems().addAll(
+//                "Nyheder", "Støvler", "Sandaler", "Ballerina Sko", "Sneakers", "Gummistøvler", "Stiletter", "Støvletter",
+//                "Hjemmesko");
+//
+//        CBAcc.getItems().addAll(
+//                "Nyheder", "Tasker", "Punge", "Smykker", "Bælter", "Tørklæder", "Ure",
+//                "Handsker", "Hatte", "Huer og kasketter", "Mobil- og tabletholder", "Solbriller");
+//
+//    }
     @FXML
     private void handleLogin(MouseEvent event)
     {
@@ -162,7 +167,6 @@ public class FXMLDocumentController implements Initializable
     {
         String email = LoginEmail.getText();
         String password = LoginPW.getText();
-        
 
     }
 
@@ -172,14 +176,11 @@ public class FXMLDocumentController implements Initializable
         String firstName = regFirstName.getText();
         String lastName = regLastName.getText();
         String email = regEmail.getText();
-        if (regPW1.getText().equals(regPW2.getText()))
-        {
+        if (regPW1.getText().equals(regPW2.getText())) {
             String password = regPW1.getText();
-            
+
             webshop.registerCustomer(firstName, lastName, email, password);
-        }
-        else
-        {
+        } else {
 
         }
 
@@ -194,23 +195,55 @@ public class FXMLDocumentController implements Initializable
 
     }
 
-    
-    
     @FXML
     private void handleSearch(ActionEvent event)
     {
-        
         String st = TFsearch.getText();
-
-        if (CBCloth.getValue() != null)
-        {
-            webshop.browseCategory(CBCloth.getValue().toString().toLowerCase(), st);
+        String genderQuery = "";
+        String categoryQuery = "";
+        String completeQuery;
+        CheckBox[] checkedBoxes;
+        
+        for (CheckBox cb : cbMapGender.keySet()) {
+            if (cb.isSelected()) {
+                checkboxCounter++;
+                isGenderSelected = true;
+                if(genderQuery.isEmpty()){
+                    genderQuery = "product_gender = " + cbMapGender.get(cb);
+                } else {
+                    genderQuery += "OR product_gender = " + cbMapGender.get(cb);
+                }
+            }
 
         }
-        else
-        {
+        
+        for (CheckBox cb : cbMapCategory.keySet()){
+            if (cb.isSelected()){
+                checkboxCounter++;
+                
+                if(categoryQuery.isEmpty()){
+                    if(isGenderSelected){
+                        categoryQuery = " AND product_category = " + cbMapCategory.get(cb);
+                    } else {
+                        categoryQuery = " product_category = " + cbMapCategory.get(cb);
+                    }
+                    
+                } else {
+                    categoryQuery += " OR product_category = " + cbMapCategory.get(cb);
+                }
+            }
+        }
+        
+        completeQuery = "SELECT * FROM PRODUCTS WHERE " + genderQuery  + categoryQuery;
+        
+        if (checkboxCounter > 0) {
+            webshop.browseCategory(completeQuery, st);
+        } else {
             webshop.browseProductName(st);
         }
 
+        checkboxCounter = 0;
+        isGenderSelected = false;
     }
+
 }

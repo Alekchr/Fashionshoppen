@@ -10,18 +10,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ProgressMonitor;
 
-public class ServerRequest
-{
+public class ServerRequest {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
-    String user = "aleksander";
-    String password = "a123456LA";
+    String user = "postgres";
+    String password = "Snuden123";
     Connection con = null;
     ResultSet rs;
     Statement st;
     String query;
     String query2;
-    
+
     public ServerRequest()
     {
         //ProgressMonitor progressMonitor = new ProgressMonitor(null, "Please wait", "Loading", 0, 100);
@@ -30,69 +29,66 @@ public class ServerRequest
 
     private void connect()
     {
-        try
-        {
+        try {
             con = DriverManager.getConnection(url, user, password);
 
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(ServerRequest.class.getName());
             lgr.log(Level.WARNING, ex.getMessage(), ex);
 
         }
 
     }
-    
-        public void browseCategory(String category, String name){
-        query = "SELECT * FROM products WHERE product_category = '" + category + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
-        
-        
+
+    public void browseCategory(String query, String name)
+    {
+        String finalQuery;
+        if (name.isEmpty()) {
+            finalQuery = query;
+        } else {
+            finalQuery = query + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
+        }
+
         try {
             st = con.createStatement();
-            rs = st.executeQuery(query);
+            rs = st.executeQuery(finalQuery);
 
-            
             while (rs.next()) {
                 System.out.println(rs.getString(2) + rs.getString(3) + rs.getDouble(5));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } 
+        }
     }
-    
-    public void browseProductName(String name){
+
+    public void browseProductName(String name)
+    {
         query = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER('%" + name + "%')";
-        
+
         try {
             st = con.createStatement();
             rs = st.executeQuery(query);
 
-            
             while (rs.next()) {
                 System.out.println(rs.getString(2) + rs.getString(3) + rs.getDouble(5));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } 
+        }
     }
 
     public void registerUser(String firstName, String lastName, String email, String password)
     {
-        try
-        {
+        try {
             st = con.createStatement();
             query = "INSERT INTO users (firstname, lastname, email, password) VALUES (" + "'"
-                    +  firstName + "', " + "'" + lastName + "', " + "'" + email + "', " + "'" + password + "')";
+                    + firstName + "', " + "'" + lastName + "', " + "'" + email + "', " + "'" + password + "')";
 
             st.execute(query);
 
-        }
-
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -100,42 +96,34 @@ public class ServerRequest
     public ResultSet loginUser(String email, String password)
     {
 
-        try
-        {
+        try {
 
             st = con.createStatement();
             String query = "SELECT * FROM users WHERE LOWER(email) = LOWER('" + email + "') AND password = '" + password + "'";
 
             rs = st.executeQuery(query);
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return rs;
-    } 
-
+    }
 
     public ResultSet checkLoginType(String email)
     {
-        try
-        {
+        try {
 
             st = con.createStatement();
             query = "SELECT * FROM customer WHERE LOWE R(email) = LOWER('" + email + "')";
             rs = st.executeQuery(query);
-            if(rs == null)
-            {
-            query = "SELECT * FROM customer WHERE LOWER(email) = LOWER('" + email + "')";
-            rs = st.executeQuery(query);
+            if (rs == null) {
+                query = "SELECT * FROM customer WHERE LOWER(email) = LOWER('" + email + "')";
+                rs = st.executeQuery(query);
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        
-    return rs;
+
+        return rs;
     }
 }
