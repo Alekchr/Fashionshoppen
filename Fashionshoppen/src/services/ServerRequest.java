@@ -13,8 +13,8 @@ import javax.swing.ProgressMonitor;
 public class ServerRequest {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
-    String user = "postgres";
-    String password = "Snuden123";
+    String user = "aleksander";
+    String password = "a123456LA";
     Connection con = null;
     ResultSet rs;
     Statement st;
@@ -111,19 +111,34 @@ public class ServerRequest {
 
     public ResultSet checkLoginType(String email)
     {
-        try {
+        int user_id = 2;
+        try
+        {
 
             st = con.createStatement();
-            query = "SELECT * FROM customer WHERE LOWE R(email) = LOWER('" + email + "')";
+            query = "SELECT user_id FROM users WHERE LOWER(email) = LOWER('" + email + "')";
             rs = st.executeQuery(query);
-            if (rs == null) {
-                query = "SELECT * FROM customer WHERE LOWER(email) = LOWER('" + email + "')";
-                rs = st.executeQuery(query);
+
+            while (rs.next())
+            {
+                user_id = rs.getInt("user_id");
+                
             }
-        } catch (SQLException e) {
+            query = "SELECT * FROM employee WHERE user_id = '" + user_id + "'";
+            rs = st.executeQuery(query);
+            if(rs == null)
+            {
+            query = "SELECT * FROM users WHERE user_id = '" + user_id + "'";
+            rs = st.executeQuery(query);
+            }
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
+        
+    return rs;
+        
 
-        return rs;
     }
 }

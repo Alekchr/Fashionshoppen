@@ -167,7 +167,18 @@ public class FXMLDocumentController implements Initializable {
     {
         String email = LoginEmail.getText();
         String password = LoginPW.getText();
-
+        
+        if(webshop.checkUserType(email, password) instanceof Domain.Employee) 
+        {
+            
+        }
+        else if(webshop.checkUserType(email, password) instanceof Domain.Customer) 
+        {
+        
+        }
+        else{
+        
+        }
     }
 
     @FXML
