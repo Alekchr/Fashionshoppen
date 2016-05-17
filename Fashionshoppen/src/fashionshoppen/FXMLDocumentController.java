@@ -7,53 +7,31 @@ package fashionshoppen;
 
 import Domain.Product;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import services.ServerRequest;
 
 import Domain.Webshop;
-import java.awt.Color;
-import static java.awt.Color.BLACK;
-import java.awt.Image;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Array;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.TextAlignment;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 /**
  *
@@ -61,14 +39,11 @@ import javax.swing.JLabel;
  */
 public class FXMLDocumentController implements Initializable {
 
-    private int checkboxCounter = 0;
+
     private HashMap<CheckBox, String> cbMapGender;
     private HashMap<CheckBox, String> cbMapCategory;
-    private ArrayList<CheckBox> cbGenderArray;
-    private Boolean isGenderSelected = false;
     private ArrayList products;
     private Webshop webshop;
-    private CheckBox[] cbArray;
     @FXML
     private Pane RegisterPane;
     @FXML
@@ -313,7 +288,7 @@ public class FXMLDocumentController implements Initializable {
                 
                 //GUI elementer instantieres for produkt
                 Label priceLabel  = new Label(prod.getPrice() + " KR");
-                Label nameLabel  = new Label(prod.getName());
+                Label nameLabel  = new Label(prod.getName().toUpperCase());
                 Button buyButton  = new Button("Læg i kurv");
                 GridPane productThumbnail = new GridPane();
                 ImageView imView = new ImageView(prod.getImage());
@@ -323,15 +298,46 @@ public class FXMLDocumentController implements Initializable {
                 productWindow.add(productThumbnail, colCount, rowCount);
                 productWindow.setPadding(new Insets(10, 10, 10, 30));
                 colCount++;
-
-                productThumbnail.setMaxSize(220, 220);
-                productThumbnail.setMinSize(220, 220);
+ 
+                productThumbnail.setOnMouseEntered(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event)
+                    {
+                        productThumbnail.setOpacity(0.8);
+                        productThumbnail.setCursor(Cursor.HAND);
+                    }
+                
+            });
+                
+                productThumbnail.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event)
+                    {
+                                                MainTabPane.getSelectionModel().select(2);
+                        productPhoto.setImage(prod.getImage());
+                        priceTag.setText(prod.getPrice() + " KR");
+                        nameTag.setText(prod.getName());
+                    }
+                    
+                });
+                
+                productThumbnail.setOnMouseExited(new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event)
+                    {
+                        productThumbnail.setOpacity(1);
+                        productThumbnail.setCursor(Cursor.DEFAULT);
+                    }
+                
+            });
+                productThumbnail.setMaxSize(220, 245);
+                productThumbnail.setMinSize(220, 245);
                 productThumbnail.setAlignment(Pos.BOTTOM_CENTER);
                 productThumbnail.setStyle("-fx-background-color: #FFFFFF");
-                productThumbnail.setPrefSize(220, 220);
+                productThumbnail.setPrefSize(220, 245);
                 
                 //Produktbillede modificeres og indsættes i GUI
-                imView.setFitHeight(100);
+                imView.setFitHeight(126);
                 imView.setFitWidth(220);
                 productThumbnail.add(imView, colCount, rowsInThumb);
                 rowsInThumb++;
@@ -340,6 +346,8 @@ public class FXMLDocumentController implements Initializable {
                 productThumbnail.add(nameLabel, colCount, rowsInThumb);
                 nameLabel.setMaxWidth(Double.MAX_VALUE);
                 nameLabel.setAlignment(Pos.CENTER);
+                nameLabel.setPadding(new Insets(20,0,10,0));
+                nameLabel.setStyle("-fx-font-weight: bold");
                 rowsInThumb++;
 
                 //Produktpris modificieres og indsættes i GUI
@@ -347,22 +355,12 @@ public class FXMLDocumentController implements Initializable {
                 priceLabel.setContentDisplay(ContentDisplay.CENTER);
                 priceLabel.setMaxWidth(Double.MAX_VALUE);
                 priceLabel.setAlignment(Pos.CENTER);
+                priceLabel.setPadding(new Insets(0,0,10,0));
                 rowsInThumb++;
 
                 //Køb knap modificieres og indsættes i GUI
                 productThumbnail.add(buyButton, colCount, rowsInThumb);
-                buyButton.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) //ActionEvent på knap som indsætter data på produktside og viser den
-                    {
-                        MainTabPane.getSelectionModel().select(2);
-                        productPhoto.setImage(prod.getImage());
-                        priceTag.setText(prod.getPrice() + " KR");
-                        nameTag.setText(prod.getName());
-                    }
-
-                });
-                buyButton.setStyle("-fx-base: #52cc14;");
+                buyButton.setStyle("-fx-base: #52cc14; -fx-font-weight: bold");
                 buyButton.setMinSize(220, 45);
                 buyButton.setAlignment(Pos.CENTER);
                 

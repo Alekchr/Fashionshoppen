@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 public class ServerRequest {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
-    String user = "aleksander";
-    String password = "a123456LA";
+    String user = "postgres";
+    String password = "Snuden123";
     Connection con = null;
     ResultSet rs;
     Statement st;

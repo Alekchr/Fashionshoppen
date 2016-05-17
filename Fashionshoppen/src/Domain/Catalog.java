@@ -43,11 +43,17 @@ public class Catalog {
     //Produkterne har følgende: Navn, Kategori, Køn, Pris, billede-path
     public ArrayList showProducts()
     {
-            
+            String pathString = "";
         try {
               
             while (productResultSet.next()) {
-                Product product = new Product(productResultSet.getString("product_name"), productResultSet.getString("product_gender"), productResultSet.getString("product_category"), productResultSet.getDouble("product_price"), "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/placeholder1.png");
+                
+                if(productResultSet.getString("product_category").equals("kjole")){
+                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/dressplaceholder.png";
+                } else {
+                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/placeholder1.png";
+                }
+                Product product = new Product(productResultSet.getString("product_name"), productResultSet.getString("product_gender"), productResultSet.getString("product_category"), productResultSet.getDouble("product_price"), pathString);
                 products.add(product);
             }
         } catch (SQLException e) {
