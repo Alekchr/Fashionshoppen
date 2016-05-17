@@ -89,8 +89,8 @@ public class ServerRequest {
             st.execute(query);
 
             
-            query = "INSERT INTO customer (address, phone) VALUES (" + "'"
-                    + " " + "', " + "'" + "1" + "')";
+            query = "INSERT INTO customer (user_id, address, phone) VALUES (" + findUserID(email) + "'),"
+                    + "' '" + ", '' )";
                     
             st.execute(query);
             
@@ -98,7 +98,47 @@ public class ServerRequest {
             e.printStackTrace();
         }
     }
-
+    
+    public ResultSet findCustomerAddress(String email){
+        
+        int user_id = findUserID(email);
+        
+        try
+        {    
+            st = con.createStatement();
+            query = "SELECT * FROM Address WHERE user_id ='" + user_id + "'";
+            rs = st.executeQuery(query);
+            
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return rs;
+    }
+    
+    public int findUserID(String email)
+    {
+        int user_id = 0;
+        try
+        {
+            st = con.createStatement();
+            query = "SELECT user_id FROM users WHERE email ='" + email + "'";
+            rs = st.executeQuery(query);
+            
+            while(rs.next())
+            {
+                user_id = rs.getInt("user_id");
+            }   
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user_id;
+    } 
+            
     public ResultSet loginUser(String email, String password)
     {
 

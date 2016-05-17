@@ -20,15 +20,14 @@ public class Order
     private int order_id;
     private Date order_date;
     private double price;
-    private String shippingAddress;
-    private String shippingCity;
+    private Address shippingAddress;
     private double shippingCharge;
     private double finalPrice;
     private String payment_option;
     private String Status;
     private ArrayList<Item> items;
 
-    public Order(int customer_id, int order_id, String shippingAddress, String shippingCity, Item item, double price)
+    public Order(int customer_id, int order_id, Address shippingAddress, String shippingCity, Item item)
     {
         this.customer_id = customer_id;
         this.order_id = order_id;
@@ -40,12 +39,16 @@ public class Order
     public void addItem(Item item)
     {
         items.add(item);
-
+    }
+    
+    public void totalPrice(){
+    
+    
     }
 
     public void finishOrder(Order order)
     {
-        
+        items.toString();
     }
 
     public int getOrder_id()
@@ -78,25 +81,17 @@ public class Order
         this.price = price;
     }
 
-    public String getShippingAddress()
+    public Address getShippingAddress()
     {
         return shippingAddress;
     }
 
-    public void setShippingAddress(String shippingAddress)
+    public void setShippingAddress(Address shippingAddress)
     {
         this.shippingAddress = shippingAddress;
     }
 
-    public String getShippingCity()
-    {
-        return shippingCity;
-    }
 
-    public void setShippingCity(String shippingCity)
-    {
-        this.shippingCity = shippingCity;
-    }
 
     public double getShippingCharge()
     {

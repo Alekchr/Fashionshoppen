@@ -51,4 +51,9 @@ public final class ServicesFacade {
     public ResultSet loginCustomer(String email){
      return sr.checkLoginType(email);
     }
+    
+    public ResultSet getCustomerAddress(String email)
+    {
+        return sr.findCustomerAddress(email);
+    }
 }
