@@ -5,6 +5,9 @@
  */
 package Domain;
 
+
+import java.util.ArrayList;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
@@ -46,7 +49,13 @@ public final class Webshop
 
         return instance;
     }
+    
 
+    public ArrayList showProducts(){
+        ArrayList products = catalog.showProducts();
+        return products;
+        
+    }
     public void browseCategory(String category, String name)
     {
         sf.browseCategory(category, name);

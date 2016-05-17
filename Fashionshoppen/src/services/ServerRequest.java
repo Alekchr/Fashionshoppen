@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 public class ServerRequest {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
-    String user = "aleksander";
-    String password = "a123456LA";
+    String user = "postgres";
+    String password = "Snuden123";
     Connection con = null;
     ResultSet rs;
     Statement st;
@@ -62,7 +62,7 @@ public class ServerRequest {
         }
     }
 
-    public void browseProductName(String name)
+    public ResultSet browseProductName(String name)
     {
         query = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER('%" + name + "%')";
 
@@ -77,6 +77,22 @@ public class ServerRequest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return rs;
+    }
+    
+    public ResultSet getProducts(){
+        
+        query = "SELECT * from products";
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return rs;
     }
     //Denne metode registrer en bruger, og sørger for at det samme user_id bliver gemt i alle database tables, så de senere kan ændres.
     public void registerUser(String firstName, String lastName, String email, String password)  

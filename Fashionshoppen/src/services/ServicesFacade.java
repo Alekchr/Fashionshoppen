@@ -31,6 +31,11 @@ public final class ServicesFacade {
         return instance;
     }
         
+   public ResultSet getProducts(){
+       ResultSet rs = sr.getProducts();
+       return rs;
+   }
+        
     public void browseProductName(String name){
         sr.browseProductName(name);
     }
