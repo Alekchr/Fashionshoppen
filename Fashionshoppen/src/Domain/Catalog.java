@@ -30,12 +30,17 @@ public class Catalog {
 
     }
 
+    //getProducts() er en metode som returnerer ResultSet fra servicelaget
+    //ResultSettet bruges i showproducts til at oprette array af products.
     public ResultSet getProducts()
     {
         ResultSet rs = sf.getProducts();
         return rs;
     }
 
+    
+    //showProducts() er en metode som returnerer et array af alle produkter fra databasen
+    //Produkterne har følgende: Navn, Kategori, Køn, Pris, billede-path
     public ArrayList showProducts()
     {
             

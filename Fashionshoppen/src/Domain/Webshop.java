@@ -56,6 +56,7 @@ public final class Webshop
         return products;
         
     }
+    
     public void browseCategory(String category, String name)
     {
         sf.browseCategory(category, name);
