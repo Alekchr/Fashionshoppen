@@ -46,7 +46,7 @@ public class Employee extends User
         return employee;
     }
     @Override
-    public void registerUser(User user){
+    public void registerUser(User user){                    //kan laves senere, den vigtigste er customer atm.
     
     }
 }

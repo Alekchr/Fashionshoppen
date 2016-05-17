@@ -36,7 +36,7 @@ public class Order
         items.add(item);
     }
 
-    public void addItem(Item item)
+    public void addItem(Item item) //Hver gang en customer tilføjer et produkt, laves et item, og den tilføjes til kundens kurv/arraylist
     {
         items.add(item);
     }

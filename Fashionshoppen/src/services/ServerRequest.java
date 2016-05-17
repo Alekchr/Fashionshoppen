@@ -23,7 +23,7 @@ public class ServerRequest {
 
     public ServerRequest()
     {
-        //ProgressMonitor progressMonitor = new ProgressMonitor(null, "Please wait", "Loading", 0, 100);
+       
         connect();
     }
 
@@ -78,8 +78,8 @@ public class ServerRequest {
             e.printStackTrace();
         }
     }
-
-    public void registerUser(String firstName, String lastName, String email, String password)
+    //Denne metode registrer en bruger, og sørger for at det samme user_id bliver gemt i alle database tables, så de senere kan ændres.
+    public void registerUser(String firstName, String lastName, String email, String password)  
     {
         try {
             st = con.createStatement();
@@ -94,12 +94,17 @@ public class ServerRequest {
                     
             st.execute(query);
             
+            query = "INSERT INTO address (user_id) VALUES (" + findUserID(email) +")";  
+                    
+            st.execute(query);
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     
-    public ResultSet findCustomerAddress(String email){
+    public ResultSet findCustomerAddress(String email){     //Returnerer et resultset, som bruges til at oprette en instans
+                                                            //af addresse til den bruger der har logget ind.
         
         int user_id = findUserID(email);
         
@@ -118,7 +123,7 @@ public class ServerRequest {
         return rs;
     }
     
-    public int findUserID(String email)
+    public int findUserID(String email)     //Metode til at finde user_id ud fra email, bruges når der logges ind med email.
     {
         int user_id = 0;
         try
@@ -154,10 +159,11 @@ public class ServerRequest {
         }
         return rs;
     }
-
+    
+    //Checker om det er en customer eller employee der har logget ind, og returnerer ResultSet fra det table som matcher.
     public ResultSet checkLoginType(String email)
     {
-        int user_id = 2;
+        int user_id = 0;
         try
         {
 

@@ -49,7 +49,8 @@ public class Customer extends User
     }
 
     @Override
-    public void registerUser(User user)
+    public void registerUser(User user)  //Opretter en bruger med det vigtigste informationer, 
+                                         //ting som addresse og telefonnummber kan tilføjes senere
     {
 
         String firstName = user.getFirstName();
@@ -62,7 +63,8 @@ public class Customer extends User
     }
 
     @Override
-    public Customer loginUser(User user)
+    public Customer loginUser(User user)     //Når en bruger logges ind gemmes alle deres oplysninger, 
+                                             //så de kan bruges til orders/ændring af oplysninger
     {
         Customer customer = new Customer("", "", "", "");
         try
