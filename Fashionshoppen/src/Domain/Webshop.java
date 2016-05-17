@@ -5,6 +5,9 @@
  */
 package Domain;
 
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import services.ServicesFacade;
 /**
  *
@@ -42,7 +45,13 @@ public final class Webshop
 
         return instance;
     }
+    
 
+    public ArrayList showProducts(){
+        ArrayList products = catalog.showProducts();
+        return products;
+        
+    }
     public void browseCategory(String category, String name)
     {
         sf.browseCategory(category, name);

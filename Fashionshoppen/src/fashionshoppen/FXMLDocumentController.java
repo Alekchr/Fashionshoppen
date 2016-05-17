@@ -5,6 +5,7 @@
  */
 package fashionshoppen;
 
+import Domain.Product;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
@@ -23,12 +24,36 @@ import javafx.scene.layout.Pane;
 import services.ServerRequest;
 
 import Domain.Webshop;
+import java.awt.Color;
+import static java.awt.Color.BLACK;
+import java.awt.Image;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.TextAlignment;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -39,7 +64,9 @@ public class FXMLDocumentController implements Initializable {
     private int checkboxCounter = 0;
     private HashMap<CheckBox, String> cbMapGender;
     private HashMap<CheckBox, String> cbMapCategory;
+    private ArrayList<CheckBox> cbGenderArray;
     private Boolean isGenderSelected = false;
+    private ArrayList products;
     private Webshop webshop;
     private CheckBox[] cbArray;
     @FXML
@@ -69,7 +96,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button searchBtn;
     @FXML
-    private AnchorPane productWindow;
+    private GridPane productWindow;
     @FXML
     private Tab TabLogin;
     @FXML
@@ -88,6 +115,14 @@ public class FXMLDocumentController implements Initializable {
     private CheckBox tshirtCB;
     @FXML
     private CheckBox kjoleCB;
+    @FXML
+    private ImageView productPhoto;
+    @FXML
+    private Label nameTag;
+    @FXML
+    private Label priceTag;
+    @FXML
+    private Button backBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -95,58 +130,25 @@ public class FXMLDocumentController implements Initializable {
         webshop = new Webshop();
         cbMapGender = new HashMap();
         cbMapCategory = new HashMap();
-        cbMapGender.put(womanCB, "'dame'");
-        cbMapGender.put(manCB, "'herre'");
-        cbMapGender.put(unisexCB, "'unisex'");
-        
-        cbMapCategory.put(tshirtCB, "'t-shirt'");
-        cbMapCategory.put(kjoleCB, "'kjole'");
+        cbGenderArray = new ArrayList();
+        MainTabPane.getTabs();
 
+        products = webshop.showProducts();
+
+        cbGenderArray.add(womanCB);
+        cbGenderArray.add(manCB);
+        cbGenderArray.add(unisexCB);
+
+        cbMapGender.put(womanCB, "dame");
+        cbMapGender.put(manCB, "herre");
+        cbMapGender.put(unisexCB, "unisex");
+
+        cbMapCategory.put(tshirtCB, "t-shirt");
+        cbMapCategory.put(kjoleCB, "kjole");
+        filter();
+        handleSearch(new ActionEvent());
     }
 
-//    private void showDClothes(ActionEvent event)
-//    {
-//        populateCBD();
-//
-//    }
-//    private void populateCBH()
-//    {
-//        CBCloth.getItems().clear();
-//        CBShoes.getItems().clear();
-//        CBAcc.getItems().clear();
-//
-//        CBCloth.getItems().addAll(
-//                "Nyheder", "Jakker og frakker", "T-shirts", "Jeans", "Skjorter", "Bukser", "Shorts",
-//                "Polo", "Badeshorts", "Trøjer", "Undertøj", "Strømper", "Jakkesæt");
-//
-//        CBShoes.getItems().addAll(
-//                "Nyheder", "Hjemmesko", "Sandaler", "Sneakers", "Støvler");
-//
-//        CBAcc.getItems().addAll(
-//                "Nyheder", "Tasker", "Handsker", "Punge", "Huer og kasketter", "Bælter", "Ure", "Butterfly",
-//                "Smykker", "Hatte", "Kortholder", "Halstørklæder");
-//
-//    }
-//
-//    private void populateCBD()
-//    {
-//        CBCloth.getItems().clear();
-//        CBShoes.getItems().clear();
-//        CBAcc.getItems().clear();
-//
-//        CBCloth.getItems().addAll(
-//                "Nyheder", "Kjoler", "Bukser", "Jakker og frakker", "Nederdele", "Jeans", "Nattøj", "Badetøj", "Bluser",
-//                "Skjorter", "Toppe", "Shorts", "T-shirts", "Tunika", "Lingerie", "Strømpebukser", "Undertøj", "Heldragt");
-//
-//        CBShoes.getItems().addAll(
-//                "Nyheder", "Støvler", "Sandaler", "Ballerina Sko", "Sneakers", "Gummistøvler", "Stiletter", "Støvletter",
-//                "Hjemmesko");
-//
-//        CBAcc.getItems().addAll(
-//                "Nyheder", "Tasker", "Punge", "Smykker", "Bælter", "Tørklæder", "Ure",
-//                "Handsker", "Hatte", "Huer og kasketter", "Mobil- og tabletholder", "Solbriller");
-//
-//    }
     @FXML
     private void handleLogin(MouseEvent event)
     {
@@ -195,55 +197,171 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
+    private ArrayList filter()
+    {
+        String st = TFsearch.getText();
+        ArrayList<Product> productsToReturn = new ArrayList();
+
+        String genderString = "";
+        String categoryString = "";
+
+        for (CheckBox cb : cbMapGender.keySet()) {
+            if (cb.isSelected()) {
+                genderString += cbMapGender.get(cb) + ";";
+            }
+        }
+
+        for (CheckBox cb : cbMapCategory.keySet()) {
+            if (cb.isSelected()) {
+                categoryString += cbMapCategory.get(cb) + ";";
+            }
+        }
+        String[] genderStrings = genderString.split(";");
+        String[] categoryStrings = categoryString.split(";");
+
+        if (genderString.isEmpty() != true && categoryString.isEmpty() != true) {
+            for (int i = 0; i < products.size(); i++) {
+                Boolean genderMatch = false;
+                Boolean categoryMatch = false;
+                Product product = (Product) products.get(i);
+
+                for (int k = 0; k < genderStrings.length; k++) {
+
+                    if (product.getGender().equals(genderStrings[k])) {
+                        genderMatch = true;
+                    }
+
+                    for (int j = 0; j < categoryStrings.length; j++) {
+
+                        if (product.getCategory().equals(categoryStrings[j])) {
+                            categoryMatch = true;
+                        }
+
+                    }
+
+                }
+
+                if (genderMatch && categoryMatch) {
+                    productsToReturn.add(product);
+                }
+
+                genderMatch = false;
+                categoryMatch = false;
+            }
+        } else if (genderString.isEmpty() != true) {
+            for (int i = 0; i < products.size(); i++) {
+                Product product = (Product) products.get(i);
+
+                for (int k = 0; k < genderStrings.length; k++) {
+                    if (product.getGender().equals(genderStrings[k])) {
+                        productsToReturn.add(product);
+                    }
+                }
+
+            }
+        } else if (categoryString.isEmpty() != true) {
+            for (int i = 0; i < products.size(); i++) {
+                Product product = (Product) products.get(i);
+                for (int k = 0; k < categoryStrings.length; k++) {
+                    if (product.getCategory().equals(categoryStrings[k])) {
+                        productsToReturn.add(product);
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < products.size(); i++) {
+                Product product = (Product) products.get(i);
+                productsToReturn.add(product);
+
+            }
+
+        }
+        return productsToReturn;
+    }
+
+//        
     @FXML
     private void handleSearch(ActionEvent event)
     {
         String st = TFsearch.getText();
-        String genderQuery = "";
-        String categoryQuery = "";
-        String completeQuery;
-        CheckBox[] checkedBoxes;
+        ArrayList<Product> productsToReturn = filter();
+        productWindow.getChildren().clear();
         
-        for (CheckBox cb : cbMapGender.keySet()) {
-            if (cb.isSelected()) {
-                checkboxCounter++;
-                isGenderSelected = true;
-                if(genderQuery.isEmpty()){
-                    genderQuery = "product_gender = " + cbMapGender.get(cb);
-                } else {
-                    genderQuery += "OR product_gender = " + cbMapGender.get(cb);
-                }
-            }
 
-        }
-        
-        for (CheckBox cb : cbMapCategory.keySet()){
-            if (cb.isSelected()){
-                checkboxCounter++;
-                
-                if(categoryQuery.isEmpty()){
-                    if(isGenderSelected){
-                        categoryQuery = " AND product_category = " + cbMapCategory.get(cb);
-                    } else {
-                        categoryQuery = " product_category = " + cbMapCategory.get(cb);
-                    }
-                    
-                } else {
-                    categoryQuery += " OR product_category = " + cbMapCategory.get(cb);
-                }
-            }
-        }
-        
-        completeQuery = "SELECT * FROM PRODUCTS WHERE " + genderQuery  + categoryQuery;
-        
-        if (checkboxCounter > 0) {
-            webshop.browseCategory(completeQuery, st);
+        if (productsToReturn.isEmpty()) {
+            System.out.println("productstoreturn er tom");
         } else {
-            webshop.browseProductName(st);
-        }
 
-        checkboxCounter = 0;
-        isGenderSelected = false;
+            int rowCount = 0;
+            int colCount = 0;
+            int rowsInThumb = 0;
+
+            for (Product prod : productsToReturn) {
+                if (colCount >= 5) {
+                    colCount = 0;
+                    rowCount++;
+                }
+                Label priceLabel;
+                Label nameLabel;
+                Button buyButton;
+                GridPane productThumbnail;
+
+                ImageView imView = new ImageView(prod.getImage());
+                imView.setFitHeight(100);
+                imView.setFitWidth(220);
+                
+
+                productWindow.add(productThumbnail = new GridPane(), colCount, rowCount);
+                productWindow.setPadding(new Insets(10, 10, 10, 30));
+                colCount++;
+                
+                productThumbnail.setMaxSize(220, 220);
+                productThumbnail.setMinSize(220, 220);
+                productThumbnail.setAlignment(Pos.BOTTOM_CENTER);
+                productThumbnail.setStyle("-fx-background-color: #FFFFFF");
+                productThumbnail.setPrefSize(220, 220);
+                productThumbnail.add(imView, colCount, rowsInThumb);
+                rowsInThumb++;
+                productThumbnail.add(nameLabel = new Label(prod.getName()), colCount, rowsInThumb);
+                nameLabel.setMaxWidth(Double.MAX_VALUE);
+                nameLabel.setAlignment(Pos.CENTER);
+                rowsInThumb++;
+
+                productThumbnail.add(priceLabel = new Label(prod.getPrice() + " KR"), colCount, rowsInThumb);
+                priceLabel.setContentDisplay(ContentDisplay.CENTER);
+                priceLabel.setMaxWidth(Double.MAX_VALUE);
+                priceLabel.setAlignment(Pos.CENTER);
+                rowsInThumb++;
+
+                productThumbnail.add(buyButton = new Button("Læg i kurv"), colCount, rowsInThumb);
+                buyButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event)
+                    {
+                        MainTabPane.getSelectionModel().select(2);
+                        productPhoto.setImage(prod.getImage());
+                        priceTag.setText(prod.getPrice()+ " KR");
+                        nameTag.setText(prod.getName());
+                    }
+
+                });
+                buyButton.setStyle("-fx-base: #52cc14;");
+                buyButton.setMinSize(220, 45);
+                buyButton.setAlignment(Pos.CENTER);
+            }
+            if (colCount >= 5) {
+                rowCount++;
+                colCount = 0;
+            }
+
+        }
     }
+
+    @FXML
+    private void handleBack(ActionEvent event)
+    {
+        MainTabPane.getSelectionModel().select(0);
+    }
+
 
 }

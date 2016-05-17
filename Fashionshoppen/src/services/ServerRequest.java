@@ -62,7 +62,7 @@ public class ServerRequest {
         }
     }
 
-    public void browseProductName(String name)
+    public ResultSet browseProductName(String name)
     {
         query = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER('%" + name + "%')";
 
@@ -77,6 +77,22 @@ public class ServerRequest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        return rs;
+    }
+    
+    public ResultSet getProducts(){
+        
+        query = "SELECT * from products";
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return rs;
     }
 
     public void registerUser(String firstName, String lastName, String email, String password)
