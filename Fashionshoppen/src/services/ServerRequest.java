@@ -2,13 +2,13 @@ package services;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ProgressMonitor;
+
 
 public class ServerRequest {
 
@@ -104,6 +104,12 @@ public class ServerRequest {
 
             st.execute(query);
 
+            
+            query = "INSERT INTO customer (address, phone) VALUES (" + "'"
+                    + " " + "', " + "'" + "1" + "')";
+                    
+            st.execute(query);
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,19 +133,39 @@ public class ServerRequest {
 
     public ResultSet checkLoginType(String email)
     {
-        try {
+        int user_id = 2;
+        try
+        {
 
             st = con.createStatement();
-            query = "SELECT * FROM customer WHERE LOWE R(email) = LOWER('" + email + "')";
+            query = "SELECT user_id FROM users WHERE LOWER(email) = LOWER('" + email + "')";
             rs = st.executeQuery(query);
-            if (rs == null) {
-                query = "SELECT * FROM customer WHERE LOWER(email) = LOWER('" + email + "')";
-                rs = st.executeQuery(query);
+
+            while (rs.next())
+            {
+                user_id = rs.getInt("user_id");
+                
             }
-        } catch (SQLException e) {
+            query = "SELECT * FROM employee WHERE user_id = '" + user_id + "'";
+            rs = st.executeQuery(query);
+            if(rs == null)
+            {
+            query = "SELECT * FROM users WHERE user_id = '" + user_id + "'";
+            rs = st.executeQuery(query);
+            }
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
+        
+    return rs;
+        
 
-        return rs;
     }
+    
+//    public void createOrder(){
+//        query = "INSERT INTO TABLE orders ()"
+//    
+//    }
 }

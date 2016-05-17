@@ -5,9 +5,13 @@
  */
 package Domain;
 
-import java.io.IOException;
-import java.sql.ResultSet;
+
 import java.util.ArrayList;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import services.ServicesFacade;
 /**
  *
@@ -25,7 +29,7 @@ public final class Webshop
     Product product;
     User user;
     ServicesFacade sf;
-    
+    MessageDigest md;
 
     public Webshop()
     {
@@ -65,25 +69,51 @@ public final class Webshop
     public void registerCustomer(String firstName, String lastName, String email, String password)
     {
 
-        customer = new Customer(firstName, lastName, email, password);
+        String encryptedPass = encryptPassword(password);
+        customer = new Customer(firstName, lastName, email, encryptedPass);
         customer.registerUser(customer);
     }
 
     public User checkUserType(String email, String password)
     {
+        Customer returnedCustomer = null;
         Employee returnedEmployee = null;
-        customer = new Customer(email, password);
-        Customer returnedCustomer = (Customer) customer.loginUser(customer);
-        
+        String encryptedPass = encryptPassword(password);
+        customer = new Customer(email, encryptedPass);
+        returnedCustomer = (Customer) customer.loginUser(customer);
+
         if (returnedCustomer == null)
         {
-            employee = new Employee(email, password);
+            employee = new Employee(email, encryptedPass);
             returnedEmployee = (Employee) employee.loginUser(employee);
-            return employee;
+            return returnedEmployee;
         }
-        else {
-        return customer;
+        else
+        {
+            return returnedCustomer;
         }
 
+    }
+    public String encryptPassword(String password)
+    {
+        StringBuilder sb = new StringBuilder();
+        try
+        {
+            md = MessageDigest.getInstance("MD5");
+            byte[] passBytes = password.getBytes();
+            md.digest(passBytes);
+            byte[] digest = md.digest(passBytes);
+
+            for (int i = 0; i < digest.length; i++)
+            {
+                sb.append(Integer.toHexString(0xff & digest[i]));
+            }
+
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(Webshop.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sb.toString();
     }
 }

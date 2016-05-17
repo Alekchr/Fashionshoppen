@@ -66,17 +66,20 @@ public class Customer extends User
 
     }
 
-    @Override
+     @Override
     public Customer loginUser(User user)
     {
-        Customer customer = null;
-        customer.setUser_id(0);
+        Customer customer = new Customer("", "", "", "");
         try
         {
+            
             ResultSet rs = sf.loginUser(user.getEmail(), user.getPassword());
             while (rs.next())
             {
-                customer = new Customer(rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("password"));
+                customer.setFirstName(rs.getString("firstname"));
+                customer.setLastName(rs.getString("lastname"));
+                customer.setEmail(rs.getString("email"));
+                customer.setPassword(rs.getString("password"));
                 customer.setUser_id(rs.getInt("user_id"));
             }
 
@@ -95,4 +98,5 @@ public class Customer extends User
         }
         return customer;
     }
+
 }
