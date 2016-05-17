@@ -36,6 +36,9 @@ public class Product
         return writableImg;
     }
     
+    
+    //createImage() er en metode som returnerer WritableImage ud fra imagePath.
+    //Image er den størrelse som det er, og skal resizes i controller.
     public WritableImage createImage(String imagePath){
                         BufferedImage bf = null;
                 try {
