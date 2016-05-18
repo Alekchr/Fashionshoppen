@@ -39,9 +39,9 @@ public class Catalog {
             while (productResultSet.next()) {
                 
                 if(productResultSet.getString("product_category").equals("kjole")){
-                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/dressplaceholder.png";
+                    pathString = "/home/aleksander/UNI/Software/2. semester/Projekt/Fashionshoppenv1/Fashionshoppen/src/dressplaceholder.png";
                 } else {
-                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/placeholder1.png";
+                    pathString = "/home/aleksander/UNI/Software/2. semester/Projekt/Fashionshoppenv1/Fashionshoppen/src/placeholder1.png";
                 }
                 product = new Product(productResultSet.getString("product_name"), productResultSet.getString("product_gender"), productResultSet.getString("product_category"), productResultSet.getDouble("product_price"), pathString);
                 products.add(product);
