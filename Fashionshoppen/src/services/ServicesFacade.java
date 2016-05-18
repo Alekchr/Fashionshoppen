@@ -61,4 +61,24 @@ public final class ServicesFacade {
     {
         return sr.findCustomerAddress(email);
     }
+    
+    public void editProductName(int productId, String productName){
+        sr.editProductName(productId, productName);
+    }
+    
+    public void editProductCategory(int productId, String productCategory){
+        sr.editProductName(productId, productCategory);
+    }
+    
+    public void editProductGender(int productId, String productGender){
+        sr.editProductName(productId, productGender);
+    }
+    
+    public void editProductPrice(int productId, Double price){
+        sr.editProductPrice(productId, price);
+    }
+    
+    public void editProductPicture(int productId, String imagePath){
+        sr.editProductName(productId, imagePath);
+    }
 }

@@ -57,6 +57,26 @@ public final class Webshop
         
     }
     
+        public void editProductName(int productId, String productName){
+        sf.editProductName(productId, productName);
+    }
+    
+    public void editProductCategory(int productId, String productCategory){
+        sf.editProductName(productId, productCategory);
+    }
+    
+    public void editProductGender(int productId, String productGender){
+        sf.editProductName(productId, productGender);
+    }
+    
+    public void editProductPrice(int productId, Double price){
+        sf.editProductPrice(productId, price);
+    }
+    
+    public void editProductPicture(int productId, String imagePath){
+        sf.editProductName(productId, imagePath);
+    }
+    
     public void browseCategory(String category, String name)
     {
         sf.browseCategory(category, name);

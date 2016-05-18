@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class ServerRequest {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
@@ -23,7 +22,7 @@ public class ServerRequest {
 
     public ServerRequest()
     {
-       
+
         connect();
     }
 
@@ -77,12 +76,13 @@ public class ServerRequest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return rs;
     }
-    
-    public ResultSet getProducts(){
-        
+
+    public ResultSet getProducts()
+    {
+
         query = "SELECT * from products";
         try {
             st = con.createStatement();
@@ -91,11 +91,12 @@ public class ServerRequest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return rs;
     }
+
     //Denne metode registrer en bruger, og sørger for at det samme user_id bliver gemt i alle database tables, så de senere kan ændres.
-    public void registerUser(String firstName, String lastName, String email, String password)  
+    public void registerUser(String firstName, String lastName, String email, String password)
     {
         try {
             st = con.createStatement();
@@ -104,62 +105,55 @@ public class ServerRequest {
 
             st.execute(query);
 
-            
             query = "INSERT INTO customer (user_id, phone) VALUES ('" + findUserID(email) + "',"
                     + " ' ' )";
-                    
+
             st.execute(query);
-            
-            query = "INSERT INTO address (user_id) VALUES (" + findUserID(email) +")";  
-                    
+
+            query = "INSERT INTO address (user_id) VALUES (" + findUserID(email) + ")";
+
             st.execute(query);
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
-    public ResultSet findCustomerAddress(String email){     //Returnerer et resultset, som bruges til at oprette en instans
-                                                            //af addresse til den bruger der har logget ind.
-        
+
+    public ResultSet findCustomerAddress(String email)
+    {     //Returnerer et resultset, som bruges til at oprette en instans
+        //af addresse til den bruger der har logget ind.
+
         int user_id = findUserID(email);
-        
-        try
-        {    
+
+        try {
             st = con.createStatement();
             query = "SELECT * FROM Address WHERE user_id ='" + user_id + "'";
             rs = st.executeQuery(query);
-            
-        }
-        catch (SQLException ex)
-        {
+
+        } catch (SQLException ex) {
             Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return rs;
     }
-    
+
     public int findUserID(String email)     //Metode til at finde user_id ud fra email, bruges når der logges ind med email.
     {
         int user_id = 0;
-        try
-        {
+        try {
             st = con.createStatement();
             query = "SELECT user_id FROM users WHERE email ='" + email + "'";
             rs = st.executeQuery(query);
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 user_id = rs.getInt("user_id");
-            }   
-        }
-        catch (SQLException ex)
-        {
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
         }
         return user_id;
-    } 
-            
+    }
+
     public ResultSet loginUser(String email, String password)
     {
 
@@ -175,43 +169,83 @@ public class ServerRequest {
         }
         return rs;
     }
-    
+
     //Checker om det er en customer eller employee der har logget ind, og returnerer ResultSet fra det table som matcher.
     public ResultSet checkLoginType(String email)
     {
         int user_id = 0;
-        try
-        {
+        try {
 
             st = con.createStatement();
             query = "SELECT user_id FROM users WHERE LOWER(email) = LOWER('" + email + "')";
             rs = st.executeQuery(query);
 
-            while (rs.next())
-            {
+            while (rs.next()) {
                 user_id = rs.getInt("user_id");
-                
+
             }
             query = "SELECT * FROM employee WHERE user_id = '" + user_id + "'";
             rs = st.executeQuery(query);
-            if(rs == null)
-            {
-            query = "SELECT * FROM users WHERE user_id = '" + user_id + "'";
-            rs = st.executeQuery(query);
+            if (rs == null) {
+                query = "SELECT * FROM users WHERE user_id = '" + user_id + "'";
+                rs = st.executeQuery(query);
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        
-    return rs;
-        
+
+        return rs;
 
     }
-    
-//    public void createOrder(){
+
+    //    public void createOrder(){
 //        query = "INSERT INTO TABLE orders ()"
 //    
 //    }
+    public void createProduct(String name, String category, String gender, Double price)
+    {
+
+        try {
+            query = "INSERT INTO products(product_name, product_category, product_gender, product_price) VALUES('" + name + "', '" + category + "', '" + gender + "', '" + price + "');";
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void editProductName(int productId, String name){
+        query =  "UPDATE products SET product_name = " + name + " WHERE product_id = " + productId + ";";
+        runQuery(query);
+    }
+    
+    public void editProductCategory(int productId, String category){
+        query =  "UPDATE products SET product_category = " + category + " WHERE product_id = " + productId + ";";
+        runQuery(query);
+    }
+    
+    public void editProductGender(int productId, String gender){
+        query = "UPDATE products SET product_gender = " + gender + " WHERE product_id = " + productId + ";";
+        runQuery(query);
+    }
+    
+    public void editProductPrice(int productId, Double price){
+        query =  "UPDATE products SET product_price = " + price + " WHERE product_id = " + productId + ";";
+        runQuery(query);
+    }
+    
+    public void editProductPicture(int productId, String imagePath){
+        query = "UPDATE products SET product_image_path = " + imagePath + " WHERE product_id = " + productId + ";";
+        runQuery(query);
+    }
+    
+    public void runQuery(String query){
+        try{
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
