@@ -97,6 +97,8 @@ public class FXMLDocumentController implements Initializable {
     private Label priceTag;
     @FXML
     private Button backBtn;
+    @FXML
+    private Tab basketWindow;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
