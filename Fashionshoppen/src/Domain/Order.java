@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author aleksander
  */
-public class Order
+public class Order implements OrderManager
 {
 
     private int customer_id;
@@ -36,10 +36,7 @@ public class Order
         items.add(item);
     }
 
-    public void addItem(Item item) //Hver gang en customer tilføjer et produkt, laves et item, og den tilføjes til kundens kurv/arraylist
-    {
-        items.add(item);
-    }
+
     
     public void totalPrice(){
     
@@ -141,5 +138,17 @@ public class Order
     public void setItems(ArrayList<Item> items)
     {
         this.items = items;
+    }
+
+    @Override
+    public void createOrder()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void addItem()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

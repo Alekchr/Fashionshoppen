@@ -30,6 +30,7 @@ public final class Webshop
     User user;
     ServicesFacade sf;
     MessageDigest md;
+    Order order;
 
     public Webshop()
     {
@@ -77,8 +78,8 @@ public final class Webshop
 
     public User checkUserType(String email, String password)
     {
-        Customer returnedCustomer = null;
-        Employee returnedEmployee = null;
+        Customer returnedCustomer;
+        Employee returnedEmployee;
         String encryptedPass = encryptPassword(password);
         customer = new Customer(email, encryptedPass);
         returnedCustomer = (Customer) customer.loginUser(customer);
@@ -116,5 +117,24 @@ public final class Webshop
             Logger.getLogger(Webshop.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sb.toString();
+    }
+    
+    public void createProduct(Product product){
+        this.product = product;
+    }
+            
+    public Product getProduct(){
+        return product;
+    }
+    
+
+    
+    public void addItem(int product_id){
+        addItem(product_id);
+    }
+    
+    public void createOrder(){
+        
+    
     }
 }
