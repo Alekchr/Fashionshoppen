@@ -27,16 +27,18 @@ public class Order implements OrderManager
     private String Status;
     private ArrayList<Item> items;
 
-    public Order(int customer_id, int order_id, Address shippingAddress, String shippingCity, Item item)
+    public Order(int customer_id, Address shippingAddress, Item item)
     {
         this.customer_id = customer_id;
-        this.order_id = order_id;
         this.shippingAddress = shippingAddress;
         this.items = new ArrayList();
         items.add(item);
     }
 
 
+    public void addItem(Item item){
+    items.add(item);
+    }
     
     public void totalPrice(){
     

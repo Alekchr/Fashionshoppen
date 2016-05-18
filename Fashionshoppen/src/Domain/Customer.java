@@ -15,11 +15,12 @@ public class Customer extends User
 
     private Address address;
     private String phoneNr;
+    private Order order;
 
     public Customer(String email, String password)
     {
         super(email, password);
-
+        
     }
 
     public Customer(String firstName, String lastName, String email, String password)
@@ -101,5 +102,17 @@ public class Customer extends User
         }
         return customer;
     }
+
+    public Order getOrder()
+    {
+        return order;
+    }
+
+    public void setOrder(Order order)
+    {
+        this.order = order;
+    }
+    
+    
 
 }

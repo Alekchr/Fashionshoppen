@@ -359,7 +359,7 @@ public class FXMLDocumentController implements Initializable {
                 buyButton.setAlignment(Pos.CENTER);
                 buyButton.setOnAction((ActionEvent event1) ->
                 {
-                    webshop.addItem(webshop.getProduct().getProduct_id());
+                    webshop.addItem(webshop.getProduct().getProduct_id(), 1);
                 });
                 
             }
