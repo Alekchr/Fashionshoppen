@@ -140,4 +140,42 @@ public final class Webshop
         }
         return sb.toString();
     }
+    
+    public void displayProduct(Product product){
+        this.product = product;
+    }
+    
+    public void createProduct(Product product){
+        
+    }
+
+    public Product getProduct()
+    {
+        return product;
+    }   
+
+    public void addItem(int product_id, int amount)
+    {
+        if (customer == null)
+        {
+            customer = new Customer(" ", " ");
+            System.out.println("created random GUEST customer");
+        }
+        
+        if (customer.getOrder() == null)
+        {
+            customer.setOrder(new Order(customer.getUser_id(), customer.getAddress(), new Item(product_id, amount)));
+            System.out.println("Order was created and item added");
+        }
+        else
+        {
+            customer.getOrder().addItem(new Item(product_id, amount));
+            System.out.println("item was added to basket");
+        }
+    }
+
+    public void createOrder()
+    {
+
+    }
 }
