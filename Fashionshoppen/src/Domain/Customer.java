@@ -12,27 +12,23 @@ import services.ServicesFacade;
  */
 public class Customer extends User
 {
-    
-    private String address = " ";
-    private String phoneNr = " ";
+
+    private Address address;
+    private String phoneNr;
 
     public Customer(String email, String password)
     {
         super(email, password);
-        
-    }
 
-    
+    }
 
     public Customer(String firstName, String lastName, String email, String password)
     {
         super(firstName, lastName, email, password);
-        this.address = " ";
-        this.phoneNr = " ";
-        
+
     }
 
-    private void setAddress(String address)
+    private void setAddress(Address address)
     {
         this.address = address;
     }
@@ -42,7 +38,7 @@ public class Customer extends User
         this.phoneNr = phoneNr;
     }
 
-    public String getAddress()
+    public Address getAddress()
     {
         return address;
     }
@@ -52,9 +48,9 @@ public class Customer extends User
         return phoneNr;
     }
 
-    
     @Override
-    public void registerUser(User user)
+    public void registerUser(User user)  //Opretter en bruger med det vigtigste informationer, 
+                                         //ting som addresse og telefonnummber kan tilføjes senere
     {
 
         String firstName = user.getFirstName();
@@ -66,13 +62,14 @@ public class Customer extends User
 
     }
 
-     @Override
-    public Customer loginUser(User user)
+    @Override
+    public Customer loginUser(User user)     //Når en bruger logges ind gemmes alle deres oplysninger, 
+                                             //så de kan bruges til orders/ændring af oplysninger
     {
         Customer customer = new Customer("", "", "", "");
         try
         {
-            
+
             ResultSet rs = sf.loginUser(user.getEmail(), user.getPassword());
             while (rs.next())
             {
@@ -87,10 +84,16 @@ public class Customer extends User
 
             while (rs.next())
             {
-                customer.setAddress(rs.getString("address"));
                 customer.setPhoneNr(rs.getString("phone"));
             }
 
+            rs = sf.getCustomerAddress(customer.getEmail());
+
+            while (rs.next())
+            {
+                customer.setAddress(new Address(rs.getInt("user_id"), rs.getString("streetname"), rs.getString("housenumber"),
+                        rs.getString("zipcode"), rs.getString("city")));
+            }
         }
         catch (SQLException e)
         {

@@ -5,6 +5,9 @@
  */
 package Domain;
 
+
+import java.util.ArrayList;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
@@ -22,7 +25,6 @@ public final class Webshop
     Customer customer;
     Employee employee;
     Item item;
-    Login login;
     Product product;
     User user;
     ServicesFacade sf;
@@ -46,7 +48,38 @@ public final class Webshop
 
         return instance;
     }
+    
 
+    public ArrayList showProducts(){
+        ArrayList products = catalog.showProducts();
+        return products;
+        
+    }
+    
+       public void createProduct(String name, String category, String gender, Double price){
+        sf.createProduct(name, category, gender, price);
+    }
+    
+        public void editProductName(int productId, String productName){
+        sf.editProductName(productId, productName);
+    }
+    
+    public void editProductCategory(int productId, String productCategory){
+        sf.editProductName(productId, productCategory);
+    }
+    
+    public void editProductGender(int productId, String productGender){
+        sf.editProductName(productId, productGender);
+    }
+    
+    public void editProductPrice(int productId, Double price){
+        sf.editProductPrice(productId, price);
+    }
+    
+    public void editProductPicture(int productId, String imagePath){
+        sf.editProductName(productId, imagePath);
+    }
+    
     public void browseCategory(String category, String name)
     {
         sf.browseCategory(category, name);
