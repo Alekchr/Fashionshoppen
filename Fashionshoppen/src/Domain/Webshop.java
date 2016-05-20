@@ -75,7 +75,7 @@ public final class Webshop
     }
     
     public void editProductGender(int productId, String productGender){
-        sf.editProductName(productId, productGender);
+        sf.editProductGender(productId, productGender);
     }
     
     public void editProductPrice(int productId, Double price){
@@ -83,7 +83,7 @@ public final class Webshop
     }
     
     public void editProductPicture(int productId, String imagePath){
-        sf.editProductName(productId, imagePath);
+        sf.editProductPicture(productId, imagePath);
     }
     
     public void browseCategory(String category, String name)

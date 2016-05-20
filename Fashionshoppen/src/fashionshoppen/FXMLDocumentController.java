@@ -23,6 +23,7 @@ import javafx.scene.layout.Pane;
 import Domain.Webshop;
 import com.sun.prism.impl.Disposer.Record;
 import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -134,8 +135,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private AnchorPane manageProductsPane;
     @FXML
-    private ScrollPane productListSrollPane;
-    @FXML
     private TableView<Product> productTable;
     @FXML
     private TableColumn<Product, String> nameCol;
@@ -147,6 +146,18 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<Product, String> genderCol;
     @FXML
     private TableColumn<Record, Boolean> btnCol;
+    @FXML
+    private TextField editNameField;
+    @FXML
+    private TextField editPriceField;
+    @FXML
+    private ComboBox editCategoryCMB;
+    @FXML
+    private ComboBox editGenderCMB;
+    @FXML
+    private Button saveChangesBtn;
+    @FXML
+    private Label productIdLabel;
     
 
     @Override
@@ -157,8 +168,8 @@ public class FXMLDocumentController implements Initializable {
         cbMapCategory = new HashMap();
         productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-        productListSrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-        productListSrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+        
+        
         
         productWindow.setPrefColumns(5);
         productWindow.setVgap(25);
@@ -179,6 +190,11 @@ public class FXMLDocumentController implements Initializable {
         categoryCMB.getItems().addAll("kjole", "t-shirt");
         genderCMB.getItems().addAll("herre", "dame", "unisex");
         
+
+        
+        editCategoryCMB.getItems().addAll("kjole", "t-shirt");
+        editGenderCMB.getItems().addAll("herre", "dame", "unisex");
+        
         
         createProductList();
         showProductList();
@@ -187,6 +203,24 @@ public class FXMLDocumentController implements Initializable {
         //som default når applikationen starter.
         filter();
         handleSearch(new ActionEvent());
+    }
+
+    @FXML
+    private void handleSaveChanges(ActionEvent event)
+    {
+        int productID = parseInt(productIdLabel.getText());
+        String name = editNameField.getText();
+        String gender = editGenderCMB.getValue().toString();
+        String category = editCategoryCMB.getValue().toString();
+        Double price = parseDouble(editPriceField.getText());
+        
+        webshop.editProductName(productID, name);
+        webshop.editProductCategory(productID, category);
+        webshop.editProductGender(productID, gender);
+        webshop.editProductPrice(productID, price);
+        
+        refreshTable();
+        
     }
     
     
@@ -329,6 +363,16 @@ public class FXMLDocumentController implements Initializable {
          
         });
         
+        productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            //Check whether item is selected and set value of selected item to Label
+            if (productTable.getSelectionModel().getSelectedItem() != null) {
+                productIdLabel.setText(productTable.getSelectionModel().getSelectedItem().getProductId() + "");
+                editNameField.setText(productTable.getSelectionModel().getSelectedItem().getName());
+                editCategoryCMB.setValue(productTable.getSelectionModel().getSelectedItem().getCategory());
+                editGenderCMB.setValue(productTable.getSelectionModel().getSelectedItem().getGender());
+                editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getPrice() + "");
+            }
+        });
         for (Product prod : products){
             
             
@@ -585,6 +629,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleAddProduct(ActionEvent event)
     {
+        
         String name = setNameField.getText();
         String category = categoryCMB.getValue().toString();
         String gender = genderCMB.getValue().toString();
@@ -594,8 +639,7 @@ public class FXMLDocumentController implements Initializable {
             webshop.createProduct(name, category, gender, price);
             setNameField.clear();
             setPriceField.clear();
-            updateProducts();
-            showProductList();
+            refreshTable(); 
             handleSearch(new ActionEvent());
             
         }
