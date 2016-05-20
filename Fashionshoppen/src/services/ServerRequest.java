@@ -1,5 +1,7 @@
 package services;
 
+
+import Domain.Order;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -9,7 +11,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerRequest {
+public class ServerRequest implements ServiceFacade{
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
     String user = "postgres";
@@ -41,24 +43,26 @@ public class ServerRequest {
 
     public void browseCategory(String query, String name)
     {
-        String finalQuery;
-        if (name.isEmpty()) {
-            finalQuery = query;
-        } else {
-            finalQuery = query + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
-        }
-
-        try {
-            st = con.createStatement();
-            rs = st.executeQuery(finalQuery);
+        try
+        {
+            String finalQuery;
+            if (name.isEmpty()) {
+                finalQuery = query;
+            } else {
+                finalQuery = query + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
+            }
+            rs = runRSQuery(query);
 
             while (rs.next()) {
                 System.out.println(rs.getString(2) + rs.getString(3) + rs.getDouble(5));
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
     }
 
     public ResultSet browseProductName(String name)
@@ -214,26 +218,31 @@ public class ServerRequest {
         }
     }
     
+    @Override
     public void editProductName(int productId, String name){
         query =  "UPDATE products SET product_name = " + name + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
     
+    @Override
     public void editProductCategory(int productId, String category){
         query =  "UPDATE products SET product_category = " + category + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
     
+    @Override
     public void editProductGender(int productId, String gender){
         query = "UPDATE products SET product_gender = " + gender + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
     
+    @Override
     public void editProductPrice(int productId, Double price){
         query =  "UPDATE products SET product_price = " + price + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
     
+    @Override
     public void editProductPicture(int productId, String imagePath){
         query = "UPDATE products SET product_image_path = " + imagePath + " WHERE product_id = " + productId + ";";
         runQuery(query);
@@ -242,10 +251,31 @@ public class ServerRequest {
     public void runQuery(String query){
         try{
             st = con.createStatement();
-            rs = st.executeQuery(query);
+            st.execute(query);
             
         } catch (SQLException e){
-            e.printStackTrace();
+            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    
+    public ResultSet runRSQuery(String query){
+        try
+        {
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            
+        }
+        catch (SQLException e)
+        {
+            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return rs;
+    }
+    
+    @Override
+    public void storeOrder(Order order)
+    {
+        
+    }
+
 }
