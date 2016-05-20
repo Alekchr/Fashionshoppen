@@ -12,7 +12,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import services.ServicesFacade;
+import services.*;
+
 /**
  *
  * @author jonaspedersen
@@ -28,6 +29,7 @@ public final class Webshop
     Product product;
     User user;
     ServicesFacade sf;
+    
     MessageDigest md;
 
     public Webshop()
@@ -65,7 +67,7 @@ public final class Webshop
     }
     
     public void editProductCategory(int productId, String productCategory){
-        sf.editProductName(productId, productCategory);
+        sf.editProductCategory(productId, productCategory);
     }
     
     public void editProductGender(int productId, String productGender){
