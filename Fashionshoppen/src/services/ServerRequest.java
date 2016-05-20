@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerRequest implements ServiceFacade
+public class ServerRequest
 {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
@@ -209,35 +209,35 @@ public class ServerRequest implements ServiceFacade
 
     }
 
-    @Override
+    
     public void editProductName(int productId, String name)
     {
         query = "UPDATE products SET product_name = " + name + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
 
-    @Override
+    
     public void editProductCategory(int productId, String category)
     {
         query = "UPDATE products SET product_category = " + category + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
 
-    @Override
+    
     public void editProductGender(int productId, String gender)
     {
         query = "UPDATE products SET product_gender = " + gender + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
 
-    @Override
+    
     public void editProductPrice(int productId, Double price)
     {
         query = "UPDATE products SET product_price = " + price + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
 
-    @Override
+    
     public void editProductPicture(int productId, String imagePath)
     {
         query = "UPDATE products SET product_image_path = " + imagePath + " WHERE product_id = " + productId + ";";
@@ -273,7 +273,7 @@ public class ServerRequest implements ServiceFacade
         return rs;
     }
 
-    @Override
+    
     public void storeOrder(Order order)
     {
 
