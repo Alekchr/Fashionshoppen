@@ -5,6 +5,7 @@
  */
 package services;
 
+import Domain.Order;
 import java.sql.ResultSet;
 
 /**
@@ -15,7 +16,7 @@ public final class ServicesFacade {
 
     private static ServicesFacade instance = null;
     public ServerRequest sr;
-    public GetUserCallback userCallback;
+    
 
     public ServicesFacade()
     {
@@ -100,7 +101,9 @@ public final class ServicesFacade {
     }
     
     
-    
+    public void storeOrder(Order order, int customer_id){
+        sr.storeOrder(order, customer_id);
+    }
         
     
 }

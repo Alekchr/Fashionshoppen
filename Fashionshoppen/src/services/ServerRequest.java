@@ -171,9 +171,9 @@ public class ServerRequest
         try
         {
 
-            st = con.createStatement();
+            
             query = "SELECT user_id FROM users WHERE LOWER(email) = LOWER('" + email + "')";
-            rs = st.executeQuery(query);
+            runRSQuery(query);
 
             while (rs.next())
             {
@@ -274,9 +274,13 @@ public class ServerRequest
     }
 
     
-    public void storeOrder(Order order)
+    public void storeOrder(Order order, int customer_id)
     {
-
+        query = "INSERT INTO orders (order_date, price, shippingcharge, finalprice, paymentOption, customer_id)"
+                + "VALUES ( '" + order.getOrder_date() + "', '" + order.getPrice() + "', '" + order.getShippingCharge() 
+                + "', '" + order.getFinalPrice() + "', '" + order.getPayment_option() +"', '" + customer_id + "')";
+        order.getOrder_date();
+        
     }
 
 }

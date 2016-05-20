@@ -94,24 +94,19 @@ public final class Webshop
 
     public void registerCustomer(String firstName, String lastName, String email, String password)
     {
-
-        String encryptedPass = encryptPassword(password);
-        customer = new Customer(firstName, lastName, email, encryptedPass);
-        customer.registerUser(customer);
+        customer.registerUser(firstName, lastName, email, password);
     }
 
     public User checkUserType(String email, String password)
     {
-        Customer returnedCustomer = null;
-        Employee returnedEmployee = null;
-        String encryptedPass = encryptPassword(password);
-        customer = new Customer(email, encryptedPass);
-        returnedCustomer = (Customer) customer.loginUser(customer);
-
+        
+        
+        customer = new Customer(email, password);
+        Customer returnedCustomer = (Customer) customer.checkUserType(customer);
         if (returnedCustomer == null)
         {
-            employee = new Employee(email, encryptedPass);
-            returnedEmployee = (Employee) employee.loginUser(employee);
+            employee = new Employee(email, password);
+            Employee returnedEmployee = (Employee) employee.checkUserType(employee);
             return returnedEmployee;
         }
         else
@@ -120,28 +115,7 @@ public final class Webshop
         }
 
     }
-    public String encryptPassword(String password)
-    {
-        StringBuilder sb = new StringBuilder();
-        try
-        {
-            md = MessageDigest.getInstance("MD5");
-            byte[] passBytes = password.getBytes();
-            md.digest(passBytes);
-            byte[] digest = md.digest(passBytes);
 
-            for (int i = 0; i < digest.length; i++)
-            {
-                sb.append(Integer.toHexString(0xff & digest[i]));
-            }
-
-        }
-        catch (NoSuchAlgorithmException ex)
-        {
-            Logger.getLogger(Webshop.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return sb.toString();
-    }
     
     public void displayProduct(Product product){
         this.product = product;
@@ -176,8 +150,13 @@ public final class Webshop
         }
     }
 
-    public void createOrder()
+    public void storeOrder(String payment_option, Address shippingAddress) //Address skal have autoudfyld.
     {
-
+        StringBuilder sb = new StringBuilder();
+        sb.append(customer.getOrder().getItems().toString().split(";"));
+        System.out.println(sb);
+        customer.getOrder().setPayment_option(payment_option);
+        customer.getOrder().setShippingAddress(shippingAddress);
+        //customer.getOrder().setPrice(price);
     }
 }

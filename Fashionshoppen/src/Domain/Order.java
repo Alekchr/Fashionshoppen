@@ -6,14 +6,14 @@
 package Domain;
 
 import Domain.Item;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 
 /**
  *
  * @author aleksander
  */
-public class Order implements OrderManager
+public class Order
 {
 
     private int customer_id;
@@ -33,6 +33,7 @@ public class Order implements OrderManager
         this.shippingAddress = shippingAddress;
         this.items = new ArrayList();
         items.add(item);
+        order_date = new Date();
     }
 
 
@@ -142,13 +143,13 @@ public class Order implements OrderManager
         this.items = items;
     }
 
-    @Override
+    
     public void createOrder()
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+ 
     public void addItem()
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -15,5 +15,7 @@ public interface UserManager
     
     User loginUser(User user);
     
-    void registerUser(User user);
+    void registerUser(String firstName, String lastName, String email, String password);
+    
+    
 }

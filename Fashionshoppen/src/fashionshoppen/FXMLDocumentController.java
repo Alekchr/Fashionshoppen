@@ -147,7 +147,6 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-    @FXML
     private void handleShowBasket(MouseEvent event)
     {
         MainTabPane.getSelectionModel().select(3);
@@ -395,12 +394,18 @@ public class FXMLDocumentController implements Initializable {
         String gender = genderCMB.getValue().toString();
         Double price = parseDouble(setPriceField.getText());
         
-        if(name != null && category != null && gender != null && price != null){
+        if(name != null && category != null && gender != null){
             webshop.createProduct(name, category, gender, price);
             setNameField.clear();
             setPriceField.clear();
         }
         
+    }
+
+    @FXML
+    private void returnMainPage(MouseEvent event)
+    {
+        MainTabPane.getSelectionModel().select(0);
     }
 
     

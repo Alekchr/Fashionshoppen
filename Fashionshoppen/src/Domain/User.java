@@ -1,5 +1,9 @@
 package Domain;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import services.ServicesFacade;
 
 /**
@@ -14,6 +18,7 @@ public abstract class User implements UserManager
     private String email;
     private String password;
     ServicesFacade sf = new ServicesFacade();
+    MessageDigest md;
 
     public User(String firstName, String lastName, String email, String password)
     {
@@ -82,4 +87,46 @@ public abstract class User implements UserManager
     }
 
 
+        public String encryptPassword(String password)
+    {
+        StringBuilder sb = new StringBuilder();
+        try
+        {
+            md = MessageDigest.getInstance("MD5");
+            byte[] passBytes = password.getBytes();
+            md.digest(passBytes);
+            byte[] digest = md.digest(passBytes);
+
+            for (int i = 0; i < digest.length; i++)
+            {
+                sb.append(Integer.toHexString(0xff & digest[i]));
+            }
+
+        }
+        catch (NoSuchAlgorithmException ex)
+        {
+            Logger.getLogger(Webshop.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sb.toString();
+    }
+    public User checkUserType(User user)
+    {
+        Customer returnedCustomer;
+        Employee returnedEmployee;
+        String encryptedPass = encryptPassword(password);
+        Customer customer = new Customer(email, encryptedPass);
+        returnedCustomer = (Customer) customer.loginUser(customer);
+
+        if (returnedCustomer == null)
+        {
+            Employee employee = new Employee(email, encryptedPass);
+            returnedEmployee = (Employee) employee.loginUser(employee);
+            return returnedEmployee;
+        }
+        else
+        {
+            return returnedCustomer;
+        }
+
+    }
 }

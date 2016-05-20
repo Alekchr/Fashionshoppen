@@ -13,6 +13,7 @@ import services.ServicesFacade;
 public class Customer extends User
 {
 
+    Customer customer;
     private Address address;
     private String phoneNr;
     private Order order;
@@ -48,26 +49,22 @@ public class Customer extends User
     {
         return phoneNr;
     }
-
+    
     @Override
-    public void registerUser(User user)  //Opretter en bruger med det vigtigste informationer, 
-                                         //ting som addresse og telefonnummber kan tilføjes senere
+        public void registerUser(String firstName, String lastName, String email, String password)
     {
-
-        String firstName = user.getFirstName();
-        String lastName = user.getLastName();
-        String email = user.getEmail();
-        String password = user.getPassword();
-
-        sf.registerUser(firstName, lastName, email, password);
-
+        
+        String encryptedPass = encryptPassword(password);
+        sf.registerUser(firstName, lastName, email, encryptedPass);
     }
+    
+
 
     @Override
     public Customer loginUser(User user)     //Når en bruger logges ind gemmes alle deres oplysninger, 
                                              //så de kan bruges til orders/ændring af oplysninger
     {
-        Customer customer = new Customer("", "", "", "");
+        customer = new Customer("", "", "", "");
         try
         {
 

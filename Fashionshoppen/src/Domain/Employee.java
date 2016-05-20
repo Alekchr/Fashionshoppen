@@ -45,8 +45,11 @@ public class Employee extends User
         }
         return employee;
     }
+
+
     @Override
-    public void registerUser(User user){                    //kan laves senere, den vigtigste er customer atm.
-    
+    public void registerUser(String firstName, String lastName, String email, String password)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
