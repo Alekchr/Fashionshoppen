@@ -12,7 +12,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import services.ServicesFacade;
+import services.*;
+
 /**
  *
  * @author jonaspedersen
@@ -28,6 +29,7 @@ public final class Webshop
     Product product;
     User user;
     ServicesFacade sf;
+    
     MessageDigest md;
 
     public Webshop()
@@ -50,7 +52,7 @@ public final class Webshop
     }
     
 
-    public ArrayList showProducts(){
+    public ArrayList createProductsArray(){
         ArrayList products = catalog.showProducts();
         return products;
         
@@ -59,13 +61,17 @@ public final class Webshop
        public void createProduct(String name, String category, String gender, Double price){
         sf.createProduct(name, category, gender, price);
     }
+       
+       public void deleteProduct(int productId){
+        sf.deleteProduct(productId);
+    }
     
         public void editProductName(int productId, String productName){
         sf.editProductName(productId, productName);
     }
     
     public void editProductCategory(int productId, String productCategory){
-        sf.editProductName(productId, productCategory);
+        sf.editProductCategory(productId, productCategory);
     }
     
     public void editProductGender(int productId, String productGender){

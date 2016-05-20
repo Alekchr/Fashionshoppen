@@ -12,11 +12,11 @@ public class Catalog {
     Product product;
     Connection con;
     ResultSet productResultSet;
-    ArrayList products = new ArrayList();
+    ArrayList products;
 
     public Catalog()
     {
-        productResultSet = getProducts();
+        
 
     }
 
@@ -33,6 +33,8 @@ public class Catalog {
     //Produkterne har følgende: Navn, Kategori, Køn, Pris, billede-path
     public ArrayList showProducts()
     {
+            productResultSet = getProducts();
+            products = new ArrayList();
             String pathString = "";
         try {
               
@@ -44,6 +46,7 @@ public class Catalog {
                     pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/placeholder1.png";
                 }
                 product = new Product(productResultSet.getString("product_name"), productResultSet.getString("product_gender"), productResultSet.getString("product_category"), productResultSet.getDouble("product_price"), pathString);
+                product.setProduct_id(productResultSet.getInt("product_id"));
                 products.add(product);
             }
         } catch (SQLException e) {

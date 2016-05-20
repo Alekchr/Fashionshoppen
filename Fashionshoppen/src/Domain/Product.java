@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
  */
 public class Product
 {
-    private int product_id;
+    private int productId;
     private String productName;
     private double productPrice;
     private String category;
@@ -78,14 +78,14 @@ public class Product
         return productPrice;
     }
 
-    public int getProduct_id()
+    public int getProductId()
     {
-        return product_id;
+        return productId;
     }
 
-    public void setProduct_id(int product_id)
+    public void setProduct_id(int productId)
     {
-        this.product_id = product_id;
+        this.productId = productId;
     }
 
     public String getProductName()

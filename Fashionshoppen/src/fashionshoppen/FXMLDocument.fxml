@@ -7,9 +7,13 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
@@ -114,14 +118,25 @@
             </Tab>
             <Tab text="Manage products">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane fx:id="manageProductsPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label layoutX="113.0" layoutY="83.0" prefHeight="43.0" prefWidth="249.0" text="Liste af produkter">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <ScrollPane layoutX="117.0" layoutY="148.0" prefHeight="694.0" prefWidth="515.0" />
+                        <ScrollPane fx:id="productListSrollPane" layoutX="117.0" layoutY="148.0" prefHeight="694.0" prefWidth="515.0">
+                           <content>
+                              <TableView fx:id="productTable" prefHeight="690.0" prefWidth="509.0">
+                                <columns>
+                                  <TableColumn fx:id="nameCol" prefWidth="180.34902954101562" text="Produktnavn" />
+                                  <TableColumn fx:id="typeCol" minWidth="0.0" prefWidth="85.47119140625" text="Type" />
+                                    <TableColumn fx:id="genderCol" prefWidth="67.54107666015625" text="Køn" />
+                                    <TableColumn fx:id="priceCol" minWidth="0.0" prefWidth="94.5235595703125" text="Pris" />
+                                    <TableColumn fx:id="btnCol" prefWidth="156.47637939453125" />
+                                </columns>
+                              </TableView>
+                           </content></ScrollPane>
                         <Label layoutX="770.0" layoutY="82.0" prefHeight="43.0" prefWidth="249.0" text="Ændre produkt">
                            <font>
                               <Font size="24.0" />
@@ -158,6 +173,11 @@
                         </Label>
                         <ComboBox fx:id="categoryCMB" layoutX="1247.0" layoutY="340.0" prefHeight="37.0" prefWidth="315.0" promptText="Kategori" />
                         <ComboBox fx:id="genderCMB" layoutX="1250.0" layoutY="466.0" prefHeight="37.0" prefWidth="315.0" promptText="Køn" />
+                        <GridPane fx:id="productList" layoutX="620.0" layoutY="403.0" prefHeight="40.0" prefWidth="513.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                        </GridPane>
                      </children>
                   </AnchorPane>
               </content>

@@ -1,6 +1,5 @@
 package services;
 
-
 import Domain.Order;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +10,8 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerRequest implements ServiceFacade{
+public class ServerRequest
+{
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
     String user = "postgres";
@@ -30,10 +30,13 @@ public class ServerRequest implements ServiceFacade{
 
     private void connect()
     {
-        try {
+        try
+        {
             con = DriverManager.getConnection(url, user, password);
 
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex)
+        {
             Logger lgr = Logger.getLogger(ServerRequest.class.getName());
             lgr.log(Level.WARNING, ex.getMessage(), ex);
 
@@ -46,14 +49,18 @@ public class ServerRequest implements ServiceFacade{
         try
         {
             String finalQuery;
-            if (name.isEmpty()) {
+            if (name.isEmpty())
+            {
                 finalQuery = query;
-            } else {
+            }
+            else
+            {
                 finalQuery = query + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
             }
-            rs = runRSQuery(query);
+            rs = runRSQuery(finalQuery);
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 System.out.println(rs.getString(2) + rs.getString(3) + rs.getDouble(5));
             }
         }
@@ -62,23 +69,24 @@ public class ServerRequest implements ServiceFacade{
             Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
     }
 
     public ResultSet browseProductName(String name)
     {
         query = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER('%" + name + "%')";
+        runRSQuery(query);
+        try
+        {
 
-        try {
-            st = con.createStatement();
-            rs = st.executeQuery(query);
-
-            while (rs.next()) {
+            while (rs.next())
+            {
                 System.out.println(rs.getString(2) + rs.getString(3) + rs.getDouble(5));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+        catch (SQLException e)
+        {
+            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, e);
         }
 
         return rs;
@@ -88,39 +96,33 @@ public class ServerRequest implements ServiceFacade{
     {
 
         query = "SELECT * from products";
-        try {
-            st = con.createStatement();
-            rs = st.executeQuery(query);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        runRSQuery(query);
         return rs;
+    }
+    
+    public void deleteProduct(int productId){
+        query = "DELETE FROM products WHERE product_id = " + productId;
+        runQuery(query);
     }
 
     //Denne metode registrer en bruger, og sørger for at det samme user_id bliver gemt i alle database tables, så de senere kan ændres.
     public void registerUser(String firstName, String lastName, String email, String password)
     {
-        try {
-            st = con.createStatement();
-            query = "INSERT INTO users (firstname, lastname, email, password) VALUES (" + "'"
-                    + firstName + "', " + "'" + lastName + "', " + "'" + email + "', " + "'" + password + "')";
 
-            st.execute(query);
+        query = "INSERT INTO users (firstname, lastname, email, password) VALUES (" + "'"
+                + firstName + "', " + "'" + lastName + "', " + "'" + email + "', " + "'" + password + "')";
 
-            query = "INSERT INTO customer (user_id, phone) VALUES ('" + findUserID(email) + "',"
-                    + " ' ' )";
+        runQuery(query);
 
-            st.execute(query);
+        query = "INSERT INTO customer (user_id, phone) VALUES ('" + findUserID(email) + "',"
+                + " ' ' )";
 
-            query = "INSERT INTO address (user_id) VALUES (" + findUserID(email) + ")";
+        runQuery(query);
 
-            st.execute(query);
+        query = "INSERT INTO address (user_id) VALUES (" + findUserID(email) + ")";
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        runQuery(query);
+
     }
 
     public ResultSet findCustomerAddress(String email)
@@ -129,14 +131,8 @@ public class ServerRequest implements ServiceFacade{
 
         int user_id = findUserID(email);
 
-        try {
-            st = con.createStatement();
-            query = "SELECT * FROM Address WHERE user_id ='" + user_id + "'";
-            rs = st.executeQuery(query);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        query = "SELECT * FROM Address WHERE user_id ='" + user_id + "'";
+        runRSQuery(query);
 
         return rs;
     }
@@ -144,33 +140,32 @@ public class ServerRequest implements ServiceFacade{
     public int findUserID(String email)     //Metode til at finde user_id ud fra email, bruges når der logges ind med email.
     {
         int user_id = 0;
-        try {
+        try
+        {
             st = con.createStatement();
             query = "SELECT user_id FROM users WHERE email ='" + email + "'";
             rs = st.executeQuery(query);
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 user_id = rs.getInt("user_id");
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
         }
+        catch (SQLException e)
+        {
+            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, e);
+        }
+
         return user_id;
+
     }
 
     public ResultSet loginUser(String email, String password)
     {
 
-        try {
+        query = "SELECT * FROM users WHERE LOWER(email) = LOWER('" + email + "') AND password = '" + password + "'";
 
-            st = con.createStatement();
-            String query = "SELECT * FROM users WHERE LOWER(email) = LOWER('" + email + "') AND password = '" + password + "'";
-
-            rs = st.executeQuery(query);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        runRSQuery(query);
         return rs;
     }
 
@@ -178,23 +173,28 @@ public class ServerRequest implements ServiceFacade{
     public ResultSet checkLoginType(String email)
     {
         int user_id = 0;
-        try {
+        try
+        {
 
             st = con.createStatement();
             query = "SELECT user_id FROM users WHERE LOWER(email) = LOWER('" + email + "')";
             rs = st.executeQuery(query);
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 user_id = rs.getInt("user_id");
 
             }
             query = "SELECT * FROM employee WHERE user_id = '" + user_id + "'";
             rs = st.executeQuery(query);
-            if (rs == null) {
+            if (rs == null)
+            {
                 query = "SELECT * FROM users WHERE user_id = '" + user_id + "'";
                 rs = st.executeQuery(query);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
@@ -209,61 +209,67 @@ public class ServerRequest implements ServiceFacade{
     public void createProduct(String name, String category, String gender, Double price)
     {
 
-        try {
-            query = "INSERT INTO products(product_name, product_category, product_gender, product_price) VALUES('" + name + "', '" + category + "', '" + gender + "', '" + price + "');";
-            st = con.createStatement();
-            st.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        query = "INSERT INTO products(product_name, product_category, product_gender, product_price) VALUES('" + name + "', '" + category + "', '" + gender + "', '" + price + "');";
+        runQuery(query);
+
     }
+
     
-    @Override
-    public void editProductName(int productId, String name){
-        query =  "UPDATE products SET product_name = " + name + " WHERE product_id = " + productId + ";";
+    public void editProductName(int productId, String name)
+    {
+        query = "UPDATE products SET product_name = " + name + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
+
     
-    @Override
-    public void editProductCategory(int productId, String category){
-        query =  "UPDATE products SET product_category = " + category + " WHERE product_id = " + productId + ";";
+    public void editProductCategory(int productId, String category)
+    {
+        query = "UPDATE products SET product_category = " + category + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
+
     
-    @Override
-    public void editProductGender(int productId, String gender){
+    public void editProductGender(int productId, String gender)
+    {
         query = "UPDATE products SET product_gender = " + gender + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
+
     
-    @Override
-    public void editProductPrice(int productId, Double price){
-        query =  "UPDATE products SET product_price = " + price + " WHERE product_id = " + productId + ";";
+    public void editProductPrice(int productId, Double price)
+    {
+        query = "UPDATE products SET product_price = " + price + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
+
     
-    @Override
-    public void editProductPicture(int productId, String imagePath){
+    public void editProductPicture(int productId, String imagePath)
+    {
         query = "UPDATE products SET product_image_path = " + imagePath + " WHERE product_id = " + productId + ";";
         runQuery(query);
     }
-    
-    public void runQuery(String query){
-        try{
+
+    public void runQuery(String query)
+    {
+        try
+        {
             st = con.createStatement();
             st.execute(query);
-            
-        } catch (SQLException e){
+
+        }
+        catch (SQLException e)
+        {
             Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
-    public ResultSet runRSQuery(String query){
+
+    public ResultSet runRSQuery(String query)
+    {
         try
         {
             st = con.createStatement();
             rs = st.executeQuery(query);
-            
+
         }
         catch (SQLException e)
         {
@@ -271,11 +277,11 @@ public class ServerRequest implements ServiceFacade{
         }
         return rs;
     }
+
     
-    @Override
     public void storeOrder(Order order)
     {
-        
+
     }
 
 }

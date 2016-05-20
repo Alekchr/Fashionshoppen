@@ -42,6 +42,10 @@ public final class ServicesFacade {
     {
         sr.createProduct(name, category, gender, price);
     }
+    
+    public void deleteProduct(int productId){
+        sr.deleteProduct(productId);
+    }
 
     public void browseProductName(String name)
     {
