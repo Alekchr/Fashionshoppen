@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -31,8 +31,11 @@ import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 
 /**
  *
@@ -72,7 +75,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button searchBtn;
     @FXML
-    private GridPane productWindow;
+    private TilePane productWindow;
     @FXML
     private Tab TabLogin;
     @FXML
@@ -109,6 +112,8 @@ public class FXMLDocumentController implements Initializable {
     private ComboBox categoryCMB;
     @FXML
     private ComboBox genderCMB;
+    @FXML
+    private ScrollPane productWindowScrollPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -116,7 +121,13 @@ public class FXMLDocumentController implements Initializable {
         webshop = new Webshop();
         cbMapGender = new HashMap();
         cbMapCategory = new HashMap();
-
+        productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+        productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+        
+        productWindow.setPrefColumns(5);
+        productWindow.setVgap(25);
+        productWindow.setHgap(25);
+        
         //Fylder products array op med alle produkter
         products = webshop.showProducts();
 
@@ -147,7 +158,6 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-    @FXML
     private void handleShowBasket(MouseEvent event)
     {
         MainTabPane.getSelectionModel().select(3);
@@ -292,16 +302,10 @@ public class FXMLDocumentController implements Initializable {
             System.out.println("productstoreturn er tom");
         } else {
 
-            int rowCount = 0;
             int colCount = 0;
             int rowsInThumb = 0;
 
             for (Product prod : productsToReturn) { //Looper igennem de filtrerede produkter
-                
-                if (colCount >= 5) { //Sørger for at der kun kan være 5 kolonner
-                    colCount = 0;
-                    rowCount++;
-                }
                 
                 //GUI elementer instantieres for produkt
                 Label priceLabel  = new Label(prod.getPrice() + " KR");
@@ -310,10 +314,9 @@ public class FXMLDocumentController implements Initializable {
                 GridPane productThumbnail = new GridPane();
                 ImageView imView = new ImageView(prod.getImage());
                 
-
-
-                productWindow.add(productThumbnail, colCount, rowCount);
-                productWindow.setPadding(new Insets(10, 10, 10, 30));
+                
+                productWindow.getChildren().add(productThumbnail);
+                productWindow.setPadding(new Insets(30, 0, 0, 30));
                 colCount++;
  
                 productThumbnail.setOnMouseEntered(new EventHandler<MouseEvent>(){
@@ -399,6 +402,7 @@ public class FXMLDocumentController implements Initializable {
             webshop.createProduct(name, category, gender, price);
             setNameField.clear();
             setPriceField.clear();
+            
         }
         
     }

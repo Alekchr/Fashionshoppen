@@ -212,7 +212,7 @@ public class ServerRequest implements ServiceFacade{
         try {
             query = "INSERT INTO products(product_name, product_category, product_gender, product_price) VALUES('" + name + "', '" + category + "', '" + gender + "', '" + price + "');";
             st = con.createStatement();
-            rs = st.executeQuery(query);
+            st.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
