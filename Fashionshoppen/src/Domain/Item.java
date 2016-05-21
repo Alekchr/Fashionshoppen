@@ -7,23 +7,23 @@ package Domain;
 public class Item
 {
 
-    private int product_id;
+    private Product product;
     private int amount;
 
-    public Item(int product_id, int amount)
+    public Item(Product product, int amount)
     {
-        this.product_id = product_id;
+        this.product = product;
         this.amount = amount;
     }
 
-    public int getProduct_id()
+    public Product getProduct()
     {
-        return product_id;
+        return product;
     }
 
-    public void setProduct_id(int product_id)
+    public void setProduct(Product product)
     {
-        this.product_id = product_id;
+        this.product = product;
     }
 
     public int getAmount()

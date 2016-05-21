@@ -144,10 +144,10 @@
                                         <TableColumn fx:id="orderPic" prefWidth="139.0" text="Produkt billede" />
                                         <TableColumn fx:id="orderName" minWidth="0.0" prefWidth="245.99996948242188" text="Produkt navn" />
                                         <TableColumn fx:id="orderStr" text="Størrelse." />
+                                        <TableColumn fx:id="orderColor" prefWidth="84.0" text="Farve" />
                                         <TableColumn fx:id="orderAmount" minWidth="0.0" prefWidth="48.0" text="Antal" />
-                                        <TableColumn fx:id="orderPrice" prefWidth="84.0" text="Farve" />
-                                        <TableColumn fx:id="btnCol11" prefWidth="132.0" text="Pris" />
-                                        <TableColumn fx:id="btnCol111" minWidth="0.0" prefWidth="45.0" text="Fjern" />
+                                        <TableColumn fx:id="orderPrice" prefWidth="132.0" text="Pris" />
+                                        <TableColumn fx:id="orderBtn" minWidth="0.0" prefWidth="45.0" text="Fjern" />
                                     </columns>
                                 </TableView>
                             </children>

@@ -5,6 +5,7 @@
  */
 package fashionshoppen;
 
+import Domain.Order;
 import Domain.Product;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,6 +27,7 @@ import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -60,8 +62,10 @@ public class FXMLDocumentController implements Initializable {
     private HashMap<CheckBox, String> cbMapGender;
     private HashMap<CheckBox, String> cbMapCategory;
     private ArrayList<Product> products;
+    private ArrayList<Product> orderProducts;
     public ArrayList<GridPane> productGridList;
     public ObservableList<Product> obsProductList = FXCollections.observableArrayList();
+    public ObservableList<Product> obsOrderProductList = FXCollections.observableArrayList();
     private Webshop webshop;
     
     @FXML
@@ -117,8 +121,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label priceTag;
     @FXML
-    private Button backBtn;
-    @FXML
     private Button addProductBtn;
     @FXML
     private TextField setNameField;
@@ -158,6 +160,22 @@ public class FXMLDocumentController implements Initializable {
     private Button saveChangesBtn;
     @FXML
     private Label productIdLabel;
+    @FXML
+    private TableView<Product> orderTable;
+    @FXML
+    private TableColumn<Product, ?> orderPic;
+    @FXML
+    private TableColumn<Product, String> orderName;
+    @FXML
+    private TableColumn<Product, String> orderStr;
+    @FXML
+    private TableColumn<Product, Integer> orderAmount;
+    @FXML
+    private TableColumn<Product, Double> orderPrice;
+    @FXML
+    private TableColumn<Product, String> orderColor;
+    @FXML
+    private TableColumn<Record, Boolean> orderBtn;
     
 
     @Override
@@ -166,8 +184,8 @@ public class FXMLDocumentController implements Initializable {
         webshop = new Webshop();
         cbMapGender = new HashMap();
         cbMapCategory = new HashMap();
-        productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-        productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+//        productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+//        productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
         
         
         
@@ -178,6 +196,8 @@ public class FXMLDocumentController implements Initializable {
         //Fylder products array op med alle produkter
         products = webshop.createProductsArray();
 
+        
+        
         //Køn checkboxe puttes i map med deres values
         cbMapGender.put(womanCB, "dame");
         cbMapGender.put(manCB, "herre");
@@ -232,16 +252,13 @@ public class FXMLDocumentController implements Initializable {
 
                     cellButton.setStyle("-fx-base: #FF0000; -fx-font-weight: bold");
                     cellButton.setMinWidth(70);
-                    cellButton.setOnAction(new EventHandler<ActionEvent>(){
-
-                        @Override
-                        public void handle(ActionEvent t) {
-                            Product currentProduct = (Product) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
-                            
-                            obsProductList.remove(currentProduct);
-                            webshop.deleteProduct(currentProduct.getProductId());
-                            refreshTable();
-                        }
+                    cellButton.setOnAction((ActionEvent t) ->
+                    {
+                        Product currentProduct = (Product) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                        
+                        obsProductList.remove(currentProduct);
+                        webshop.deleteProduct(currentProduct.getProductId());
+                        refreshTable();
                     });
                 }
 
@@ -271,6 +288,8 @@ public class FXMLDocumentController implements Initializable {
     private void handleShowBasket(MouseEvent event)
     {
         MainTabPane.getSelectionModel().select(3);
+        showOrderList();
+        
     }
 
     @FXML
@@ -319,6 +338,17 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
+        public void createOrderList(){
+        
+        ObservableList<Product> tempOrderList = FXCollections.observableArrayList();
+        for (Product prod : orderProducts){
+            tempOrderList.add(prod);
+        }
+        
+        obsOrderProductList = tempOrderList;
+        
+    }
+    
     private void refreshTable(){
         updateProducts();
         createProductList();
@@ -340,7 +370,7 @@ public class FXMLDocumentController implements Initializable {
         btnCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         btnCol.setSortable(false);
         btnCol.setMinWidth(50);
-        
+        System.out.println(obsProductList);
         productTable.setItems(obsProductList);
         
         
@@ -553,7 +583,7 @@ public class FXMLDocumentController implements Initializable {
                 
                 productThumbnail.setOnMouseClicked((MouseEvent event1) ->
                 {
-                    MainTabPane.getSelectionModel().select(2);
+                    MainTabPane.getSelectionModel().select(1);
                     productPhoto.setImage(prod.getImage());
                     priceTag.setText(prod.getPrice() + " KR");
                     nameTag.setText(prod.getName());
@@ -599,14 +629,14 @@ public class FXMLDocumentController implements Initializable {
                 buyButton.setAlignment(Pos.CENTER);
                 buyButton.setOnAction((ActionEvent event1) ->
                 {
-                    webshop.addItem(webshop.getProduct().getProductId(), 1);
+                    webshop.addItem(prod,1);
                 });
                 
             }
         
     }
 
-    @FXML
+   
     private void handleBack(ActionEvent event) //Går tilbage til startside fra produktside
     {
         MainTabPane.getSelectionModel().select(0);
@@ -638,5 +668,38 @@ public class FXMLDocumentController implements Initializable {
         MainTabPane.getSelectionModel().select(0);
     }
 
+    public void showOrderList(){
+        orderProducts = webshop.createOrdersArray();
+        createOrderList();
+        
+        orderPic.setCellValueFactory(new PropertyValueFactory<>("productpic"));
+        orderName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        orderStr.setCellValueFactory(new PropertyValueFactory<>("productsize"));
+        orderColor.setCellValueFactory(new PropertyValueFactory<>("productcolor"));
+        orderAmount.setCellValueFactory(new PropertyValueFactory<>("itemAmount"));
+        orderPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
+        orderBtn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+        btnCol.setSortable(false);
+        btnCol.setMinWidth(35);
+        System.out.println(obsOrderProductList);
+        orderTable.setItems(obsOrderProductList);
+        
+        
+        btnCol.setCellValueFactory((TableColumn.CellDataFeatures<Record, Boolean> p) ->
+                new SimpleBooleanProperty(p.getValue() != null));
+ 
+        btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell());
+        
+        productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            //Check whether item is selected and set value of selected item to Label
+            if (productTable.getSelectionModel().getSelectedItem() != null) {
+                productIdLabel.setText(productTable.getSelectionModel().getSelectedItem().getProductId() + "");
+                editNameField.setText(productTable.getSelectionModel().getSelectedItem().getName());
+                editCategoryCMB.setValue(productTable.getSelectionModel().getSelectedItem().getCategory());
+                editGenderCMB.setValue(productTable.getSelectionModel().getSelectedItem().getGender());
+                editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getPrice() + "");
+            }
+        });
+    }
     
 }

@@ -29,7 +29,7 @@ public final class Webshop
     Product product;
     User user;
     ServicesFacade sf;
-    
+    Order order;
     MessageDigest md;
 
     public Webshop()
@@ -55,6 +55,15 @@ public final class Webshop
     public ArrayList createProductsArray(){
         ArrayList products = catalog.showProducts();
         return products;
+        
+    }
+    
+        public ArrayList createOrdersArray(){
+        ArrayList orderProducts = new ArrayList();
+        for(int i=0;i<customer.getOrder().getItems().size();i++){
+        orderProducts.add(customer.getOrder().getItems().get(i).getProduct());
+        }
+        return orderProducts;
         
     }
     
@@ -131,10 +140,11 @@ public final class Webshop
 
     public Product getProduct()
     {
+        System.out.println(product);
         return product;
     }   
 
-    public void addItem(int product_id, int amount)
+    public void addItem(Product product, int amount)
     {
         if (customer == null)
         {
@@ -144,12 +154,12 @@ public final class Webshop
         
         if (customer.getOrder() == null)
         {
-            customer.setOrder(new Order(customer.getUser_id(), customer.getAddress(), new Item(product_id, amount)));
+            customer.setOrder(new Order(customer.getUser_id(), customer.getAddress(), new Item(product, amount)));
             System.out.println("Order was created and item added");
         }
         else
         {
-            customer.getOrder().addItem(new Item(product_id, amount));
+            customer.getOrder().addItem(new Item(product, amount));
             System.out.println("item was added to basket");
         }
     }
