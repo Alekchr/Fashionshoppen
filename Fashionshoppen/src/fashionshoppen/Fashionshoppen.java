@@ -24,7 +24,7 @@ public class Fashionshoppen extends Application
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("tabs.css");
+        //scene.getStylesheets().add("tabs.css");
         stage.setScene(scene);
         stage.show();
     }

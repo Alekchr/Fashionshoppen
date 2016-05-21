@@ -262,11 +262,12 @@ public class FXMLDocumentController implements Initializable {
     private void handleLogin(MouseEvent event)
     {
 
-        MainTabPane.getSelectionModel().select(1);
+        MainTabPane.getSelectionModel().select(2);
         RegisterPane.setVisible(false);
 
     }
-
+    
+    @FXML
     private void handleShowBasket(MouseEvent event)
     {
         MainTabPane.getSelectionModel().select(3);
@@ -343,25 +344,10 @@ public class FXMLDocumentController implements Initializable {
         productTable.setItems(obsProductList);
         
         
-        btnCol.setCellValueFactory(
-                new Callback<TableColumn.CellDataFeatures<Record, Boolean>, 
-                ObservableValue<Boolean>>() {
+        btnCol.setCellValueFactory((TableColumn.CellDataFeatures<Record, Boolean> p) ->
+                new SimpleBooleanProperty(p.getValue() != null));
  
-            @Override
-            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Record, Boolean> p) {
-                return new SimpleBooleanProperty(p.getValue() != null);
-            }
-        });
- 
-        btnCol.setCellFactory(
-                new Callback<TableColumn<Record, Boolean>, TableCell<Record, Boolean>>() {
- 
-            @Override
-            public TableCell<Record, Boolean> call(TableColumn<Record, Boolean> p) {
-                return new ButtonCell();
-            }
-         
-        });
+        btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell());
         
         productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             //Check whether item is selected and set value of selected item to Label
