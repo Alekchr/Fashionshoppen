@@ -99,6 +99,11 @@ public class ServerRequest
         runRSQuery(query);
         return rs;
     }
+    
+    public void deleteProduct(int productId){
+        query = "DELETE FROM products WHERE product_id = " + productId;
+        runQuery(query);
+    }
 
     //Denne metode registrer en bruger, og sørger for at det samme user_id bliver gemt i alle database tables, så de senere kan ændres.
     public void registerUser(String firstName, String lastName, String email, String password)
@@ -212,35 +217,35 @@ public class ServerRequest
     
     public void editProductName(int productId, String name)
     {
-        query = "UPDATE products SET product_name = " + name + " WHERE product_id = " + productId + ";";
+        query = "UPDATE products SET product_name = '" + name + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 
     
     public void editProductCategory(int productId, String category)
     {
-        query = "UPDATE products SET product_category = " + category + " WHERE product_id = " + productId + ";";
+        query = "UPDATE products SET product_category = '" + category + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 
     
     public void editProductGender(int productId, String gender)
     {
-        query = "UPDATE products SET product_gender = " + gender + " WHERE product_id = " + productId + ";";
+        query = "UPDATE products SET product_gender = '" + gender + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 
     
     public void editProductPrice(int productId, Double price)
     {
-        query = "UPDATE products SET product_price = " + price + " WHERE product_id = " + productId + ";";
+        query = "UPDATE products SET product_price = '" + price + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 
     
     public void editProductPicture(int productId, String imagePath)
     {
-        query = "UPDATE products SET product_image_path = " + imagePath + " WHERE product_id = " + productId + ";";
+        query = "UPDATE products SET product_image_path = '" + imagePath + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 

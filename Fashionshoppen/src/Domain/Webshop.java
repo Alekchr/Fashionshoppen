@@ -52,7 +52,7 @@ public final class Webshop
     }
     
 
-    public ArrayList showProducts(){
+    public ArrayList createProductsArray(){
         ArrayList products = catalog.showProducts();
         return products;
         
@@ -60,6 +60,10 @@ public final class Webshop
     
        public void createProduct(String name, String category, String gender, Double price){
         sf.createProduct(name, category, gender, price);
+    }
+       
+       public void deleteProduct(int productId){
+        sf.deleteProduct(productId);
     }
     
         public void editProductName(int productId, String productName){
@@ -71,7 +75,7 @@ public final class Webshop
     }
     
     public void editProductGender(int productId, String productGender){
-        sf.editProductName(productId, productGender);
+        sf.editProductGender(productId, productGender);
     }
     
     public void editProductPrice(int productId, Double price){
@@ -79,7 +83,7 @@ public final class Webshop
     }
     
     public void editProductPicture(int productId, String imagePath){
-        sf.editProductName(productId, imagePath);
+        sf.editProductPicture(productId, imagePath);
     }
     
     public void browseCategory(String category, String name)

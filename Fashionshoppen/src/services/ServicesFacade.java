@@ -43,6 +43,10 @@ public final class ServicesFacade {
     {
         sr.createProduct(name, category, gender, price);
     }
+    
+    public void deleteProduct(int productId){
+        sr.deleteProduct(productId);
+    }
 
     public void browseProductName(String name)
     {
@@ -82,12 +86,12 @@ public final class ServicesFacade {
 
     public void editProductCategory(int productId, String productCategory)
     {
-        sr.editProductName(productId, productCategory);
+        sr.editProductCategory(productId, productCategory);
     }
 
     public void editProductGender(int productId, String productGender)
     {
-        sr.editProductName(productId, productGender);
+        sr.editProductGender(productId, productGender);
     }
 
     public void editProductPrice(int productId, Double price)
@@ -97,7 +101,7 @@ public final class ServicesFacade {
 
     public void editProductPicture(int productId, String imagePath)
     {
-        sr.editProductName(productId, imagePath);
+        sr.editProductPicture(productId, imagePath);
     }
     
     
