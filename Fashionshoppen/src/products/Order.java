@@ -2,7 +2,7 @@
 package products;
 
 import users.Address;
-import products.Item;
+
 import java.util.Date;
 import java.util.ArrayList;
 

@@ -1,8 +1,5 @@
 package products;
 
-import products.Product;
-
-
 public class Item
 {
 
@@ -36,6 +33,5 @@ public class Item
     {
         this.amount = amount;
     }
-
 
 }

@@ -4,29 +4,21 @@ import products.Order;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.HashMap;
-import java.util.Map;
-
 import services.OrderStatus;
-
-
 
 public class Customer extends User
 {
 
     private Customer customer;
-    
+
     private String phoneNr;
-    
-    
-    
-    
+
     public Customer(String email, String password)
     {
         super(email, password);
         orders = new HashMap();
-        
+
     }
 
     public Customer(String firstName, String lastName, String email, String password)
@@ -55,19 +47,15 @@ public class Customer extends User
     {
         return phoneNr;
     }
-    
-    
-        public void registerUser(String firstName, String lastName, String email, String password)
+
+    public void registerUser(String firstName, String lastName, String email, String password)
     {
-        
+
         sf.registerUser(firstName, lastName, email, password);
     }
-    
 
-
-    
     public Customer loginUser(User user)     //Når en bruger logges ind gemmes alle deres oplysninger, 
-                                             //så de kan bruges til orders/ændring af oplysninger
+    //så de kan bruges til orders/ændring af oplysninger
     {
         customer = new Customer("", "", "", "");
         try
@@ -105,15 +93,17 @@ public class Customer extends User
         return customer;
     }
 
-        public Order findShoppingBasket() {
-        for(Order order : orders.values()) {
-            if(order.getStatus() == OrderStatus.SHOPPING_BASKET) {
+    public Order findShoppingBasket()
+    {
+        for (Order order : orders.values())
+        {
+            if (order.getStatus() == OrderStatus.SHOPPING_BASKET)
+            {
                 return order;
             }
-            
+
         }
         return null;
     }
-
 
 }

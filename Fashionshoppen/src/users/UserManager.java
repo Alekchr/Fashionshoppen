@@ -5,42 +5,37 @@ import products.Order;
 import products.Product;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+public class UserManager implements IUserManager
+{
 
-
-public class UserManager implements IUserManager {
-
-    
     private User onlineUser;
     MessageDigest md;
-    public UserManager() {
-        
+
+    public UserManager()
+    {
 
     }
-    
 
-        public boolean checkUserType(String email, String password)
+    public boolean checkUserType(String email, String password)
     {
-        
+
         String encryptedPass = encryptPassword(password);
         Customer customer = new Customer(email, encryptedPass);
-        
+
         Customer returnedCustomer = (Customer) customer.loginUser(customer);
         if (returnedCustomer != null)
         {
             setOnlineUser(returnedCustomer);
-                if(this.userHasBasket()){
+            if (this.userHasBasket())
+            {
                 onlineUser.inShoppingBasket(customer.findShoppingBasket());
-                }
-            
+            }
+
         }
         else
         {
@@ -54,42 +49,45 @@ public class UserManager implements IUserManager {
         }
         else
         {
-        return true;
+            return true;
         }
 
-
     }
-    
-    private void setOnlineUser(User user){
+
+    private void setOnlineUser(User user)
+    {
         onlineUser = user;
     }
-    
+
     @Override
-    public User getOnlineUser() {
+    public User getOnlineUser()
+    {
         return onlineUser;
     }
-    
+
     @Override
-    public boolean isUserLoggedIn() {
+    public boolean isUserLoggedIn()
+    {
         return onlineUser != null;
     }
 
     @Override
-    public void logout() {
+    public void logout()
+    {
         setOnlineUser(null);
     }
-    
-    @Override
-    public void createUser(String firstName, String lastName, String email, String password) {
-        
-            String encryptedPass = encryptPassword(password);
-            Customer customer = new Customer(firstName, lastName, email, encryptedPass);
-            customer.registerUser(firstName, lastName, email, encryptedPass);
-        
-    }
-    
 
- public String encryptPassword(String password)
+    @Override
+    public void createUser(String firstName, String lastName, String email, String password)
+    {
+
+        String encryptedPass = encryptPassword(password);
+        Customer customer = new Customer(firstName, lastName, email, encryptedPass);
+        customer.registerUser(firstName, lastName, email, encryptedPass);
+
+    }
+
+    public String encryptPassword(String password)
     {
         StringBuilder sb = new StringBuilder();
         try
@@ -111,49 +109,54 @@ public class UserManager implements IUserManager {
         }
         return sb.toString();
     }
-    
-    
+
     @Override
-    public void createOrder(int orderID) {
+    public void createOrder(int orderID)
+    {
         onlineUser.createOrder(orderID);
     }
 
     @Override
-    public boolean userHasBasket() {
-        if(!isUserLoggedIn()) {
+    public boolean userHasBasket()
+    {
+        if (!isUserLoggedIn())
+        {
             return false;
         }
         return onlineUser.findShoppingBasket() != null;
     }
-    
+
     @Override
-    public List<Item> getShoppingBasketItems() {
+    public List<Item> getShoppingBasketItems()
+    {
         return onlineUser.getShoppingBasketItems();
     }
-    
-   
-    public Order getShoppingBasket() {
+
+    public Order getShoppingBasket()
+    {
         return onlineUser.getShoppingBasket();
     }
 
     @Override
-    public void addItem(Product product, int quantity, String size) {
+    public void addItem(Product product, int quantity, String size)
+    {
         onlineUser.addItem(product, quantity, size);
     }
 
-    public void changeAmount(Item item, int amount) {
+    public void changeAmount(Item item, int amount)
+    {
         onlineUser.changeAmount(item, amount);
 
     }
 
     @Override
-    public void removeItem(Item item) {
+    public void removeItem(Item item)
+    {
         onlineUser.removeItem(item);
     }
 
-
-
-    private String createGuestEmail() {
+    private String createGuestEmail()
+    {
         Random generator = new Random();
         StringBuilder sb = new StringBuilder();
         sb.append("guest");
@@ -163,14 +166,12 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public void createGuestUser() {
+    public void createGuestUser()
+    {
         String email = createGuestEmail();
-        
-            User guestUser = new Customer(email, "");
-            setOnlineUser(guestUser);
-        }
 
+        User guestUser = new Customer(email, "");
+        setOnlineUser(guestUser);
+    }
 
-
-    
 }

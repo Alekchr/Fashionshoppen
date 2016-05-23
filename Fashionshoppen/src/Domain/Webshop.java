@@ -10,7 +10,7 @@ import products.Item;
 import products.Order;
 import users.User;
 import users.Address;
-import users.Customer;
+
 import users.Employee;
 import products.ProductCatalog;
 import products.Product;
@@ -30,11 +30,7 @@ public final class Webshop
 
     private static Webshop instance = null;
     ProductCatalog catalog;
-    Customer customer;
-    Employee employee;
-    Item item;
     Product product;
-    User user;
     UserManager um;
     ServicesFacade sf;
     MessageDigest md;
@@ -137,7 +133,8 @@ public final class Webshop
     }   
 
 
-    public void addItem(int amount, String size)
+    
+    public void addItem(Product product, int amount, String size)
     {
         if (!um.isUserLoggedIn())
         {
@@ -146,11 +143,11 @@ public final class Webshop
         }
         if (!um.userHasBasket()) {
             um.createOrder(orderID++);
-
+            um.addItem(product, amount, size);
         }
         else
         {
-            um.addItem(getProduct(), amount, size);
+            um.addItem(product, amount, size);
             
             System.out.println("item was added to basket");
         }

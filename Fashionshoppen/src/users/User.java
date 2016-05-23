@@ -1,13 +1,8 @@
 package users;
 
-import Domain.Webshop;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import products.Item;
 import products.Order;
 import products.Product;
@@ -24,7 +19,7 @@ public abstract class User
     int accesslvl;
     protected Address address;
     ServicesFacade sf = new ServicesFacade();
-    MessageDigest md;
+
     protected Map<Integer, Order> orders;
 
     public User(String firstName, String lastName, String email, String password)
@@ -108,36 +103,40 @@ public abstract class User
             {
                 return order;
             }
-            
+
         }
         return null;
     }
 
-        public List<Item> getShoppingBasketItems() {
+    public List<Item> getShoppingBasketItems()
+    {
         return getShoppingBasket().getItems();
     }
-    
-    public Order getShoppingBasket() {
+
+    public Order getShoppingBasket()
+    {
         return findShoppingBasket();
     }
-        
-    public void addItem(Product product, int quantity, String size) {
+
+    public void addItem(Product product, int quantity, String size)
+    {
         findShoppingBasket().addItem(product, quantity, size);
     }
 
-    public void changeAmount(Item item, int amount) {
+    public void changeAmount(Item item, int amount)
+    {
         findShoppingBasket().changeAmount(item, amount);
     }
-    
-    public void removeItem(Item item) {
+
+    public void removeItem(Item item)
+    {
         Order shoppingBasket = this.findShoppingBasket();
         shoppingBasket.removeItem(item);
     }
-    
+
     public void inShoppingBasket(Order o)
     {
         orders.put(o.getOrder_id(), o);
     }
-    
-    
+
 }

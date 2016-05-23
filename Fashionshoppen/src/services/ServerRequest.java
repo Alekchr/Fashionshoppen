@@ -99,8 +99,9 @@ public class ServerRequest
         runRSQuery(query);
         return rs;
     }
-    
-    public void deleteProduct(int productId){
+
+    public void deleteProduct(int productId)
+    {
         query = "DELETE FROM products WHERE product_id = " + productId;
         runQuery(query);
     }
@@ -176,7 +177,6 @@ public class ServerRequest
         try
         {
 
-            
             query = "SELECT user_id FROM users WHERE LOWER(email) = LOWER('" + email + "')";
             runRSQuery(query);
 
@@ -214,35 +214,30 @@ public class ServerRequest
 
     }
 
-    
     public void editProductName(int productId, String name)
     {
         query = "UPDATE products SET product_name = '" + name + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 
-    
     public void editProductCategory(int productId, String category)
     {
         query = "UPDATE products SET product_category = '" + category + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 
-    
     public void editProductGender(int productId, String gender)
     {
         query = "UPDATE products SET product_gender = '" + gender + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 
-    
     public void editProductPrice(int productId, Double price)
     {
         query = "UPDATE products SET product_price = '" + price + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 
-    
     public void editProductPicture(int productId, String imagePath)
     {
         query = "UPDATE products SET product_image_path = '" + imagePath + "' WHERE product_id = '" + productId + "';";
@@ -278,14 +273,13 @@ public class ServerRequest
         return rs;
     }
 
-    
     public void storeOrder(Order order, int customer_id)
     {
         query = "INSERT INTO orders (order_date, price, shippingcharge, finalprice, paymentOption, customer_id)"
-                + "VALUES ( '" + order.getOrder_date() + "', '" + order.getPrice() + "', '" + order.getShippingCharge() 
-                + "', '" + order.getFinalPrice() + "', '" + order.getPayment_option() +"', '" + customer_id + "')";
+                + "VALUES ( '" + order.getOrder_date() + "', '" + order.getPrice() + "', '" + order.getShippingCharge()
+                + "', '" + order.getFinalPrice() + "', '" + order.getPayment_option() + "', '" + customer_id + "')";
         order.getOrder_date();
-        
+
     }
 
 }
