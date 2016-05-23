@@ -10,10 +10,6 @@ import products.Item;
 import products.Order;
 import java.util.List;
 
-/**
- *
- * @author Morten
- */
 public interface IUserManager {
 
     void createGuestUser();
