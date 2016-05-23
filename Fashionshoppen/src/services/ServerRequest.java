@@ -1,6 +1,6 @@
 package services;
 
-import Domain.Order;
+import products.Order;
 import java.sql.Connection;
 import java.sql.DriverManager;
 

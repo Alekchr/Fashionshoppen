@@ -1,32 +1,38 @@
-package Domain;
+package users;
 
-import services.ServerRequest;
+import products.Order;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import services.ServicesFacade;
 
-/**
- *
- * @author aleksander
- */
+import java.util.HashMap;
+import java.util.Map;
+import services.AccessLvl;
+import services.OrderStatus;
+
+
+
 public class Customer extends User
 {
 
-    Customer customer;
-    private Address address;
+    private Customer customer;
+    
     private String phoneNr;
-    private Order order;
-
+    
+    
+    
+    
     public Customer(String email, String password)
     {
         super(email, password);
+        orders = new HashMap();
         
     }
 
     public Customer(String firstName, String lastName, String email, String password)
     {
         super(firstName, lastName, email, password);
+        orders = new HashMap();
 
     }
 
@@ -50,17 +56,16 @@ public class Customer extends User
         return phoneNr;
     }
     
-    @Override
+    
         public void registerUser(String firstName, String lastName, String email, String password)
     {
         
-        String encryptedPass = encryptPassword(password);
-        sf.registerUser(firstName, lastName, email, encryptedPass);
+        sf.registerUser(firstName, lastName, email, password);
     }
     
 
 
-    @Override
+    
     public Customer loginUser(User user)     //Når en bruger logges ind gemmes alle deres oplysninger, 
                                              //så de kan bruges til orders/ændring af oplysninger
     {
@@ -100,16 +105,15 @@ public class Customer extends User
         return customer;
     }
 
-    public Order getOrder()
-    {
-        return order;
+        public Order findShoppingBasket() {
+        for(Order order : orders.values()) {
+            if(order.getStatus() == OrderStatus.SHOPPING_BASKET) {
+                return order;
+            }
+            
+        }
+        return null;
     }
 
-    public void setOrder(Order order)
-    {
-        this.order = order;
-    }
-    
-    
 
 }

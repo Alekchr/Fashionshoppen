@@ -1,24 +1,31 @@
-package Domain;
+package users;
 
+import Domain.Webshop;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import services.ServicesFacade;
+import products.Item;
+import products.Order;
+import products.Product;
+import services.*;
 
-/**
- *
- * @author aleksander
- */
-public abstract class User implements UserManager
+public abstract class User
 {
+
     private int user_id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    int accesslvl;
+    protected Address address;
     ServicesFacade sf = new ServicesFacade();
     MessageDigest md;
+    protected Map<Integer, Order> orders;
 
     public User(String firstName, String lastName, String email, String password)
     {
@@ -29,13 +36,14 @@ public abstract class User implements UserManager
         this.password = password;
 
     }
-    
+
     public User(String email, String password)
     {
-        this("", "", email, password);
-        
+        this.email = email;
+        this.password = password;
+
     }
-    
+
     public int getUser_id()
     {
         return user_id;
@@ -86,47 +94,50 @@ public abstract class User implements UserManager
         this.password = password;
     }
 
-
-        public String encryptPassword(String password)
+    public void createOrder(int orderID)
     {
-        StringBuilder sb = new StringBuilder();
-        try
-        {
-            md = MessageDigest.getInstance("MD5");
-            byte[] passBytes = password.getBytes();
-            md.digest(passBytes);
-            byte[] digest = md.digest(passBytes);
+        double shippingCharge = 25.0;
+        orders.put(orderID, new Order(orderID, address, OrderStatus.SHOPPING_BASKET));
+    }
 
-            for (int i = 0; i < digest.length; i++)
+    public Order findShoppingBasket()
+    {
+        for (Order order : orders.values())
+        {
+            if (order.getStatus() == OrderStatus.SHOPPING_BASKET)
             {
-                sb.append(Integer.toHexString(0xff & digest[i]));
+                return order;
             }
-
+            
         }
-        catch (NoSuchAlgorithmException ex)
-        {
-            Logger.getLogger(Webshop.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return sb.toString();
+        return null;
     }
-    public User checkUserType(User user)
+
+        public List<Item> getShoppingBasketItems() {
+        return getShoppingBasket().getItems();
+    }
+    
+    public Order getShoppingBasket() {
+        return findShoppingBasket();
+    }
+        
+    public void addItem(Product product, int quantity, String size) {
+        findShoppingBasket().addItem(product, quantity, size);
+    }
+
+    public void changeAmount(Item item, int amount) {
+        findShoppingBasket().changeAmount(item, amount);
+    }
+    
+    public void removeItem(Item item) {
+        Order shoppingBasket = this.findShoppingBasket();
+        shoppingBasket.removeItem(item);
+    }
+    
+    public void inShoppingBasket(Order o)
     {
-        Customer returnedCustomer;
-        Employee returnedEmployee;
-        String encryptedPass = encryptPassword(password);
-        Customer customer = new Customer(email, encryptedPass);
-        returnedCustomer = (Customer) customer.loginUser(customer);
-
-        if (returnedCustomer == null)
-        {
-            Employee employee = new Employee(email, encryptedPass);
-            returnedEmployee = (Employee) employee.loginUser(employee);
-            return returnedEmployee;
-        }
-        else
-        {
-            return returnedCustomer;
-        }
-
+        orders.put(o.getOrder_id(), o);
     }
+    
+    
 }

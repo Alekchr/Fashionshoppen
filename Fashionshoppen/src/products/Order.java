@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Domain;
+package products;
 
-import Domain.Item;
+import users.Address;
+import products.Item;
 import java.util.Date;
 import java.util.ArrayList;
 
-/**
- *
- * @author aleksander
- */
+
 public class Order
 {
 
@@ -24,21 +22,22 @@ public class Order
     private double shippingCharge;
     private double finalPrice;
     private String payment_option;
-    private String Status;
+    private int Status;
     private ArrayList<Item> items;
 
-    public Order(int customer_id, Address shippingAddress, Item item)
+    public Order(int customer_id, Address shippingAddress, int Status)
     {
         this.customer_id = customer_id;
         this.shippingAddress = shippingAddress;
         this.items = new ArrayList();
-        items.add(item);
+        
         order_date = new Date();
     }
 
 
-    public void addItem(Item item){
-    items.add(item);
+    
+    public void addItem(Product product, int quantity, String size) {
+        items.add(new Item(product, quantity, size));
     }
     
     public void totalPrice(){
@@ -123,12 +122,12 @@ public class Order
         this.payment_option = payment_option;
     }
 
-    public String getStatus()
+    public int getStatus()
     {
         return Status;
     }
 
-    public void setStatus(String Status)
+    public void setStatus(int Status)
     {
         this.Status = Status;
     }
@@ -144,14 +143,22 @@ public class Order
     }
 
     
-    public void createOrder()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public void changeAmount(Item item, int amount) {
+        for(Item i : items) {
+            if (item.equals(i)) {
+                item.setAmount(amount);
+            }
+        }
     }
 
  
     public void addItem()
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+        
+    public void removeItem(Item item) {
+        items.remove(item);
     }
 }

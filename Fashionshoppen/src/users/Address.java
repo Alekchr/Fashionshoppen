@@ -1,11 +1,5 @@
 
-package Domain;
-
-/**
- *
- * @author aleksander
- */
-
+package users;
 
 public class Address
 {

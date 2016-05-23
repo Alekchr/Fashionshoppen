@@ -11,10 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author aleksander
- */
+
 public class Fashionshoppen extends Application
 {
     

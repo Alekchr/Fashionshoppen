@@ -1,13 +1,10 @@
 
-package Domain;
+package users;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author aleksander
- */
+
 public class Employee extends User
 {
     
@@ -22,7 +19,7 @@ public class Employee extends User
         
     }
     
-    @Override
+    
     public Employee loginUser(User user)
     {
         Employee employee = null;
@@ -47,7 +44,6 @@ public class Employee extends User
     }
 
 
-    @Override
     public void registerUser(String firstName, String lastName, String email, String password)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

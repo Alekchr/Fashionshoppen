@@ -5,13 +5,9 @@
  */
 package services;
 
-import Domain.Order;
+import products.Order;
 import java.sql.ResultSet;
 
-/**
- *
- * @author jonaspedersen
- */
 public final class ServicesFacade {
 
     private static ServicesFacade instance = null;

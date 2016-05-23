@@ -1,19 +1,20 @@
-package Domain;
+package products;
 
-/**
- *
- * @author aleksander
- */
+import products.Product;
+
+
 public class Item
 {
 
     private Product product;
     private int amount;
+    private String size;
 
-    public Item(Product product, int amount)
+    public Item(Product product, int amount, String size)
     {
         this.product = product;
         this.amount = amount;
+        this.size = size;
     }
 
     public Product getProduct()
@@ -35,5 +36,6 @@ public class Item
     {
         this.amount = amount;
     }
+
 
 }

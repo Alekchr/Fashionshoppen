@@ -6,36 +6,45 @@
 package Domain;
 
 
+import products.Item;
+import products.Order;
+import users.User;
+import users.Address;
+import users.Customer;
+import users.Employee;
+import products.ProductCatalog;
+import products.Product;
 import java.util.ArrayList;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import services.*;
+import users.UserManager;
 
-/**
- *
- * @author jonaspedersen
- */
+
 public final class Webshop
 {
 
     private static Webshop instance = null;
-    Catalog catalog;
+    ProductCatalog catalog;
     Customer customer;
     Employee employee;
     Item item;
     Product product;
     User user;
+    UserManager um;
     ServicesFacade sf;
-    Order order;
     MessageDigest md;
-
+    private int orderID;
+    
     public Webshop()
     {
 
-        catalog = new Catalog();
+        catalog = new ProductCatalog();
+        um = new UserManager();
         sf = new ServicesFacade();
 
     }
@@ -58,14 +67,11 @@ public final class Webshop
         
     }
     
-        public ArrayList createOrdersArray(){
-        ArrayList orderProducts = new ArrayList();
-        for(int i=0;i<customer.getOrder().getItems().size();i++){
-        orderProducts.add(customer.getOrder().getItems().get(i).getProduct());
-        }
-        return orderProducts;
-        
+    public List<Item> getShoppingBasketItems() {
+        return um.getShoppingBasketItems();
     }
+        
+    
     
        public void createProduct(String name, String category, String gender, Double price){
         sf.createProduct(name, category, gender, price);
@@ -107,26 +113,12 @@ public final class Webshop
 
     public void registerCustomer(String firstName, String lastName, String email, String password)
     {
-        customer.registerUser(firstName, lastName, email, password);
+        um.createUser(firstName, lastName, email, password);
     }
 
-    public User checkUserType(String email, String password)
+    public void loginUser(String email, String password)
     {
-        
-        
-        customer = new Customer(email, password);
-        Customer returnedCustomer = (Customer) customer.checkUserType(customer);
-        if (returnedCustomer == null)
-        {
-            employee = new Employee(email, password);
-            Employee returnedEmployee = (Employee) employee.checkUserType(employee);
-            return returnedEmployee;
-        }
-        else
-        {
-            return returnedCustomer;
-        }
-
+        um.checkUserType(email, password);
     }
 
     
@@ -144,22 +136,22 @@ public final class Webshop
         return product;
     }   
 
-    public void addItem(Product product, int amount)
+
+    public void addItem(int amount, String size)
     {
-        if (customer == null)
+        if (!um.isUserLoggedIn())
         {
-            customer = new Customer(" ", " ");
-            System.out.println("created random GUEST customer");
+        um.createGuestUser();
+                
         }
-        
-        if (customer.getOrder() == null)
-        {
-            customer.setOrder(new Order(customer.getUser_id(), customer.getAddress(), new Item(product, amount)));
-            System.out.println("Order was created and item added");
+        if (!um.userHasBasket()) {
+            um.createOrder(orderID++);
+
         }
         else
         {
-            customer.getOrder().addItem(new Item(product, amount));
+            um.addItem(getProduct(), amount, size);
+            
             System.out.println("item was added to basket");
         }
     }
@@ -167,10 +159,10 @@ public final class Webshop
     public void storeOrder(String payment_option, Address shippingAddress) //Address skal have autoudfyld.
     {
         StringBuilder sb = new StringBuilder();
-        sb.append(customer.getOrder().getItems().toString().split(";"));
+        sb.append(um.getShoppingBasket().getItems().toString().split(";"));
         System.out.println(sb);
-        customer.getOrder().setPayment_option(payment_option);
-        customer.getOrder().setShippingAddress(shippingAddress);
+        um.getShoppingBasket().setPayment_option(payment_option);
+        um.getShoppingBasket().setShippingAddress(shippingAddress);
         //customer.getOrder().setPrice(price);
     }
 }

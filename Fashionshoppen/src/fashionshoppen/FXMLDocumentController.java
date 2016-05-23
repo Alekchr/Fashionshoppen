@@ -1,12 +1,8 @@
-    /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package fashionshoppen;
 
-import Domain.Order;
-import Domain.Product;
+import products.Order;
+import products.Product;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -51,18 +47,16 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Callback;
+import products.Item;
 
-/**
- *
- * @author aleksander
- */
+
 public class FXMLDocumentController implements Initializable {
 
 
     private HashMap<CheckBox, String> cbMapGender;
     private HashMap<CheckBox, String> cbMapCategory;
     private ArrayList<Product> products;
-    private ArrayList<Product> orderProducts;
+    private List<Item> orderProducts;
     public ArrayList<GridPane> productGridList;
     public ObservableList<Product> obsProductList = FXCollections.observableArrayList();
     public ObservableList<Product> obsOrderProductList = FXCollections.observableArrayList();
@@ -298,7 +292,7 @@ public class FXMLDocumentController implements Initializable {
         String email = LoginEmail.getText();
         String password = LoginPW.getText();
         
-        webshop.checkUserType(email, password);
+        webshop.loginUser(email, password);
         
     }
 
@@ -341,8 +335,8 @@ public class FXMLDocumentController implements Initializable {
         public void createOrderList(){
         
         ObservableList<Product> tempOrderList = FXCollections.observableArrayList();
-        for (Product prod : orderProducts){
-            tempOrderList.add(prod);
+        for (Item item : orderProducts){
+            tempOrderList.add(item.getProduct());
         }
         
         obsOrderProductList = tempOrderList;
@@ -629,7 +623,7 @@ public class FXMLDocumentController implements Initializable {
                 buyButton.setAlignment(Pos.CENTER);
                 buyButton.setOnAction((ActionEvent event1) ->
                 {
-                    webshop.addItem(prod,1);
+                    webshop.addItem(1,"Small");
                 });
                 
             }
@@ -669,7 +663,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void showOrderList(){
-        orderProducts = webshop.createOrdersArray();
+        orderProducts = webshop.getShoppingBasketItems();
         createOrderList();
         
         orderPic.setCellValueFactory(new PropertyValueFactory<>("productpic"));
