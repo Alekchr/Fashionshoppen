@@ -136,8 +136,8 @@
                            </font>
                         </Label>
                        <Button fx:id="addProductBtn" layoutX="1250.0" layoutY="762.0" mnemonicParsing="false" onAction="#handleAddProduct" prefHeight="60.0" prefWidth="132.0" text="Tilføj produkt" />
-                        <Button fx:id="saveChangesBtn" layoutX="778.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="60.0" prefWidth="132.0" text="Gem" />
-                        <TextField fx:id="setNameField" layoutX="1244.0" layoutY="216.0" prefHeight="45.0" prefWidth="314.0" />
+                        <Button fx:id="saveChangesBtn" layoutX="778.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="60.0" prefWidth="132.0" text="Gem ændringer" />
+                        <TextField fx:id="setNameField" layoutX="1244.0" layoutY="216.0" prefHeight="45.0" prefWidth="314.0" promptText="Navn på produkt" />
                         <Label layoutX="1246.0" layoutY="178.0" prefHeight="29.0" prefWidth="312.0" text="Produkt navn">
                            <font>
                               <Font size="16.0" />
@@ -153,7 +153,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="setPriceField" layoutX="1246.0" layoutY="574.0" prefHeight="45.0" prefWidth="314.0" />
+                        <TextField fx:id="setPriceField" layoutX="1246.0" layoutY="574.0" prefHeight="45.0" prefWidth="314.0" promptText="Pris på produktet" />
                         <Label layoutX="1248.0" layoutY="536.0" prefHeight="29.0" prefWidth="312.0" text="Pris">
                            <font>
                               <Font size="16.0" />
@@ -175,7 +175,7 @@
                               <TableColumn fx:id="btnCol" prefWidth="77.0" />
                           </columns>
                         </TableView>
-                        <TextField fx:id="editNameField" layoutX="765.0" layoutY="224.0" prefHeight="45.0" prefWidth="314.0" />
+                        <TextField fx:id="editNameField" layoutX="765.0" layoutY="224.0" prefHeight="45.0" prefWidth="314.0" promptText="Produktnavn som skal ændres" />
                         <Label layoutX="767.0" layoutY="186.0" prefHeight="29.0" prefWidth="312.0" text="Produkt navn">
                            <font>
                               <Font size="16.0" />
@@ -191,7 +191,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="editPriceField" layoutX="766.0" layoutY="580.0" prefHeight="45.0" prefWidth="314.0" />
+                        <TextField fx:id="editPriceField" layoutX="766.0" layoutY="580.0" prefHeight="45.0" prefWidth="314.0" promptText="Pris som skal ændres" />
                         <Label layoutX="768.0" layoutY="542.0" prefHeight="29.0" prefWidth="312.0" text="Pris">
                            <font>
                               <Font size="16.0" />

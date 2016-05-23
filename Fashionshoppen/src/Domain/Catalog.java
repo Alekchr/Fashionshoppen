@@ -41,7 +41,7 @@ public class Catalog {
             while (productResultSet.next()) {
                 
                 if(productResultSet.getString("product_category").equals("kjole")){
-                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/dressplaceholder.png";
+                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppenv2/Fashionshoppen/src/dressplaceholder.png";
                 } else {
                     pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/placeholder1.png";
                 }

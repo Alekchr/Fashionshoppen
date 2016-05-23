@@ -37,6 +37,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TableCell;
@@ -159,7 +160,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label productIdLabel;
     
-
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -168,8 +168,6 @@ public class FXMLDocumentController implements Initializable {
         cbMapCategory = new HashMap();
         productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-        
-        
         
         productWindow.setPrefColumns(5);
         productWindow.setVgap(25);
@@ -373,60 +371,6 @@ public class FXMLDocumentController implements Initializable {
                 editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getPrice() + "");
             }
         });
-        for (Product prod : products){
-            
-            
-//            GridPane productGrid = new GridPane();
-//            
-//            
-//            Label priceLabel  = new Label(prod.getPrice() + " KR");
-//            Label nameLabel  = new Label(prod.getName().toUpperCase());
-//            Label categoryLabel = new Label(prod.getCategory().toUpperCase());
-//            nameCol.setCe
-//            ColumnConstraints nameCol = new ColumnConstraints();
-//            nameCol.setPercentWidth(40);
-//            ColumnConstraints priceCol = new ColumnConstraints();
-//            priceCol.setPercentWidth(25);
-//            ColumnConstraints categoryCol = new ColumnConstraints();
-//            categoryCol.setPercentWidth(15);
-//            ColumnConstraints buttonCol = new ColumnConstraints();
-//            buttonCol.setPercentWidth(20);
-//            productGrid.getColumnConstraints().addAll(nameCol, priceCol, buttonCol);
-//            
-//            Button deleteBtn = new Button("Slet");
-//            deleteBtn.setOnAction(new EventHandler<ActionEvent>(){
-//                    @Override
-//                    public void handle(ActionEvent event)
-//                    {
-//                        webshop.deleteProduct(prod.getProductId());
-//                        updateProducts();
-//                        event.getSource().
-//                        showProductList();
-//                    }
-//                
-//            });
-//            productGrid.setStyle("-fx-border-color: black; -fx-border-bottom-width: 1;");
-//            productGrid.setMinHeight(40);
-//            
-//            priceLabel.setMinHeight(40);
-//            deleteBtn.setMinHeight(30);
-//            deleteBtn.setMinWidth(70);
-//            deleteBtn.setPadding(new Insets(5, 0, 5, 0));
-//            deleteBtn.setStyle("-fx-base: #FF0000; -fx-font-weight: bold");
-//            
-//            
-//            nameLabel.setMinHeight(40);
-//            
-//                
-//            productList.add(productGrid, 0, productCount);
-//            productCount++;
-//            productGrid.add(nameLabel, 0, 0);
-//            productGrid.add(categoryLabel, 1, 0);
-//            productGrid.add(priceLabel, 2, 0);
-//            productGrid.add(deleteBtn, 3, 0);
-//            
-//            productGridList.add(productGrid);
-        }
     }
 
     @FXML
@@ -581,7 +525,7 @@ public class FXMLDocumentController implements Initializable {
                 productThumbnail.setMaxSize(220, 245);
                 productThumbnail.setMinSize(220, 245);
                 productThumbnail.setAlignment(Pos.BOTTOM_CENTER);
-                productThumbnail.setStyle("-fx-background-color: #FFFFFF");
+                productThumbnail.getStyleClass().add("product-thumbnail");
                 productThumbnail.setPrefSize(220, 245);
                 
                 //Produktbillede modificeres og indsættes i GUI
@@ -608,7 +552,8 @@ public class FXMLDocumentController implements Initializable {
 
                 //Køb knap modificieres og indsættes i GUI
                 productThumbnail.add(buyButton, colCount, rowsInThumb);
-                buyButton.setStyle("-fx-base: #52cc14; -fx-font-weight: bold");
+                buyButton.getStyleClass().add("buy-button");
+                //buyButton.setStyle("-fx-base: #52cc14; -fx-font-weight: bold");
                 buyButton.setMinSize(220, 45);
                 buyButton.setAlignment(Pos.CENTER);
                 buyButton.setOnAction((ActionEvent event1) ->
