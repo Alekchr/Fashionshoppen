@@ -12,24 +12,32 @@ public class Order
 
     private int customer_id;
     private int order_id;
-    private Date order_date;
+    private String customerName;
+    private String order_date;
     private double price;
     private Address shippingAddress;
     private double shippingCharge;
     private double finalPrice;
     private String payment_option;
-    private int Status;
+    private String Status;
     private ArrayList<Item> items;
 
-    public Order(int customer_id, Address shippingAddress, int Status)
+    public Order(int customer_id, Address shippingAddress, String Status)
     {
         this.customer_id = customer_id;
         this.shippingAddress = shippingAddress;
         this.items = new ArrayList();
         
-        order_date = new Date();
+        order_date = new Date().toString();
     }
 
+    public void setCustomerName(String name){
+        this.customerName = name;
+    }
+    
+    public String getCustomerName(){
+        return customerName;
+    }
 
     
     public void addItem(Product product, int quantity, String size) {
@@ -56,14 +64,14 @@ public class Order
         this.order_id = order_id;
     }
 
-    public Date getOrder_date()
+    public String getOrder_date()
     {
         return order_date;
     }
 
     public void setOrder_date(Date order_date)
     {
-        this.order_date = order_date;
+        this.order_date = order_date.toString();
     }
 
     public double getPrice()
@@ -118,12 +126,22 @@ public class Order
         this.payment_option = payment_option;
     }
 
-    public int getStatus()
+    public void setCustomer_id(int customer_id)
+    {
+        this.customer_id = customer_id;
+    }
+
+    public void setOrder_date(String order_date)
+    {
+        this.order_date = order_date;
+    }
+
+    public String getStatus()
     {
         return Status;
     }
 
-    public void setStatus(int Status)
+    public void setStatus(String Status)
     {
         this.Status = Status;
     }

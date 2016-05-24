@@ -5,28 +5,22 @@
  */
 package Domain;
 
-
 import products.Item;
 import products.Order;
-import users.User;
 import users.Address;
 
-import users.Employee;
 import products.ProductCatalog;
 import products.Product;
 import java.util.ArrayList;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import services.*;
 import users.UserManager;
 
-
-public final class Webshop
-{
+public final class Webshop {
 
     private static Webshop instance = null;
     ProductCatalog catalog;
@@ -35,7 +29,7 @@ public final class Webshop
     ServicesFacade sf;
     MessageDigest md;
     private int orderID;
-    
+
     public Webshop()
     {
 
@@ -48,55 +42,113 @@ public final class Webshop
     public static Webshop getInstance()
     {
 
-        if (instance == null)
-        {
+        if (instance == null) {
             instance = new Webshop();
         }
 
         return instance;
     }
-    
 
-    public ArrayList createProductsArray(){
+    public ArrayList createProductsArray()
+    {
         ArrayList products = catalog.showProducts();
         return products;
-        
+
     }
     
-    public List<Item> getShoppingBasketItems() {
+        public Address selectAddressFromId(int userId){
+        ResultSet rs = sf.selectAddressFromId(userId);
+        Address addr = new Address(0, "dummy", "dummy", "dummy", "dummy");
+        try{
+            while(rs.next()){
+            addr.setCustomer_id(rs.getInt("user_id"));
+            addr.setStreetName(rs.getString("streetname"));
+            addr.setHouseNumber(rs.getString("housenumber"));
+            addr.setZipCode(rs.getString("zipcode"));
+            addr.setCity(rs.getString("city"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return addr;
+    }
+
+        public String getCustomerNameFromId(int userId){
+        ResultSet rs = sf.getCustomerNameFromId(userId);
+        String customerName = "";
+        try{
+            rs.next();
+            customerName = rs.getString("firstname") + " " + rs.getString("lastname");
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return customerName;
+    }
+        
+    public ArrayList createOrdersArray()
+    {
+        ResultSet rs = sf.getOrders();
+        ArrayList<Order> orders = new ArrayList();
+        try {
+            while (rs.next()) {
+                Address addr = selectAddressFromId(rs.getInt("user_id"));
+                Order newOrder = new Order(rs.getInt("user_id"), addr, rs.getString("status"));
+                newOrder.setOrder_id(rs.getInt("order_id"));
+                newOrder.setFinalPrice(rs.getDouble("finalprice"));
+                newOrder.setStatus(rs.getString("status"));
+                newOrder.setCustomer_id(rs.getInt("user_id"));
+                newOrder.setCustomerName(getCustomerNameFromId(rs.getInt("user_id")));
+                newOrder.setOrder_date(rs.getDate("order_date").toString());
+                orders.add(newOrder);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+
+    }
+
+    public List<Item> getShoppingBasketItems()
+    {
         return um.getShoppingBasketItems();
     }
-        
-    
-    
-       public void createProduct(String name, String category, String gender, Double price){
+
+    public void createProduct(String name, String category, String gender, Double price)
+    {
         sf.createProduct(name, category, gender, price);
     }
-       
-       public void deleteProduct(int productId){
+
+    public void deleteProduct(int productId)
+    {
         sf.deleteProduct(productId);
     }
-    
-        public void editProductName(int productId, String productName){
+
+    public void editProductName(int productId, String productName)
+    {
         sf.editProductName(productId, productName);
     }
-    
-    public void editProductCategory(int productId, String productCategory){
+
+    public void editProductCategory(int productId, String productCategory)
+    {
         sf.editProductCategory(productId, productCategory);
     }
-    
-    public void editProductGender(int productId, String productGender){
+
+    public void editProductGender(int productId, String productGender)
+    {
         sf.editProductGender(productId, productGender);
     }
-    
-    public void editProductPrice(int productId, Double price){
+
+    public void editProductPrice(int productId, Double price)
+    {
         sf.editProductPrice(productId, price);
     }
-    
-    public void editProductPicture(int productId, String imagePath){
+
+    public void editProductPicture(int productId, String imagePath)
+    {
         sf.editProductPicture(productId, imagePath);
     }
-    
+
     public void browseCategory(String category, String name)
     {
         sf.browseCategory(category, name);
@@ -117,52 +169,52 @@ public final class Webshop
         um.checkUserType(email, password);
     }
 
-    
-    public void displayProduct(Product product){
+    public void displayProduct(Product product)
+    {
         this.product = product;
     }
-    
-    public void createProduct(Product product){
-        
+
+    public void createProduct(Product product)
+    {
+
     }
 
     public Product getProduct()
     {
         return product;
-    }   
+    }
 
-
-    
     public void addItem(Product product, int amount, String size)
     {
-        if (!um.isUserLoggedIn())
-        {
-        um.createGuestUser();
-                
+        if (!um.isUserLoggedIn()) {
+            um.createGuestUser();
+
         }
         if (!um.userHasBasket()) {
             um.createOrder(orderID++);
             um.addItem(product, amount, size);
-        }
-        else
-        {
+        } else {
             um.addItem(product, amount, size);
-            
+
             System.out.println("item was added to basket");
         }
     }
 
-    public void editOrderStatus(int orderId, String status){
+    public void editOrderStatus(int orderId, String status)
+    {
         sf.editOrderStatus(orderId, status);
     }
-    
-    public void storeOrder(String payment_option, Address shippingAddress) //Address skal have autoudfyld.
+
+    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName,
+            String houseNumber, String zipCode, String shippingCity)
+    //Address skal have autoudfyld.
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append(um.getShoppingBasket().getItems().toString().split(";"));
-        System.out.println(sb);
-        um.getShoppingBasket().setPayment_option(payment_option);
-        um.getShoppingBasket().setShippingAddress(shippingAddress);
-        //customer.getOrder().setPrice(price);
+        um.storeOrder(payment_option, firstName, lastName, email, streetName, houseNumber, zipCode, shippingCity);
+
+    }
+
+    public boolean userHasShoppingBasket()
+    {
+        return um.userHasBasket();
     }
 }

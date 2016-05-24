@@ -4,12 +4,14 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -139,24 +141,51 @@
                                     </font>
                                 </Label>
                          
-                                <TableView fx:id="orderTable" layoutX="90.0" layoutY="139.0" prefHeight="690.0" prefWidth="776.0">
+                                <TableView fx:id="orderTable" layoutX="285.0" layoutY="140.0" prefHeight="592.0" prefWidth="875.0">
                                     <columns>
-                                        <TableColumn fx:id="orderPic" prefWidth="139.0" text="Produkt billede" />
-                                        <TableColumn fx:id="orderName" minWidth="0.0" prefWidth="245.99996948242188" text="Produkt navn" />
-                                        <TableColumn fx:id="orderStr" text="Størrelse." />
-                                        <TableColumn fx:id="orderColor" prefWidth="84.0" text="Farve" />
-                                        <TableColumn fx:id="orderAmount" minWidth="0.0" prefWidth="48.0" text="Antal" />
-                                        <TableColumn fx:id="orderPrice" prefWidth="132.0" text="Pris" />
-                                        <TableColumn fx:id="orderBtn" minWidth="0.0" prefWidth="45.0" text="Fjern" />
+                                        <TableColumn fx:id="orderPic" prefWidth="149.0" text="Produkt billede" />
+                                        <TableColumn fx:id="orderName" minWidth="0.0" prefWidth="349.0" text="Produkt navn" />
+                                        <TableColumn fx:id="orderStr" prefWidth="82.0" text="Størrelse." />
+                                        <TableColumn fx:id="orderAmount" minWidth="0.0" prefWidth="65.0" text="Antal" />
+                                        <TableColumn fx:id="orderPrice" prefWidth="157.0" text="Pris" />
+                                        <TableColumn fx:id="orderBtn" minWidth="0.0" prefWidth="72.0" text="Fjern" />
                                     </columns>
                                 </TableView>
+                        <Button fx:id="acceptOrder" layoutX="587.0" layoutY="827.0" mnemonicParsing="false" onAction="#handleOrderAccept" prefHeight="26.0" prefWidth="258.0" text="Bestil Varer" />
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
                 <Tab text="Accept Order">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="orderFirstName" layoutX="690.0" layoutY="150.0" prefHeight="26.0" prefWidth="215.0" />
+                        <TextField fx:id="orderLastName" layoutX="690.0" layoutY="223.0" prefHeight="26.0" prefWidth="215.0" />
+                        <TextField fx:id="orderStreet" layoutX="690.0" layoutY="289.0" prefHeight="26.0" prefWidth="215.0" />
+                        <Label layoutX="691.0" layoutY="127.0" text="Fornavn" />
+                        <Label layoutX="691.0" layoutY="197.0" text="Efternavn:" />
+                        <Label layoutX="691.0" layoutY="263.0" text="Addresse:" />
+                        <TextField fx:id="orderZip" layoutX="691.0" layoutY="348.0" prefHeight="26.0" prefWidth="123.0" />
+                        <Label layoutX="691.0" layoutY="323.0" text="Postnummer:" />
+                        <TextField fx:id="orderCity" layoutX="691.0" layoutY="408.0" prefHeight="26.0" prefWidth="215.0" />
+                        <Label layoutX="691.0" layoutY="383.0" text="By:" />
+                        <TextField fx:id="orderEmail" layoutX="1002.0" layoutY="150.0" prefHeight="26.0" prefWidth="215.0" />
+                        <Label layoutX="1002.0" layoutY="127.0" text="Email:" />
+                        <TextField fx:id="orderEmailCheck" layoutX="1002.0" layoutY="223.0" prefHeight="26.0" prefWidth="215.0" />
+                        <Label layoutX="1002.0" layoutY="197.0" text="Gentag email:" />
+                        <RadioButton layoutX="1002.0" layoutY="280.0" mnemonicParsing="false" onAction="#homeDelivery" text="Levering til egen addresse">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="pickupChoice" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton layoutX="1002.0" layoutY="314.0" mnemonicParsing="false" onAction="#storeDelivery" text="Afhentning i butik" toggleGroup="$pickupChoice" />
+                        <ComboBox fx:id="storeChoice" layoutX="1002.0" layoutY="348.0" prefHeight="26.0" prefWidth="215.0" promptText="Vælg butik" />
+                        <RadioButton fx:id="cardPayment" layoutX="691.0" layoutY="484.0" mnemonicParsing="false" text="Betal med kreditkort" />
+                        <RadioButton fx:id="storePayment" layoutX="1091.0" layoutY="484.0" mnemonicParsing="false" text="Betal i butikken" />
+                        <RadioButton fx:id="paypalPayment" layoutX="889.0" layoutY="484.0" mnemonicParsing="false" text="Betaling med paypal" />
+                        <Button layoutX="849.0" layoutY="728.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
+                     </children></AnchorPane>
                     </content>
                 </Tab>
                 <Tab text="Manage products">
@@ -253,6 +282,27 @@
                         </AnchorPane>
                     </content>
                 </Tab>
+            <Tab text="Manage orders">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="manageOrderTable" layoutX="110.0" layoutY="96.0" prefHeight="555.0" prefWidth="646.0">
+                          <columns>
+                            <TableColumn fx:id="orderIdCol" prefWidth="75.0" text="ID" />
+                            <TableColumn fx:id="orderDateCol" prefWidth="134.20419311523438" text="Dato" />
+                              <TableColumn fx:id="orderCustomerCol" prefWidth="193.61257934570312" text="Kunde" />
+                              <TableColumn fx:id="orderPriceCol" prefWidth="110.8341064453125" text="Pris" />
+                              <TableColumn fx:id="orderStatusCol" prefWidth="129.7841796875" text="Status" />
+                          </columns>
+                        </TableView>
+                        <Label fx:id="orderIdLabel" layoutX="1084.0" layoutY="86.0" text="Order ID" />
+                        <Button layoutX="887.0" layoutY="209.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" text="Shipped" />
+                        <Button layoutX="1097.0" layoutY="204.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" text="Afhentet" />
+                        <Button layoutX="1293.0" layoutY="202.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" text="Anulleret" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
             </tabs>
         </TabPane>
     </children>

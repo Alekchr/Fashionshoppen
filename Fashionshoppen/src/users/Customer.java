@@ -28,20 +28,14 @@ public class Customer extends User
 
     }
 
-    private void setAddress(Address address)
-    {
-        this.address = address;
-    }
+
 
     public void setPhoneNr(String phoneNr)
     {
         this.phoneNr = phoneNr;
     }
 
-    public Address getAddress()
-    {
-        return address;
-    }
+
 
     public String getPhoneNr()
     {
@@ -105,5 +99,7 @@ public class Customer extends User
         }
         return null;
     }
+    
+    
 
 }

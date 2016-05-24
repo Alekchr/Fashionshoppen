@@ -3,9 +3,9 @@ package services;
 
 public interface OrderStatus {
     
-    int SHOPPING_BASKET = 0;
-    int NOT_CONFIRMED = 1;
-    int SHIPPED = 2;
-    int RECEIVED = 3;
+    String SHOPPING_BASKET = "SHOPPING BASKET";
+    String NOT_CONFIRMED = "NOT CONFIRMED";
+    String SHIPPED = "SHIPPED";
+    String RECEIVED = "RECEIVED";
     
 }

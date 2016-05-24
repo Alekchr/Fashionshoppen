@@ -110,13 +110,9 @@ public abstract class User
 
     public List<Item> getShoppingBasketItems()
     {
-        return getShoppingBasket().getItems();
+        return findShoppingBasket().getItems();
     }
 
-    public Order getShoppingBasket()
-    {
-        return findShoppingBasket();
-    }
 
     public void addItem(Product product, int quantity, String size)
     {
@@ -138,5 +134,17 @@ public abstract class User
     {
         orders.put(o.getOrder_id(), o);
     }
+
+    public Address getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(Address address)
+    {
+        this.address = address;
+    }
+    
+    
 
 }

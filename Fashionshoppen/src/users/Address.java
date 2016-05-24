@@ -59,6 +59,11 @@ public class Address
         this.city = city;
     }
 
+    public void setCustomer_id(int customer_id)
+    {
+        this.customer_id = customer_id;
+    }
+
     
     
 }

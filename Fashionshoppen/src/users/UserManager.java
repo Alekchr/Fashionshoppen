@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static services.OrderStatus.NOT_CONFIRMED;
 
 public class UserManager implements IUserManager
 {
@@ -134,7 +135,7 @@ public class UserManager implements IUserManager
 
     public Order getShoppingBasket()
     {
-        return onlineUser.getShoppingBasket();
+        return onlineUser.findShoppingBasket();
     }
 
     @Override
@@ -172,6 +173,19 @@ public class UserManager implements IUserManager
 
         User guestUser = new Customer(email, "");
         setOnlineUser(guestUser);
+    }
+    
+    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName, 
+            String houseNumber, String zipcode, String shippingCity) //Address skal have autoudfyld.
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(onlineUser.getShoppingBasketItems().toString().split(";"));
+        onlineUser.findShoppingBasket().setPayment_option(payment_option);
+        onlineUser.setFirstName(firstName); onlineUser.setLastName(lastName); onlineUser.setEmail(email);
+        onlineUser.setAddress(new Address(onlineUser.getUser_id(), streetName, houseNumber, zipcode, shippingCity));
+        onlineUser.findShoppingBasket().setShippingAddress(onlineUser.getAddress());
+        onlineUser.findShoppingBasket().setStatus(NOT_CONFIRMED);
+        
     }
 
 }

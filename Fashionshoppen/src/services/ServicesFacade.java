@@ -7,6 +7,7 @@ package services;
 
 import products.Order;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public final class ServicesFacade {
 
@@ -105,6 +106,22 @@ public final class ServicesFacade {
     }
     public void storeOrder(Order order, int customer_id){
         sr.storeOrder(order, customer_id);
+    }
+    
+    public ResultSet getOrders(){
+        ResultSet rs = sr.getOrders();
+
+        return rs;
+    }
+    
+        public ResultSet getCustomerNameFromId(int userId){
+        ResultSet rs = sr.getCustomerNameFromId(userId);
+        return rs;
+    }
+    
+    public ResultSet selectAddressFromId(int userId){
+        ResultSet rs = sr.selectAddressFromId(userId);
+        return rs;
     }
         
     
