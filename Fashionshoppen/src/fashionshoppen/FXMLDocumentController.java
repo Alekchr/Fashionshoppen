@@ -35,11 +35,13 @@ import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -166,10 +168,35 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn<Product, Integer> orderAmount;
     @FXML
     private TableColumn<Product, Double> orderPrice;
-    @FXML
     private TableColumn<Product, String> orderColor;
     @FXML
     private TableColumn<Record, Boolean> orderBtn;
+    @FXML
+    private Button acceptOrder;
+    @FXML
+    private TextField orderFirstName;
+    @FXML
+    private TextField orderLastName;
+    @FXML
+    private TextField orderStreet;
+    @FXML
+    private TextField orderZip;
+    @FXML
+    private TextField orderCity;
+    @FXML
+    private TextField orderEmail;
+    @FXML
+    private TextField orderEmailCheck;
+    @FXML
+    private ToggleGroup pickupChoice;
+    @FXML
+    private ComboBox<?> storeChoice;
+    @FXML
+    private RadioButton cardPayment;
+    @FXML
+    private RadioButton storePayment;
+    @FXML
+    private RadioButton paypalPayment;
     
 
     @Override
@@ -235,6 +262,21 @@ public class FXMLDocumentController implements Initializable {
         
         refreshTable();
         
+    }
+
+    @FXML
+    private void handleOrderAccept(ActionEvent event)
+    {
+    }
+
+    @FXML
+    private void homeDelivery(ActionEvent event)
+    {
+    }
+
+    @FXML
+    private void storeDelivery(ActionEvent event)
+    {
     }
     
     
@@ -364,7 +406,7 @@ public class FXMLDocumentController implements Initializable {
         btnCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         btnCol.setSortable(false);
         btnCol.setMinWidth(50);
-        System.out.println(obsProductList);
+        //System.out.println(obsProductList);
         productTable.setItems(obsProductList);
         
         

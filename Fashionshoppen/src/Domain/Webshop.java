@@ -5,7 +5,6 @@
  */
 package Domain;
 
-
 import products.Item;
 import products.Order;
 import users.User;
@@ -24,7 +23,6 @@ import java.util.logging.Logger;
 import services.*;
 import users.UserManager;
 
-
 public final class Webshop
 {
 
@@ -35,7 +33,7 @@ public final class Webshop
     ServicesFacade sf;
     MessageDigest md;
     private int orderID;
-    
+
     public Webshop()
     {
 
@@ -55,48 +53,54 @@ public final class Webshop
 
         return instance;
     }
-    
 
-    public ArrayList createProductsArray(){
+    public ArrayList createProductsArray()
+    {
         ArrayList products = catalog.showProducts();
         return products;
-        
+
     }
-    
-    public List<Item> getShoppingBasketItems() {
+
+    public List<Item> getShoppingBasketItems()
+    {
         return um.getShoppingBasketItems();
     }
-        
-    
-    
-       public void createProduct(String name, String category, String gender, Double price){
+
+    public void createProduct(String name, String category, String gender, Double price)
+    {
         sf.createProduct(name, category, gender, price);
     }
-       
-       public void deleteProduct(int productId){
+
+    public void deleteProduct(int productId)
+    {
         sf.deleteProduct(productId);
     }
-    
-        public void editProductName(int productId, String productName){
+
+    public void editProductName(int productId, String productName)
+    {
         sf.editProductName(productId, productName);
     }
-    
-    public void editProductCategory(int productId, String productCategory){
+
+    public void editProductCategory(int productId, String productCategory)
+    {
         sf.editProductCategory(productId, productCategory);
     }
-    
-    public void editProductGender(int productId, String productGender){
+
+    public void editProductGender(int productId, String productGender)
+    {
         sf.editProductGender(productId, productGender);
     }
-    
-    public void editProductPrice(int productId, Double price){
+
+    public void editProductPrice(int productId, Double price)
+    {
         sf.editProductPrice(productId, price);
     }
-    
-    public void editProductPicture(int productId, String imagePath){
+
+    public void editProductPicture(int productId, String imagePath)
+    {
         sf.editProductPicture(productId, imagePath);
     }
-    
+
     public void browseCategory(String category, String name)
     {
         sf.browseCategory(category, name);
@@ -117,49 +121,50 @@ public final class Webshop
         um.checkUserType(email, password);
     }
 
-    
-    public void displayProduct(Product product){
+    public void displayProduct(Product product)
+    {
         this.product = product;
     }
-    
-    public void createProduct(Product product){
-        
+
+    public void createProduct(Product product)
+    {
+
     }
 
     public Product getProduct()
     {
-        System.out.println(product);
+        
         return product;
-    }   
+    }
 
-
-    
     public void addItem(Product product, int amount, String size)
     {
         if (!um.isUserLoggedIn())
         {
-        um.createGuestUser();
-                
+            um.createGuestUser();
+
         }
-        if (!um.userHasBasket()) {
+        if (!um.userHasBasket())
+        {
             um.createOrder(orderID++);
             um.addItem(product, amount, size);
         }
         else
         {
             um.addItem(product, amount, size);
-            
+
             System.out.println("item was added to basket");
         }
     }
 
-    public void storeOrder(String payment_option, Address shippingAddress) //Address skal have autoudfyld.
+    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName, 
+            String houseNumber, String zipCode, String shippingCity) //Address skal have autoudfyld.
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append(um.getShoppingBasket().getItems().toString().split(";"));
-        System.out.println(sb);
-        um.getShoppingBasket().setPayment_option(payment_option);
-        um.getShoppingBasket().setShippingAddress(shippingAddress);
-        //customer.getOrder().setPrice(price);
+        um.storeOrder(payment_option, firstName, lastName, email, streetName, houseNumber, zipCode, shippingCity);
+                
+    }
+    
+    public boolean userHasShoppingBasket(){
+        return um.userHasBasket();
     }
 }
