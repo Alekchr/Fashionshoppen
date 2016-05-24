@@ -1,13 +1,12 @@
-package Domain;
+package products;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import products.Product;
 import services.ServicesFacade;
 
-public class Catalog {
+public class ProductCatalog {
 
     ServicesFacade sf = new ServicesFacade();
     Product product;
@@ -15,7 +14,7 @@ public class Catalog {
     ResultSet productResultSet;
     ArrayList products;
 
-    public Catalog()
+    public ProductCatalog()
     {
         
 
@@ -42,7 +41,7 @@ public class Catalog {
             while (productResultSet.next()) {
                 
                 if(productResultSet.getString("product_category").equals("kjole")){
-                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppenv2/Fashionshoppen/src/dressplaceholder.png";
+                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/dressplaceholder.png";
                 } else {
                     pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/placeholder1.png";
                 }

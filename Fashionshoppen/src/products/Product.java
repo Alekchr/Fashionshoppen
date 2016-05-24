@@ -1,5 +1,5 @@
 
-package Domain;
+package products;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -8,10 +8,7 @@ import java.io.IOException;
 import javafx.scene.image.*;
 import javax.imageio.ImageIO;
 
-/**
- *
- * @author aleksander
- */
+
 public class Product
 {
     private int productId;

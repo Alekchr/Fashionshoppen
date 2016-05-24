@@ -1,28 +1,22 @@
-
-package Domain;
+package users;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author aleksander
- */
 public class Employee extends User
 {
-    
+
     public Employee(String firstName, String lastName, String email, String password)
     {
         super(firstName, lastName, email, password);
     }
-    
-        public Employee(String email, String password)
+
+    public Employee(String email, String password)
     {
         super(email, password);
-        
+
     }
-    
-    @Override
+
     public Employee loginUser(User user)
     {
         Employee employee = null;
@@ -35,9 +29,6 @@ public class Employee extends User
                 employee.setUser_id(rs.getInt("user_id"));
             }
 
-
-
-
         }
         catch (SQLException e)
         {
@@ -45,8 +36,9 @@ public class Employee extends User
         }
         return employee;
     }
-    @Override
-    public void registerUser(User user){                    //kan laves senere, den vigtigste er customer atm.
-    
+
+    public void registerUser(String firstName, String lastName, String email, String password)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

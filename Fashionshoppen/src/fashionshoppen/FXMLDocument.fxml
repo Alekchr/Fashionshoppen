@@ -19,72 +19,77 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<!-- FASHIONSHOPPEN 1 -->
-
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1026.0" prefWidth="1833.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fashionshoppen.FXMLDocumentController">
-   <children>
-      <TabPane fx:id="MainTabPane" layoutX="28.0" layoutY="-8.0" prefHeight="862.0" prefWidth="1842.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <tabs>
-          <Tab fx:id="TabMainpage" text="Mainpage">
-            <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="1820.0" style="-fx-background-color: WHITE;">
-                     <children>
-                        <Label fx:id="LblLogin" layoutX="1406.0" layoutY="51.0" onMouseClicked="#handleLogin" text="Login" />
-                       <!-- <Label layoutX="1463.0" layoutY="51.0" onMouseClicked="#handleShowBasket" text="Indkøbskurv" /> -->
-                        <TextField fx:id="TFsearch" layoutX="289.0" layoutY="48.0" prefHeight="29.0" prefWidth="223.0" promptText="Søg efter produkt" />
-                        <Button fx:id="searchBtn" layoutX="538.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleSearch" text="Søg" />
-                        <CheckBox fx:id="womanCB" layoutX="43.0" layoutY="192.0" mnemonicParsing="false" text="Kvinde" />
-                        <CheckBox fx:id="unisexCB" layoutX="199.0" layoutY="192.0" mnemonicParsing="false" text="Unisex" />
-                        <CheckBox fx:id="manCB" layoutX="123.0" layoutY="192.0" mnemonicParsing="false" text="Herre" />
-                        <CheckBox layoutX="43.0" layoutY="305.0" mnemonicParsing="false" text="Nyheder" />
-                        <CheckBox layoutX="43.0" layoutY="343.0" mnemonicParsing="false" text="Jakker og frakker" />
-                        <CheckBox fx:id="tshirtCB" layoutX="43.0" layoutY="380.0" mnemonicParsing="false" text="T-shirts" />
-                        <CheckBox layoutX="43.0" layoutY="418.0" mnemonicParsing="false" text="Jeans" />
-                        <CheckBox layoutX="43.0" layoutY="453.0" mnemonicParsing="false" text="Skjorter" />
-                        <CheckBox layoutX="43.0" layoutY="491.0" mnemonicParsing="false" text="Bukser" />
-                        <CheckBox layoutX="43.0" layoutY="528.0" mnemonicParsing="false" text="Shorts" />
-                        <CheckBox fx:id="kjoleCB" layoutX="43.0" layoutY="566.0" mnemonicParsing="false" text="Kjoler" />
-                        <Label layoutX="136.0" layoutY="139.0" text="Køn">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="51.0" layoutY="49.0" text="Fashionshoppen">
-                           <font>
-                              <Font name="System Bold" size="24.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="108.0" layoutY="255.0" text="Kategorier">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane fx:id="productWindowScrollPane" layoutX="286.0" layoutY="141.0" prefHeight="802.0" prefWidth="1268.0">
-                           <content>
-                              <TilePane fx:id="productWindow" prefHeight="799.0" prefWidth="1264.0" />
-                           </content>
-                        </ScrollPane>
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-          <Tab fx:id="TabLogin" text="Login">
-                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: WHITE;">
-                     <children>
-                         <TextField fx:id="LoginEmail" layoutX="235.0" layoutY="105.0" promptText="Email" />
-                              <TextField fx:id="LoginPW" layoutX="235.0" layoutY="153.0" promptText="Password" />
-                              <Button fx:id="BTNLogin" layoutX="287.0" layoutY="192.0" mnemonicParsing="false" onAction="#handleLoginUser" text="Log ind" />
-                              <Label layoutX="275.0" layoutY="248.0" text="Ikke Medlem?" />
-                              <Label fx:id="LblNewReg" layoutX="278.0" layoutY="269.0" onMouseClicked="#handleCreateCustomer" text="Opret bruger" underline="true" />
-                        <Pane fx:id="RegisterPane" layoutX="82.0" layoutY="33.0" prefHeight="447.0" prefWidth="640.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           
+    <children>
+        <TabPane fx:id="MainTabPane" layoutX="28.0" layoutY="-8.0" prefHeight="862.0" prefWidth="1842.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <tabs>
+                <Tab fx:id="TabMainpage" text="Mainpage">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="1820.0" style="-fx-background-color: WHITE;">
                             <children>
-                              <TextField fx:id="regFirstName" layoutX="235.0" layoutY="70.0" promptText="Fornavn" />
-                              <TextField fx:id="regLastName" layoutX="235.0" layoutY="118.0" promptText="Efternavn" />
-                              <TextField fx:id="regEmail" layoutX="235.0" layoutY="166.0" promptText="Email" />
-                              <TextField fx:id="regPW1" layoutX="235.0" layoutY="211.0" promptText="Password" />
-                              <TextField fx:id="regPW2" layoutX="235.0" layoutY="256.0" promptText="Bekræft Password" />
-                              <Button fx:id="BTNRegister" layoutX="269.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleRegister" text="Opret bruger" />
+                                <Label fx:id="LblLogin" layoutX="1406.0" layoutY="51.0" onMouseClicked="#handleLogin" text="Login" />
+                                <Label layoutX="1463.0" layoutY="51.0" onMouseClicked="#handleShowBasket" text="Indkøbskurv" /> 
+                                <TextField fx:id="TFsearch" layoutX="289.0" layoutY="48.0" prefHeight="29.0" prefWidth="223.0" promptText="Søg efter produkt" />
+                                <Button fx:id="searchBtn" layoutX="538.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleSearch" text="Søg" />
+                                <CheckBox fx:id="womanCB" layoutX="43.0" layoutY="192.0" mnemonicParsing="false" text="Kvinde" />
+                                <CheckBox fx:id="unisexCB" layoutX="199.0" layoutY="192.0" mnemonicParsing="false" text="Unisex" />
+                                <CheckBox fx:id="manCB" layoutX="123.0" layoutY="192.0" mnemonicParsing="false" text="Herre" />
+                                <CheckBox layoutX="43.0" layoutY="305.0" mnemonicParsing="false" text="Nyheder" />
+                                <CheckBox layoutX="43.0" layoutY="343.0" mnemonicParsing="false" text="Jakker og frakker" />
+                                <CheckBox fx:id="tshirtCB" layoutX="43.0" layoutY="380.0" mnemonicParsing="false" text="T-shirts" />
+                                <CheckBox layoutX="43.0" layoutY="418.0" mnemonicParsing="false" text="Jeans" />
+                                <CheckBox layoutX="43.0" layoutY="453.0" mnemonicParsing="false" text="Skjorter" />
+                                <CheckBox layoutX="43.0" layoutY="491.0" mnemonicParsing="false" text="Bukser" />
+                                <CheckBox layoutX="43.0" layoutY="528.0" mnemonicParsing="false" text="Shorts" />
+                                <CheckBox fx:id="kjoleCB" layoutX="43.0" layoutY="566.0" mnemonicParsing="false" text="Kjoler" />
+                                <Label layoutX="136.0" layoutY="139.0" text="Køn">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="51.0" layoutY="49.0" text="Fashionshoppen">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="108.0" layoutY="255.0" text="Kategorier">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                                <ScrollPane fx:id="productWindowScrollPane" layoutX="286.0" layoutY="141.0" prefHeight="802.0" prefWidth="1268.0">
+                                    <content>
+                                        <TilePane fx:id="productWindow" prefHeight="799.0" prefWidth="1264.0" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="TabLogin" text="Login">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: WHITE;">
+                            <children>
+                                <Label layoutX="51.0" layoutY="49.0" onMouseClicked="#returnMainPage" text="Fashionshoppen">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="LoginEmail" layoutX="235.0" layoutY="105.0" promptText="Email" />
+                                <TextField fx:id="LoginPW" layoutX="235.0" layoutY="153.0" promptText="Password" />
+                                <Button fx:id="BTNLogin" layoutX="287.0" layoutY="192.0" mnemonicParsing="false" onAction="#handleLoginUser" text="Log ind" />
+                                <Label layoutX="275.0" layoutY="248.0" text="Ikke Medlem?" />
+
+                                <Label fx:id="LblNewReg" layoutX="278.0" layoutY="269.0" onMouseClicked="#handleCreateCustomer" text="Opret bruger" underline="true" />
+                                <Pane fx:id="RegisterPane" layoutX="82.0" layoutY="33.0" prefHeight="447.0" prefWidth="640.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           
+                                    <children>
+                                        <TextField fx:id="regFirstName" layoutX="235.0" layoutY="70.0" promptText="Fornavn" />
+                                        <TextField fx:id="regLastName" layoutX="235.0" layoutY="118.0" promptText="Efternavn" />
+                                        <TextField fx:id="regEmail" layoutX="235.0" layoutY="166.0" promptText="Email" />
+                                        <TextField fx:id="regPW1" layoutX="235.0" layoutY="211.0" promptText="Password" />
+                                        <TextField fx:id="regPW2" layoutX="235.0" layoutY="256.0" promptText="Bekræft Password" />
+                                        <Button fx:id="BTNRegister" layoutX="269.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleRegister" text="Opret bruger" />
                               
                            </children>
                         </Pane>

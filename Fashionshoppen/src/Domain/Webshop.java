@@ -6,36 +6,41 @@
 package Domain;
 
 
+import products.Item;
+import products.Order;
+import users.User;
+import users.Address;
+
+import users.Employee;
+import products.ProductCatalog;
+import products.Product;
 import java.util.ArrayList;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import services.*;
+import users.UserManager;
 
-/**
- *
- * @author jonaspedersen
- */
+
 public final class Webshop
 {
 
     private static Webshop instance = null;
-    Catalog catalog;
-    Customer customer;
-    Employee employee;
-    Item item;
+    ProductCatalog catalog;
     Product product;
-    User user;
+    UserManager um;
     ServicesFacade sf;
-    
     MessageDigest md;
-
+    private int orderID;
+    
     public Webshop()
     {
 
-        catalog = new Catalog();
+        catalog = new ProductCatalog();
+        um = new UserManager();
         sf = new ServicesFacade();
 
     }
@@ -57,6 +62,12 @@ public final class Webshop
         return products;
         
     }
+    
+    public List<Item> getShoppingBasketItems() {
+        return um.getShoppingBasketItems();
+    }
+        
+    
     
        public void createProduct(String name, String category, String gender, Double price){
         sf.createProduct(name, category, gender, price);
@@ -98,54 +109,14 @@ public final class Webshop
 
     public void registerCustomer(String firstName, String lastName, String email, String password)
     {
-
-        String encryptedPass = encryptPassword(password);
-        customer = new Customer(firstName, lastName, email, encryptedPass);
-        customer.registerUser(customer);
+        um.createUser(firstName, lastName, email, password);
     }
 
-    public User checkUserType(String email, String password)
+    public void loginUser(String email, String password)
     {
-        Customer returnedCustomer = null;
-        Employee returnedEmployee = null;
-        String encryptedPass = encryptPassword(password);
-        customer = new Customer(email, encryptedPass);
-        returnedCustomer = (Customer) customer.loginUser(customer);
-
-        if (returnedCustomer == null)
-        {
-            employee = new Employee(email, encryptedPass);
-            returnedEmployee = (Employee) employee.loginUser(employee);
-            return returnedEmployee;
-        }
-        else
-        {
-            return returnedCustomer;
-        }
-
+        um.checkUserType(email, password);
     }
-    public String encryptPassword(String password)
-    {
-        StringBuilder sb = new StringBuilder();
-        try
-        {
-            md = MessageDigest.getInstance("MD5");
-            byte[] passBytes = password.getBytes();
-            md.digest(passBytes);
-            byte[] digest = md.digest(passBytes);
 
-            for (int i = 0; i < digest.length; i++)
-            {
-                sb.append(Integer.toHexString(0xff & digest[i]));
-            }
-
-        }
-        catch (NoSuchAlgorithmException ex)
-        {
-            Logger.getLogger(Webshop.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return sb.toString();
-    }
     
     public void displayProduct(Product product){
         this.product = product;
@@ -157,31 +128,38 @@ public final class Webshop
 
     public Product getProduct()
     {
+        System.out.println(product);
         return product;
     }   
 
-    public void addItem(int product_id, int amount)
+
+    
+    public void addItem(Product product, int amount, String size)
     {
-        if (customer == null)
+        if (!um.isUserLoggedIn())
         {
-            customer = new Customer(" ", " ");
-            System.out.println("created random GUEST customer");
+        um.createGuestUser();
+                
         }
-        
-        if (customer.getOrder() == null)
-        {
-            customer.setOrder(new Order(customer.getUser_id(), customer.getAddress(), new Item(product_id, amount)));
-            System.out.println("Order was created and item added");
+        if (!um.userHasBasket()) {
+            um.createOrder(orderID++);
+            um.addItem(product, amount, size);
         }
         else
         {
-            customer.getOrder().addItem(new Item(product_id, amount));
+            um.addItem(product, amount, size);
+            
             System.out.println("item was added to basket");
         }
     }
 
-    public void createOrder()
+    public void storeOrder(String payment_option, Address shippingAddress) //Address skal have autoudfyld.
     {
-
+        StringBuilder sb = new StringBuilder();
+        sb.append(um.getShoppingBasket().getItems().toString().split(";"));
+        System.out.println(sb);
+        um.getShoppingBasket().setPayment_option(payment_option);
+        um.getShoppingBasket().setShippingAddress(shippingAddress);
+        //customer.getOrder().setPrice(price);
     }
 }

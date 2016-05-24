@@ -1,31 +1,30 @@
-package Domain;
+package users;
 
-import services.ServerRequest;
+import products.Order;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import services.ServicesFacade;
+import java.util.HashMap;
+import services.OrderStatus;
 
-/**
- *
- * @author aleksander
- */
 public class Customer extends User
 {
 
-    private Address address;
+    private Customer customer;
+
     private String phoneNr;
-    private Order order;
 
     public Customer(String email, String password)
     {
         super(email, password);
-        
+        orders = new HashMap();
+
     }
 
     public Customer(String firstName, String lastName, String email, String password)
     {
         super(firstName, lastName, email, password);
+        orders = new HashMap();
 
     }
 
@@ -49,25 +48,16 @@ public class Customer extends User
         return phoneNr;
     }
 
-    @Override
-    public void registerUser(User user)  //Opretter en bruger med det vigtigste informationer, 
-                                         //ting som addresse og telefonnummber kan tilføjes senere
+    public void registerUser(String firstName, String lastName, String email, String password)
     {
-
-        String firstName = user.getFirstName();
-        String lastName = user.getLastName();
-        String email = user.getEmail();
-        String password = user.getPassword();
 
         sf.registerUser(firstName, lastName, email, password);
-
     }
 
-    @Override
     public Customer loginUser(User user)     //Når en bruger logges ind gemmes alle deres oplysninger, 
-                                             //så de kan bruges til orders/ændring af oplysninger
+    //så de kan bruges til orders/ændring af oplysninger
     {
-        Customer customer = new Customer("", "", "", "");
+        customer = new Customer("", "", "", "");
         try
         {
 
@@ -103,16 +93,17 @@ public class Customer extends User
         return customer;
     }
 
-    public Order getOrder()
+    public Order findShoppingBasket()
     {
-        return order;
-    }
+        for (Order order : orders.values())
+        {
+            if (order.getStatus() == OrderStatus.SHOPPING_BASKET)
+            {
+                return order;
+            }
 
-    public void setOrder(Order order)
-    {
-        this.order = order;
+        }
+        return null;
     }
-    
-    
 
 }
