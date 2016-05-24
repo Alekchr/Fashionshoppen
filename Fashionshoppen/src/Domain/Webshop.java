@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.security.MessageDigest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.List;
+
 import services.*;
 import users.UserManager;
 
@@ -30,7 +32,7 @@ public final class Webshop {
     MessageDigest md;
     private int orderID;
 
-    public Webshop()
+    private Webshop()
     {
 
         catalog = new ProductCatalog();
@@ -191,7 +193,12 @@ public final class Webshop {
 
         }
         if (!um.userHasBasket()) {
-            um.createOrder(orderID++);
+            //um.createOrder(orderID++);
+        }
+        
+        if (!um.userHasBasket())
+        {
+            um.createBasket(orderID++);
             um.addItem(product, amount, size);
         } else {
             um.addItem(product, amount, size);
@@ -205,9 +212,9 @@ public final class Webshop {
         sf.editOrderStatus(orderId, status);
     }
 
-    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName,
-            String houseNumber, String zipCode, String shippingCity)
-    //Address skal have autoudfyld.
+
+    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName, 
+            String houseNumber, String zipCode, String shippingCity) //Address skal have autoudfyld.
     {
         um.storeOrder(payment_option, firstName, lastName, email, streetName, houseNumber, zipCode, shippingCity);
 
@@ -216,5 +223,10 @@ public final class Webshop {
     public boolean userHasShoppingBasket()
     {
         return um.userHasBasket();
+    }
+    
+    public void removeItem(Item item)
+    {
+    um.removeItem(item);
     }
 }

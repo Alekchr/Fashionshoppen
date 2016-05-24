@@ -34,7 +34,7 @@ public class UserManager implements IUserManager
             setOnlineUser(returnedCustomer);
             if (this.userHasBasket())
             {
-                onlineUser.inShoppingBasket(customer.findShoppingBasket());
+                onlineUser.inBasket(customer.findShoppingBasket());
             }
 
         }
@@ -112,9 +112,9 @@ public class UserManager implements IUserManager
     }
 
     @Override
-    public void createOrder(int orderID)
+    public void createBasket(int orderID)
     {
-        onlineUser.createOrder(orderID);
+        onlineUser.createBasket(orderID);
     }
 
     @Override

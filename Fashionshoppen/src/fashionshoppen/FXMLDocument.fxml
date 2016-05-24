@@ -141,17 +141,17 @@
                                     </font>
                                 </Label>
                          
-                                <TableView fx:id="orderTable" layoutX="285.0" layoutY="140.0" prefHeight="592.0" prefWidth="875.0">
+                                <TableView fx:id="basketTable" layoutX="285.0" layoutY="140.0" prefHeight="592.0" prefWidth="875.0">
                                     <columns>
-                                        <TableColumn fx:id="orderPic" prefWidth="149.0" text="Produkt billede" />
-                                        <TableColumn fx:id="orderName" minWidth="0.0" prefWidth="349.0" text="Produkt navn" />
-                                        <TableColumn fx:id="orderStr" prefWidth="82.0" text="Størrelse." />
-                                        <TableColumn fx:id="orderAmount" minWidth="0.0" prefWidth="65.0" text="Antal" />
-                                        <TableColumn fx:id="orderPrice" prefWidth="157.0" text="Pris" />
-                                        <TableColumn fx:id="orderBtn" minWidth="0.0" prefWidth="72.0" text="Fjern" />
+                                        <TableColumn fx:id="basketPic" prefWidth="149.0" text="Produkt billede" />
+                                        <TableColumn fx:id="basketName" minWidth="0.0" prefWidth="349.0" text="Produkt navn" />
+                                        <TableColumn fx:id="basketStr" prefWidth="82.0" text="Størrelse." />
+                                        <TableColumn fx:id="basketAmount" minWidth="0.0" prefWidth="65.0" text="Antal" />
+                                        <TableColumn fx:id="basketPrice" prefWidth="157.0" text="Pris" />
+                                        <TableColumn fx:id="basketBtn" minWidth="0.0" prefWidth="72.0" text="Fjern" />
                                     </columns>
                                 </TableView>
-                        <Button fx:id="acceptOrder" layoutX="587.0" layoutY="827.0" mnemonicParsing="false" onAction="#handleOrderAccept" prefHeight="26.0" prefWidth="258.0" text="Bestil Varer" />
+                        <Button fx:id="acceptBasket" layoutX="587.0" layoutY="827.0" mnemonicParsing="false" onAction="#handleBasketAccept" prefHeight="26.0" prefWidth="258.0" text="Bestil Varer" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -174,17 +174,17 @@
                         <Label layoutX="1002.0" layoutY="127.0" text="Email:" />
                         <TextField fx:id="orderEmailCheck" layoutX="1002.0" layoutY="223.0" prefHeight="26.0" prefWidth="215.0" />
                         <Label layoutX="1002.0" layoutY="197.0" text="Gentag email:" />
-                        <RadioButton layoutX="1002.0" layoutY="280.0" mnemonicParsing="false" onAction="#homeDelivery" text="Levering til egen addresse">
+                        <RadioButton fx:id="homeDelivery" layoutX="1002.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleHomeDelivery" text="Levering til egen addresse">
                            <toggleGroup>
                               <ToggleGroup fx:id="pickupChoice" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton layoutX="1002.0" layoutY="314.0" mnemonicParsing="false" onAction="#storeDelivery" text="Afhentning i butik" toggleGroup="$pickupChoice" />
+                        <RadioButton fx:id="storeDelivery" layoutX="1002.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleStoreDelivery" text="Afhentning i butik" toggleGroup="$pickupChoice" />
                         <ComboBox fx:id="storeChoice" layoutX="1002.0" layoutY="348.0" prefHeight="26.0" prefWidth="215.0" promptText="Vælg butik" />
                         <RadioButton fx:id="cardPayment" layoutX="691.0" layoutY="484.0" mnemonicParsing="false" text="Betal med kreditkort" />
                         <RadioButton fx:id="storePayment" layoutX="1091.0" layoutY="484.0" mnemonicParsing="false" text="Betal i butikken" />
                         <RadioButton fx:id="paypalPayment" layoutX="889.0" layoutY="484.0" mnemonicParsing="false" text="Betaling med paypal" />
-                        <Button layoutX="849.0" layoutY="728.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
+                        <Button fx:id="endOrder" layoutX="849.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleEndOrder" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
                      </children></AnchorPane>
                     </content>
                 </Tab>
