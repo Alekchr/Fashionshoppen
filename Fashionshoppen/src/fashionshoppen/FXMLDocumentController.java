@@ -267,15 +267,16 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleOrderAccept(ActionEvent event)
     {
+        
     }
 
     @FXML
-    private void homeDelivery(ActionEvent event)
+    private void handleHomeDelivery(ActionEvent event)
     {
     }
 
     @FXML
-    private void storeDelivery(ActionEvent event)
+    private void handleStoreDelivery(ActionEvent event)
     {
     }
     

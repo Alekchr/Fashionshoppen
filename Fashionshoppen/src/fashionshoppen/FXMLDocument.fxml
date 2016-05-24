@@ -174,17 +174,17 @@
                         <Label layoutX="1002.0" layoutY="127.0" text="Email:" />
                         <TextField fx:id="orderEmailCheck" layoutX="1002.0" layoutY="223.0" prefHeight="26.0" prefWidth="215.0" />
                         <Label layoutX="1002.0" layoutY="197.0" text="Gentag email:" />
-                        <RadioButton layoutX="1002.0" layoutY="280.0" mnemonicParsing="false" onAction="#homeDelivery" text="Levering til egen addresse">
+                        <RadioButton fx:id="homeDelivery" layoutX="1002.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleHomeDelivery" text="Levering til egen addresse">
                            <toggleGroup>
                               <ToggleGroup fx:id="pickupChoice" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton layoutX="1002.0" layoutY="314.0" mnemonicParsing="false" onAction="#storeDelivery" text="Afhentning i butik" toggleGroup="$pickupChoice" />
+                        <RadioButton fx:id="storeDelivery" layoutX="1002.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleStoreDelivery" text="Afhentning i butik" toggleGroup="$pickupChoice" />
                         <ComboBox fx:id="storeChoice" layoutX="1002.0" layoutY="348.0" prefHeight="26.0" prefWidth="215.0" promptText="Vælg butik" />
                         <RadioButton fx:id="cardPayment" layoutX="691.0" layoutY="484.0" mnemonicParsing="false" text="Betal med kreditkort" />
                         <RadioButton fx:id="storePayment" layoutX="1091.0" layoutY="484.0" mnemonicParsing="false" text="Betal i butikken" />
                         <RadioButton fx:id="paypalPayment" layoutX="889.0" layoutY="484.0" mnemonicParsing="false" text="Betaling med paypal" />
-                        <Button layoutX="849.0" layoutY="728.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
+                        <Button fx:id="endOrder" layoutX="849.0" layoutY="728.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
                      </children></AnchorPane>
                     </content>
                 </Tab>
