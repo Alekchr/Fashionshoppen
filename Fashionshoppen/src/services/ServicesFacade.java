@@ -100,7 +100,9 @@ public final class ServicesFacade {
         sr.editProductPicture(productId, imagePath);
     }
     
-    
+    public void editOrderStatus(int orderId, String status){
+        sr.editOrderStatus(orderId, status);
+    }
     public void storeOrder(Order order, int customer_id){
         sr.storeOrder(order, customer_id);
     }

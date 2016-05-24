@@ -273,6 +273,10 @@ public class ServerRequest
         return rs;
     }
 
+    public void editOrderStatus(int orderId, String status){
+        query = "UPDATE orders SET status = '" + status + "' WHERE order_id = '" + orderId + "';";
+        runQuery(query);
+    }
     public void storeOrder(Order order, int customer_id)
     {
         query = "INSERT INTO orders (order_date, price, shippingcharge, finalprice, paymentOption, customer_id)"

@@ -128,7 +128,6 @@ public final class Webshop
 
     public Product getProduct()
     {
-        System.out.println(product);
         return product;
     }   
 
@@ -153,6 +152,10 @@ public final class Webshop
         }
     }
 
+    public void editOrderStatus(int orderId, String status){
+        sf.editOrderStatus(orderId, status);
+    }
+    
     public void storeOrder(String payment_option, Address shippingAddress) //Address skal have autoudfyld.
     {
         StringBuilder sb = new StringBuilder();

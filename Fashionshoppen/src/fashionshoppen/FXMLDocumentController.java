@@ -355,7 +355,6 @@ public class FXMLDocumentController implements Initializable {
         btnCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         btnCol.setSortable(false);
         btnCol.setMinWidth(50);
-        System.out.println(obsProductList);
         productTable.setItems(obsProductList);
         
         
