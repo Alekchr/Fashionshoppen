@@ -17,7 +17,7 @@ public class Order
     private Address shippingAddress;
     private double shippingCharge;
     private double finalPrice;
-    private String payment_option;
+    private int payment_option;
     private int Status;
     private ArrayList<Item> items;
 
@@ -108,12 +108,12 @@ public class Order
         this.finalPrice = finalPrice;
     }
 
-    public String getPayment_option()
+    public int getPayment_option()
     {
         return payment_option;
     }
 
-    public void setPayment_option(String payment_option)
+    public void setPayment_option(int payment_option)
     {
         this.payment_option = payment_option;
     }

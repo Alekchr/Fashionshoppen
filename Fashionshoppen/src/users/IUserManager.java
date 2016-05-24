@@ -22,7 +22,7 @@ public interface IUserManager
 
     void logout();
 
-    void createOrder(int orderID);
+    void createBasket(int orderID);
 
     void addItem(Product product, int quantity, String size);
 

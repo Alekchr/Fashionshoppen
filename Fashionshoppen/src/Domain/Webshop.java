@@ -6,20 +6,15 @@
 package Domain;
 
 import products.Item;
-import products.Order;
-import users.User;
-import users.Address;
 
-import users.Employee;
 import products.ProductCatalog;
 import products.Product;
 import java.util.ArrayList;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import services.*;
 import users.UserManager;
 
@@ -34,7 +29,7 @@ public final class Webshop
     MessageDigest md;
     private int orderID;
 
-    public Webshop()
+    private Webshop()
     {
 
         catalog = new ProductCatalog();
@@ -146,7 +141,7 @@ public final class Webshop
         }
         if (!um.userHasBasket())
         {
-            um.createOrder(orderID++);
+            um.createBasket(orderID++);
             um.addItem(product, amount, size);
         }
         else
@@ -157,7 +152,7 @@ public final class Webshop
         }
     }
 
-    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName, 
+    public void storeOrder(int payment_option, String firstName, String lastName, String email, String streetName, 
             String houseNumber, String zipCode, String shippingCity) //Address skal have autoudfyld.
     {
         um.storeOrder(payment_option, firstName, lastName, email, streetName, houseNumber, zipCode, shippingCity);
@@ -166,5 +161,10 @@ public final class Webshop
     
     public boolean userHasShoppingBasket(){
         return um.userHasBasket();
+    }
+    
+    public void removeItem(Item item)
+    {
+    um.removeItem(item);
     }
 }

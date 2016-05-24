@@ -34,7 +34,7 @@ public class UserManager implements IUserManager
             setOnlineUser(returnedCustomer);
             if (this.userHasBasket())
             {
-                onlineUser.inShoppingBasket(customer.findShoppingBasket());
+                onlineUser.inBasket(customer.findShoppingBasket());
             }
 
         }
@@ -112,9 +112,9 @@ public class UserManager implements IUserManager
     }
 
     @Override
-    public void createOrder(int orderID)
+    public void createBasket(int orderID)
     {
-        onlineUser.createOrder(orderID);
+        onlineUser.createBasket(orderID);
     }
 
     @Override
@@ -175,7 +175,7 @@ public class UserManager implements IUserManager
         setOnlineUser(guestUser);
     }
     
-    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName, 
+    public void storeOrder(int payment_option, String firstName, String lastName, String email, String streetName, 
             String houseNumber, String zipcode, String shippingCity) //Address skal have autoudfyld.
     {
         StringBuilder sb = new StringBuilder();

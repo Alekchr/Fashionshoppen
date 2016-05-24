@@ -89,7 +89,7 @@ public abstract class User
         this.password = password;
     }
 
-    public void createOrder(int orderID)
+    public void createBasket(int orderID)
     {
         double shippingCharge = 25.0;
         orders.put(orderID, new Order(orderID, address, OrderStatus.SHOPPING_BASKET));
@@ -130,7 +130,7 @@ public abstract class User
         shoppingBasket.removeItem(item);
     }
 
-    public void inShoppingBasket(Order o)
+    public void inBasket(Order o)
     {
         orders.put(o.getOrder_id(), o);
     }

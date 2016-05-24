@@ -12,5 +12,6 @@ package services;
 public interface PaymentOptions
 {
     int CREDIT_CARD = 0;
-    int IN_STORE = 1;
+    int PAYPAL = 1;
+    int IN_STORE = 2;
 }
