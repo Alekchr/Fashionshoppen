@@ -148,6 +148,7 @@ public class UserManager implements IUserManager
         onlineUser.addItem(product, quantity, size);
     }
 
+    @Override
     public void changeAmount(Item item, int amount)
     {
         onlineUser.changeAmount(item, amount);

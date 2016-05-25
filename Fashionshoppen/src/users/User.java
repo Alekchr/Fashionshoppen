@@ -100,7 +100,7 @@ public abstract class User
     {
         for (Order order : orders.values())
         {
-            if (order.getStatus() == OrderStatus.SHOPPING_BASKET)
+            if (order.getStatus().equals(OrderStatus.SHOPPING_BASKET))
             {
                 return order;
             }

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.security.MessageDigest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.List;
 
 import services.*;
@@ -190,10 +189,7 @@ public final class Webshop {
             um.createGuestUser();
 
         }
-        if (!um.userHasBasket()) {
-            //um.createOrder(orderID++);
-        }
-        
+   
         if (!um.userHasBasket())
         {
             um.createBasket(orderID++);
