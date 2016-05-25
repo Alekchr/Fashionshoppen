@@ -2,6 +2,7 @@ package users;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import static services.AccessLevel.EMPLOYEE_ACCESS;
 
 public class Employee extends User
 {
@@ -9,11 +10,13 @@ public class Employee extends User
     public Employee(String firstName, String lastName, String email, String password)
     {
         super(firstName, lastName, email, password);
+        access = EMPLOYEE_ACCESS;
     }
 
     public Employee(String email, String password)
     {
         super(email, password);
+        access = EMPLOYEE_ACCESS;
 
     }
 
@@ -37,8 +40,5 @@ public class Employee extends User
         return employee;
     }
 
-    public void registerUser(String firstName, String lastName, String email, String password)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 }

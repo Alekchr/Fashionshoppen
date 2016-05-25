@@ -9,20 +9,23 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static services.OrderStatus.NOT_CONFIRMED;
+import services.*;
 
 public class UserManager implements IUserManager
 {
 
     private User onlineUser;
-    MessageDigest md;
+    private MessageDigest md;
+    
+    
 
     public UserManager()
     {
 
     }
-
-    public boolean checkUserType(String email, String password)
+    
+    @Override
+    public boolean loginUser(String email, String password)
     {
 
         String encryptedPass = encryptPassword(password);
@@ -43,6 +46,7 @@ public class UserManager implements IUserManager
             Employee employee = new Employee(email, encryptedPass);
             Employee returnedEmployee = (Employee) employee.loginUser(employee);
             setOnlineUser(returnedEmployee);
+            
         }
         if (!isUserLoggedIn())
         {
@@ -93,7 +97,7 @@ public class UserManager implements IUserManager
         StringBuilder sb = new StringBuilder();
         try
         {
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            md = MessageDigest.getInstance("MD5");
             byte[] passBytes = password.getBytes();
             md.digest(passBytes);
             byte[] digest = md.digest(passBytes);
@@ -175,6 +179,7 @@ public class UserManager implements IUserManager
         setOnlineUser(guestUser);
     }
     
+    @Override
     public void storeOrder(int payment_option, String firstName, String lastName, String email, String streetName, 
             String houseNumber, String zipcode, String shippingCity) //Address skal have autoudfyld.
     {
@@ -184,7 +189,7 @@ public class UserManager implements IUserManager
         onlineUser.setFirstName(firstName); onlineUser.setLastName(lastName); onlineUser.setEmail(email);
         onlineUser.setAddress(new Address(onlineUser.getUser_id(), streetName, houseNumber, zipcode, shippingCity));
         onlineUser.findShoppingBasket().setShippingAddress(onlineUser.getAddress());
-        onlineUser.findShoppingBasket().setStatus(NOT_CONFIRMED);
+        onlineUser.findShoppingBasket().setStatus(OrderStatus.NOT_CONFIRMED);
         
     }
 

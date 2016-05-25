@@ -23,6 +23,7 @@ import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -37,17 +38,20 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
-import javafx.util.Callback;
+import javafx.util.converter.DefaultStringConverter;
+
 import products.Item;
 import services.PaymentOptions;
 
@@ -163,9 +167,9 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private TableColumn<Product, String> basketName;
     @FXML
-    private TableColumn<Product, String> basketStr;
+    private TableColumn<ComboBox, String> basketSize;
     @FXML
-    private TableColumn<Product, Integer> basketAmount;
+    private TableColumn<ComboBox, Integer> basketAmount;
     @FXML
     private TableColumn<Product, Double> basketPrice;
     @FXML
@@ -203,8 +207,8 @@ public class FXMLDocumentController implements Initializable
 
         cbMapGender = new HashMap();
         cbMapCategory = new HashMap();
-//        productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-//        productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+       productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+        productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 
         productWindow.setPrefColumns(5);
         productWindow.setVgap(25);
@@ -814,14 +818,15 @@ public class FXMLDocumentController implements Initializable
     {
         basketProducts = Webshop.getInstance().getShoppingBasketItems();
         createBasketList();
-
+        ObservableList<String> sizes = FXCollections.observableArrayList("Small", "Medium", "Large", "X-Large");
+        
         basketPic.setCellValueFactory(new PropertyValueFactory<>("productpic"));
         basketName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        basketStr.setCellValueFactory(new PropertyValueFactory<>("productsize"));
+        basketSize.setCellValueFactory(new PropertyValueFactory<>("sizes"));
         basketAmount.setCellValueFactory(new PropertyValueFactory<>("itemAmount"));
         basketPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
-        basketBtn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
         basketBtn.setSortable(false);
+        basketSize.setSortable(false);
         basketBtn.setMinWidth(35);
         System.out.println(obsBasketProductList);
         basketTable.setItems(obsBasketProductList);
@@ -830,7 +835,18 @@ public class FXMLDocumentController implements Initializable
                 -> new SimpleBooleanProperty(p.getValue() != null));
 
         basketBtn.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell(REMOVE_BASKET_PRODUCT));
+        basketTable.setEditable(true);
+        
+        basketSize.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), sizes));
+       
+        
+        
 
+
+
+        
+        
+                
     }
 
 }

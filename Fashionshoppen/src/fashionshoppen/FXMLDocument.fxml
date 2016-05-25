@@ -145,7 +145,7 @@
                                     <columns>
                                         <TableColumn fx:id="basketPic" prefWidth="149.0" text="Produkt billede" />
                                         <TableColumn fx:id="basketName" minWidth="0.0" prefWidth="349.0" text="Produkt navn" />
-                                        <TableColumn fx:id="basketStr" prefWidth="82.0" text="Størrelse." />
+                                        <TableColumn fx:id="basketSize" prefWidth="82.0" text="Størrelse" />
                                         <TableColumn fx:id="basketAmount" minWidth="0.0" prefWidth="65.0" text="Antal" />
                                         <TableColumn fx:id="basketPrice" prefWidth="157.0" text="Pris" />
                                         <TableColumn fx:id="basketBtn" minWidth="0.0" prefWidth="72.0" text="Fjern" />

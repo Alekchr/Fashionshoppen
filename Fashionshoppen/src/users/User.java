@@ -19,6 +19,7 @@ public abstract class User
     int accesslvl;
     protected Address address;
     ServicesFacade sf = new ServicesFacade();
+    protected int access;
 
     protected Map<Integer, Order> orders;
 
@@ -144,6 +145,17 @@ public abstract class User
     {
         this.address = address;
     }
+
+    public int getAccess()
+    {
+        return access;
+    }
+
+    public void setAccess(int access)
+    {
+        this.access = access;
+    }
+    
     
     
 

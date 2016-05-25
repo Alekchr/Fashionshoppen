@@ -5,6 +5,7 @@ import products.Order;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import static services.AccessLevel.CUSTOMER_ACCESS;
 import services.OrderStatus;
 
 public class Customer extends User
@@ -18,6 +19,7 @@ public class Customer extends User
     {
         super(email, password);
         orders = new HashMap();
+        access = CUSTOMER_ACCESS;
 
     }
 
@@ -25,6 +27,7 @@ public class Customer extends User
     {
         super(firstName, lastName, email, password);
         orders = new HashMap();
+        access = CUSTOMER_ACCESS;
 
     }
 
