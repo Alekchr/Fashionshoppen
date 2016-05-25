@@ -116,7 +116,7 @@ public class ServerRequest
         runQuery(query);
 
         query = "INSERT INTO customer (user_id, phone) VALUES ('" + findUserID(email) + "',"
-                + " ' ' )";
+                + " '2' )";
 
         runQuery(query);
 

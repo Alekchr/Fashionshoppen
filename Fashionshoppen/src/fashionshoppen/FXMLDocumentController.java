@@ -212,6 +212,22 @@ public class FXMLDocumentController implements Initializable {
     private Label orderIdLabel;
     @FXML
     private TableView<Order> manageOrderTable;
+    @FXML
+    private CheckBox jacketsCB;
+    @FXML
+    private CheckBox jeansCB;
+    @FXML
+    private CheckBox shirtsCB;
+    @FXML
+    private CheckBox pantsCB;
+    @FXML
+    private CheckBox shortsCB;
+    @FXML
+    private RadioButton homeDelivery;
+    @FXML
+    private RadioButton storeDelivery;
+    @FXML
+    private Button endOrder;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -242,6 +258,11 @@ public class FXMLDocumentController implements Initializable {
         //Kategori checkboxe puttes i map med deres values
         cbMapCategory.put(tshirtCB, "t-shirt");
         cbMapCategory.put(kjoleCB, "kjole");
+        cbMapCategory.put(shirtsCB, "skjorte");
+        cbMapCategory.put(pantsCB, "bukser");
+        cbMapCategory.put(jeansCB, "jeans");
+        cbMapCategory.put(shortsCB, "shorts");
+                
 
         categoryCMB.getItems().addAll("kjole", "t-shirt");
         genderCMB.getItems().addAll("herre", "dame", "unisex");
@@ -418,7 +439,6 @@ public class FXMLDocumentController implements Initializable {
         private void handleShowBasket(MouseEvent event)
         {
             MainTabPane.getSelectionModel().select(3);
-            //showOrderList();
             showBasketList();
         }
 
@@ -828,40 +848,7 @@ public class FXMLDocumentController implements Initializable {
     {
         MainTabPane.getSelectionModel().select(0);
     }
-//
-//    public void showOrderList()
-//    {
-//        orderProducts = Webshop.getInstance().getShoppingBasketItems();
-//        createOrderList();
-//
-//        orderPic.setCellValueFactory(new PropertyValueFactory<>("productpic"));
-//        orderName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-//        orderStr.setCellValueFactory(new PropertyValueFactory<>("productsize"));
-//        orderColor.setCellValueFactory(new PropertyValueFactory<>("productcolor"));
-//        orderAmount.setCellValueFactory(new PropertyValueFactory<>("itemAmount"));
-//        orderPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
-//        orderBtn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
-//        btnCol.setSortable(false);
-//        btnCol.setMinWidth(35);
-//        System.out.println(obsOrderProductList);
-//        orderTable.setItems(obsOrderProductList);
-//
-//        btnCol.setCellValueFactory((TableColumn.CellDataFeatures<Record, Boolean> p)
-//                -> new SimpleBooleanProperty(p.getValue() != null));
-//
-//        btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell());
-//
-//        productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-//            //Check whether item is selected and set value of selected item to Label
-//            if (productTable.getSelectionModel().getSelectedItem() != null) {
-//                productIdLabel.setText(productTable.getSelectionModel().getSelectedItem().getProductId() + "");
-//                editNameField.setText(productTable.getSelectionModel().getSelectedItem().getName());
-//                editCategoryCMB.setValue(productTable.getSelectionModel().getSelectedItem().getCategory());
-//                editGenderCMB.setValue(productTable.getSelectionModel().getSelectedItem().getGender());
-//                editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getPrice() + "");
-//            }
-//        });
-//    }
+
 
     public void showBasketList()
     {

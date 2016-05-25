@@ -97,10 +97,12 @@ public abstract class User
 
     public Order findShoppingBasket()
     {
+
         for (Order order : orders.values())
         {
-            if (order.getStatus() == OrderStatus.SHOPPING_BASKET)
+            if (order.getStatus().equals(OrderStatus.SHOPPING_BASKET))
             {
+                System.out.println("Order ikke null");
                 return order;
             }
 
@@ -117,6 +119,7 @@ public abstract class User
     public void addItem(Product product, int quantity, String size)
     {
         findShoppingBasket().addItem(product, quantity, size);
+        
     }
 
     public void changeAmount(Item item, int amount)

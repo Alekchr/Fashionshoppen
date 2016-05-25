@@ -37,12 +37,12 @@
                                 <CheckBox fx:id="unisexCB" layoutX="199.0" layoutY="192.0" mnemonicParsing="false" text="Unisex" />
                                 <CheckBox fx:id="manCB" layoutX="123.0" layoutY="192.0" mnemonicParsing="false" text="Herre" />
                                 <CheckBox layoutX="43.0" layoutY="305.0" mnemonicParsing="false" text="Nyheder" />
-                                <CheckBox layoutX="43.0" layoutY="343.0" mnemonicParsing="false" text="Jakker og frakker" />
+                                <CheckBox fx:id="jacketsCB" layoutX="43.0" layoutY="343.0" mnemonicParsing="false" text="Jakker og frakker" />
                                 <CheckBox fx:id="tshirtCB" layoutX="43.0" layoutY="380.0" mnemonicParsing="false" text="T-shirts" />
-                                <CheckBox layoutX="43.0" layoutY="418.0" mnemonicParsing="false" text="Jeans" />
-                                <CheckBox layoutX="43.0" layoutY="453.0" mnemonicParsing="false" text="Skjorter" />
-                                <CheckBox layoutX="43.0" layoutY="491.0" mnemonicParsing="false" text="Bukser" />
-                                <CheckBox layoutX="43.0" layoutY="528.0" mnemonicParsing="false" text="Shorts" />
+                                <CheckBox fx:id="jeansCB" layoutX="43.0" layoutY="418.0" mnemonicParsing="false" text="Jeans" />
+                                <CheckBox fx:id="shirtsCB" layoutX="43.0" layoutY="453.0" mnemonicParsing="false" text="Skjorter" />
+                                <CheckBox fx:id="pantsCB" layoutX="43.0" layoutY="491.0" mnemonicParsing="false" text="Bukser" />
+                                <CheckBox fx:id="shortsCB" layoutX="43.0" layoutY="528.0" mnemonicParsing="false" text="Shorts" />
                                 <CheckBox fx:id="kjoleCB" layoutX="43.0" layoutY="566.0" mnemonicParsing="false" text="Kjoler" />
                                 <Label layoutX="136.0" layoutY="139.0" text="Køn">
                                     <font>
