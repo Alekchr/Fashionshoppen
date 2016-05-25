@@ -1,6 +1,5 @@
 package fashionshoppen;
 
-import products.Order;
 import products.Product;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,11 +20,11 @@ import com.sun.prism.impl.Disposer.Record;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -47,25 +46,28 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.util.converter.DefaultStringConverter;
-
 import products.Item;
+import products.Order;
+
 import services.PaymentOptions;
 
-public class FXMLDocumentController implements Initializable
-{
+public class FXMLDocumentController implements Initializable {
 
     private final int REMOVE_PRODUCT = 1;
     private final int REMOVE_BASKET_PRODUCT = 2;
     private HashMap<CheckBox, String> cbMapGender;
     private HashMap<CheckBox, String> cbMapCategory;
-    private List<Product> products;
+    private ArrayList<Product> products;
+    private ArrayList<Order> orders;
+    private List<Item> orderProducts;
     private List<Item> basketProducts;
     public ArrayList<GridPane> productGridList;
     public ObservableList<Product> obsProductList = FXCollections.observableArrayList();
+    public ObservableList<Product> obsOrderProductList = FXCollections.observableArrayList();
+    public ObservableList<Order> obsManageOrderList = FXCollections.observableArrayList();
     public ObservableList<Product> obsBasketProductList = FXCollections.observableArrayList();
 
     @FXML
@@ -200,6 +202,20 @@ public class FXMLDocumentController implements Initializable
     private RadioButton storePayment;
     @FXML
     private RadioButton paypalPayment;
+    @FXML
+    private TableColumn<Order, Integer> orderIdCol;
+    @FXML
+    private TableColumn<Order, String> orderDateCol;
+    @FXML
+    private TableColumn<Order, String> orderCustomerCol;
+    @FXML
+    private TableColumn<Order, Double> orderPriceCol;
+    @FXML
+    private TableColumn<Order, Integer> orderStatusCol;
+    @FXML
+    private Label orderIdLabel;
+    @FXML
+    private TableView<Order> manageOrderTable;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -207,8 +223,11 @@ public class FXMLDocumentController implements Initializable
 
         cbMapGender = new HashMap();
         cbMapCategory = new HashMap();
-       productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+
+        productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+//        productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+//        productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 
         productWindow.setPrefColumns(5);
         productWindow.setVgap(25);
@@ -216,6 +235,9 @@ public class FXMLDocumentController implements Initializable
 
         //Fylder products array op med alle produkter
         products = Webshop.getInstance().createProductsArray();
+
+        //Fylder orders array op med alle ordrer()
+        orders = Webshop.getInstance().createOrdersArray();
 
         //Køn checkboxe puttes i map med deres values
         cbMapGender.put(womanCB, "dame");
@@ -234,6 +256,8 @@ public class FXMLDocumentController implements Initializable
 
         createProductList();
         showProductList();
+        createManageOrderList();
+        showManageOrderList();
 
         //Nedenstående metodekald sørger for at alle produkter bliver vist
         //som default når applikationen starter.
@@ -262,12 +286,9 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleBasketAccept(ActionEvent event)
     {
-        if (Webshop.getInstance().userHasShoppingBasket())
-        {
+        if (Webshop.getInstance().userHasShoppingBasket()) {
             MainTabPane.getSelectionModel().select(4);
-        }
-        else
-        {
+        } else {
             System.out.println("Du har ikke tilføjet nogle produkter til din indkøbskurv");
         }
     }
@@ -281,33 +302,24 @@ public class FXMLDocumentController implements Initializable
         String zip = orderZip.getText();
         String city = orderCity.getText();
         String email = orderEmail.getText();
-        int payment_option = getPaymentOption();
+        String payment_option = getPaymentOption();
 
-        if (!orderEmail.getText().equals(orderEmailCheck.getText()))
-        {
+        if (!orderEmail.getText().equals(orderEmailCheck.getText())) {
             System.out.println("De 2 emails du indtastede matcher ikke hinanden.");
-        }
-
-        else
-        {
+        } else {
             Webshop.getInstance().storeOrder(payment_option, firstName, lastName, email, street, lastName, zip, city);
         }
 
     }
 
-    int getPaymentOption()
+    String getPaymentOption()
     {
-        int payment_option;
-        if (paypalPayment.isSelected())
-        {
+        String payment_option;
+        if (paypalPayment.isSelected()) {
             payment_option = PaymentOptions.PAYPAL;
-        }
-        else if (cardPayment.isSelected())
-        {
+        } else if (cardPayment.isSelected()) {
             payment_option = PaymentOptions.CREDIT_CARD;
-        }
-        else
-        {
+        } else {
             payment_option = PaymentOptions.IN_STORE;
         }
 
@@ -325,8 +337,7 @@ public class FXMLDocumentController implements Initializable
     {
     }
 
-    public class ButtonCell extends TableCell<Record, Boolean>
-    {
+    public class ButtonCell extends TableCell<Record, Boolean> {
 
         final Button cellButton = new Button("Slet");
         public Product productToRemove;
@@ -337,18 +348,50 @@ public class FXMLDocumentController implements Initializable
             cellButton.setStyle("-fx-base: #FF0000; -fx-font-weight: bold");
             cellButton.setMinWidth(70);
             cellButton.setOnAction((ActionEvent t)
-                    -> 
-                    {
-                        Product currentProduct = (Product) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
-                        if(function == REMOVE_PRODUCT)
-                        removeProduct(currentProduct);
-                        else if (function == REMOVE_BASKET_PRODUCT)
-                        removeOrderProduct(currentProduct);    
-                        
+                    -> {
+                Product currentProduct = (Product) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                if (function == REMOVE_PRODUCT) {
+                    removeProduct(currentProduct);
+                } else if (function == REMOVE_BASKET_PRODUCT) {
+                    removeOrderProduct(currentProduct);
+                }
+
             });
         }
 
-        private void removeProduct(Product currentProduct)
+        ButtonCell()
+        {
+
+            cellButton.setStyle("-fx-base: #FF0000; -fx-font-weight: bold");
+            cellButton.setMinWidth(70);
+            cellButton.setOnAction((ActionEvent t)
+                    -> {
+                Product currentProduct = (Product) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+
+                obsProductList.remove(currentProduct);
+                Webshop.getInstance().deleteProduct(currentProduct.getProductId());
+                refreshTable();
+            });
+        }
+
+        //Display button if the row is not empty
+        @Override
+        protected void updateItem(Boolean t, boolean empty)
+        {
+            super.updateItem(t, empty);
+            if (!empty) {
+                setGraphic(cellButton);
+            }
+
+            if (empty) {
+                setGraphic(null);
+            }
+        }
+
+        
+    }
+    
+    private void removeProduct(Product currentProduct)
         {
             obsProductList.remove(currentProduct);
             Webshop.getInstance().deleteProduct(currentProduct.getProductId());
@@ -359,159 +402,160 @@ public class FXMLDocumentController implements Initializable
         {
 
             obsBasketProductList.remove(currentProduct);
-            for (int i=0; i<basketProducts.size();i++)
-            {
-                if (currentProduct == Webshop.getInstance().getShoppingBasketItems().get(i).getProduct())
-                {
+            for (int i = 0; i < basketProducts.size(); i++) {
+                if (currentProduct == Webshop.getInstance().getShoppingBasketItems().get(i).getProduct()) {
                     Webshop.getInstance().removeItem(Webshop.getInstance().getShoppingBasketItems().get(i));
                 }
             }
+
         }
 
-        //Display button if the row is not empty
-        @Override
-        protected void updateItem(Boolean t, boolean empty)
+        @FXML
+        private void handleLogin(MouseEvent event)
         {
-            super.updateItem(t, empty);
-            if (!empty)
-            {
-                setGraphic(cellButton);
+
+            MainTabPane.getSelectionModel().select(2);
+            RegisterPane.setVisible(false);
+
+        }
+
+        @FXML
+        private void handleShowBasket(MouseEvent event)
+        {
+            MainTabPane.getSelectionModel().select(3);
+            //showOrderList();
+            showBasketList();
+        }
+
+        @FXML
+        private void handleLoginUser(ActionEvent event)
+        {
+            String email = LoginEmail.getText();
+            String password = LoginPW.getText();
+
+            Webshop.getInstance().loginUser(email, password);
+
+        }
+
+        @FXML
+        private void handleRegister(ActionEvent event)
+        {
+            String firstName = regFirstName.getText();
+            String lastName = regLastName.getText();
+            String email = regEmail.getText();
+            if (regPW1.getText().equals(regPW2.getText())) {
+                String password = regPW1.getText();
+
+                Webshop.getInstance().registerCustomer(firstName, lastName, email, password);
+            } else {
+
             }
-            if (empty)
-            {
-                setGraphic(null);
+
+            RegisterPane.setVisible(false);
+
+        }
+
+        private void updateProducts()
+        {
+
+            products = Webshop.getInstance().createProductsArray();
+            handleSearch(new ActionEvent());
+
+        }
+
+        public void createProductList()
+        {
+
+            ObservableList<Product> tempProdList = FXCollections.observableArrayList();
+            for (Product prod : products) {
+                tempProdList.add(prod);
+            }
+
+            obsProductList = tempProdList;
+
+        }
+
+        public void createOrderList()
+        {
+
+            ObservableList<Product> tempOrderList = FXCollections.observableArrayList();
+            for (Item item : orderProducts) {
+                tempOrderList.add(item.getProduct());
             }
         }
-    }
 
-    @FXML
-    private void handleLogin(MouseEvent event)
-    {
-
-        MainTabPane.getSelectionModel().select(2);
-        RegisterPane.setVisible(false);
-
-    }
-
-    @FXML
-    private void handleShowBasket(MouseEvent event)
-    {
-        MainTabPane.getSelectionModel().select(3);
-        showBasketList();
-
-    }
-
-    @FXML
-    private void handleLoginUser(ActionEvent event)
-    {
-        String email = LoginEmail.getText();
-        String password = LoginPW.getText();
-
-        Webshop.getInstance().loginUser(email, password);
-
-    }
-
-    @FXML
-    private void handleRegister(ActionEvent event)
-    {
-        String firstName = regFirstName.getText();
-        String lastName = regLastName.getText();
-        String email = regEmail.getText();
-        if (regPW1.getText().equals(regPW2.getText()))
+        public void createBasketList()
         {
-            String password = regPW1.getText();
 
-            Webshop.getInstance().registerCustomer(firstName, lastName, email, password);
-        }
-        else
-        {
+            ObservableList<Product> tempBasketList = FXCollections.observableArrayList();
+            for (Item item : basketProducts) {
+                tempBasketList.add(item.getProduct());
+            }
+
+            obsBasketProductList = tempBasketList;
 
         }
 
-        RegisterPane.setVisible(false);
-
-    }
-
-    private void updateProducts()
-    {
-
-        products = Webshop.getInstance().createProductsArray();
-        handleSearch(new ActionEvent());
-
-    }
-
-    public void createProductList()
-    {
-
-        ObservableList<Product> tempProdList = FXCollections.observableArrayList();
-        for (Product prod : products)
+        public void createManageOrderList()
         {
-            tempProdList.add(prod);
+            ObservableList<Order> tempOrderList = FXCollections.observableArrayList();
+            for (Order order : orders) {
+                tempOrderList.add(order);
+            }
+            obsManageOrderList = tempOrderList;
         }
 
-        obsProductList = tempProdList;
-
-    }
-
-    public void createBasketList()
-    {
-
-        ObservableList<Product> tempBasketList = FXCollections.observableArrayList();
-        for (Item item : basketProducts)
+        private void refreshTable()
         {
-            tempBasketList.add(item.getProduct());
+            updateProducts();
+            createProductList();
+            productTable.getItems().clear();
+            productTable.getItems().addAll(obsProductList);
         }
 
-        obsBasketProductList = tempBasketList;
-
-    }
-
-
-    
-    private void refreshTable()
-    {
-        updateProducts();
-        createProductList();
-        productTable.getItems().clear();
-        productTable.getItems().addAll(obsProductList);
-    }
-
-    private void showProductList()
-    {
-
-        //public  ObservableList<Product> obsProductList = createProductList();
-        //obsProductList
-        //createProductList();
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        typeCol.setCellValueFactory(new PropertyValueFactory<>("category"));
-        genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        priceCol.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
-        btnCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
-        btnCol.setSortable(false);
-        btnCol.setMinWidth(50);
-
-        productTable.setItems(obsProductList);
-
-        btnCol.setCellValueFactory((TableColumn.CellDataFeatures<Record, Boolean> p)
-                -> new SimpleBooleanProperty(p.getValue() != null));
-
-        btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell(REMOVE_PRODUCT));
-
-        productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue)
-                -> 
-                {
-                    //Check whether item is selected and set value of selected item to Label
-                    if (productTable.getSelectionModel().getSelectedItem() != null)
-                    {
-                        productIdLabel.setText(productTable.getSelectionModel().getSelectedItem().getProductId() + "");
-                        editNameField.setText(productTable.getSelectionModel().getSelectedItem().getName());
-                        editCategoryCMB.setValue(productTable.getSelectionModel().getSelectedItem().getCategory());
-                        editGenderCMB.setValue(productTable.getSelectionModel().getSelectedItem().getGender());
-                        editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getPrice() + "");
-                    }
-        });
-        for (Product prod : products)
+        private void showProductList()
         {
+
+            //public  ObservableList<Product> obsProductList = createProductList();
+            //obsProductList
+            //createProductList();
+            nameCol.setCellValueFactory(new PropertyValueFactory<>("productName"));
+            typeCol.setCellValueFactory(new PropertyValueFactory<>("category"));
+            genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+            priceCol.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
+            btnCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+            btnCol.setSortable(false);
+            btnCol.setMinWidth(50);
+            productTable.setItems(obsProductList);
+
+            btnCol.setCellValueFactory((TableColumn.CellDataFeatures<Record, Boolean> p)
+                    -> new SimpleBooleanProperty(p.getValue() != null));
+
+            btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell());
+
+            productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+                //Check whether item is selected and set value of selected item to Label
+                if (productTable.getSelectionModel().getSelectedItem() != null) {
+                    productIdLabel.setText(productTable.getSelectionModel().getSelectedItem().getProductId() + "");
+                    editNameField.setText(productTable.getSelectionModel().getSelectedItem().getName());
+                    editCategoryCMB.setValue(productTable.getSelectionModel().getSelectedItem().getCategory());
+                    editGenderCMB.setValue(productTable.getSelectionModel().getSelectedItem().getGender());
+                    editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getPrice() + "");
+                }
+                btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell(REMOVE_PRODUCT));
+
+            });
+        }
+
+    private void showManageOrderList()
+    {
+        orderIdCol.setCellValueFactory(new PropertyValueFactory<>("order_id"));
+        orderDateCol.setCellValueFactory(new PropertyValueFactory<>("order_date"));
+        orderCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        orderPriceCol.setCellValueFactory(new PropertyValueFactory<>("finalPrice"));
+        orderStatusCol.setCellValueFactory(new PropertyValueFactory<>("Status"));
+        manageOrderTable.setItems(obsManageOrderList);
+        for (Product prod : products) {
 
 //            GridPane productGrid = new GridPane();
 //            
@@ -586,20 +630,16 @@ public class FXMLDocumentController implements Initializable
 
         //For loop som tjekker om køn checkboxes er checked.
         //Hvis checkboxe er checked indsættes keysettenes values i en string separeret med ";"
-        for (CheckBox cb : cbMapGender.keySet())
-        {
-            if (cb.isSelected())
-            {
+        for (CheckBox cb : cbMapGender.keySet()) {
+            if (cb.isSelected()) {
                 genderString += cbMapGender.get(cb) + ";";
             }
         }
 
         //For loop som tjekker om kategori checkboxes er checked
         //Hvis checkboxe er checked indsættes keysettenes values i en string separeret med ";"
-        for (CheckBox cb : cbMapCategory.keySet())
-        {
-            if (cb.isSelected())
-            {
+        for (CheckBox cb : cbMapCategory.keySet()) {
+            if (cb.isSelected()) {
                 categoryString += cbMapCategory.get(cb) + ";";
             }
         }
@@ -608,27 +648,21 @@ public class FXMLDocumentController implements Initializable
         String[] genderStrings = genderString.split(";");
         String[] categoryStrings = categoryString.split(";");
 
-        if (genderString.isEmpty() != true && categoryString.isEmpty() != true)
-        { //Bliver kaldt hvis der både er valgt køn og kategori
-            for (int i = 0; i < products.size(); i++)
-            {
+        if (genderString.isEmpty() != true && categoryString.isEmpty() != true) { //Bliver kaldt hvis der både er valgt køn og kategori
+            for (int i = 0; i < products.size(); i++) {
                 Boolean genderMatch = false;
                 Boolean categoryMatch = false;
                 Webshop.getInstance().displayProduct((Product) products.get(i));
 
-                for (int k = 0; k < genderStrings.length; k++)
-                { //looper igennem genderStrings array og tjekker om valgte køn matcher produkters
+                for (int k = 0; k < genderStrings.length; k++) { //looper igennem genderStrings array og tjekker om valgte køn matcher produkters
 
-                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k]))
-                    {
+                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k])) {
                         genderMatch = true;
                     }
 
-                    for (int j = 0; j < categoryStrings.length; j++)
-                    { //looper igennem categoryStrings array og tjekker om valgte kategorier matcher produkters
+                    for (int j = 0; j < categoryStrings.length; j++) { //looper igennem categoryStrings array og tjekker om valgte kategorier matcher produkters
 
-                        if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[j]))
-                        {
+                        if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[j])) {
                             categoryMatch = true;
                         }
 
@@ -636,8 +670,7 @@ public class FXMLDocumentController implements Initializable
 
                 }
 
-                if (genderMatch && categoryMatch)
-                { //Bliver kaldt hvis både valgte køn og kategorier matcher samme produkt
+                if (genderMatch && categoryMatch) { //Bliver kaldt hvis både valgte køn og kategorier matcher samme produkt
                     productsToReturn.add(Webshop.getInstance().getProduct()); //Produktet bliver tilføjet til ArrayList
                 }
 
@@ -645,41 +678,28 @@ public class FXMLDocumentController implements Initializable
                 categoryMatch = false;
             }
 
-        }
-        else if (genderString.isEmpty() != true)
-        { //Bliver kaldt hvis der kun er valgt køn
-            for (int i = 0; i < products.size(); i++)
-            {
+        } else if (genderString.isEmpty() != true) { //Bliver kaldt hvis der kun er valgt køn
+            for (int i = 0; i < products.size(); i++) {
                 Webshop.getInstance().displayProduct((Product) products.get(i));
 
-                for (int k = 0; k < genderStrings.length; k++)
-                {
-                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k]))
-                    {
+                for (int k = 0; k < genderStrings.length; k++) {
+                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k])) {
                         productsToReturn.add(Webshop.getInstance().getProduct());
                     }
                 }
 
             }
-        }
-        else if (categoryString.isEmpty() != true)
-        { //Bliver kaldt hvis der kun er kategori
-            for (int i = 0; i < products.size(); i++)
-            {
+        } else if (categoryString.isEmpty() != true) { //Bliver kaldt hvis der kun er kategori
+            for (int i = 0; i < products.size(); i++) {
                 Webshop.getInstance().displayProduct((Product) products.get(i));
-                for (int k = 0; k < categoryStrings.length; k++)
-                {
-                    if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[k]))
-                    {
+                for (int k = 0; k < categoryStrings.length; k++) {
+                    if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[k])) {
                         productsToReturn.add(Webshop.getInstance().getProduct());
                     }
                 }
             }
-        }
-        else
-        { //Bliver kaldt hvis intet er valgt, og returnerer alle produkter uden filter
-            for (int i = 0; i < products.size(); i++)
-            {
+        } else { //Bliver kaldt hvis intet er valgt, og returnerer alle produkter uden filter
+            for (int i = 0; i < products.size(); i++) {
                 Webshop.getInstance().displayProduct((Product) products.get(i));
                 productsToReturn.add(Webshop.getInstance().getProduct());
 
@@ -699,8 +719,7 @@ public class FXMLDocumentController implements Initializable
         int colCount = 0;
         int rowsInThumb = 0;
 
-        for (Product prod : productsToReturn)
-        { //Looper igennem de filtrerede produkter
+        for (Product prod : productsToReturn) { //Looper igennem de filtrerede produkter
 
             //GUI elementer instantieres for produkt
             Label priceLabel = new Label(prod.getPrice() + " KR");
@@ -713,8 +732,7 @@ public class FXMLDocumentController implements Initializable
             productWindow.setPadding(new Insets(30, 0, 0, 30));
             colCount++;
 
-            productThumbnail.setOnMouseEntered(new EventHandler<MouseEvent>()
-            {
+            productThumbnail.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event)
                 {
@@ -725,24 +743,25 @@ public class FXMLDocumentController implements Initializable
             });
 
             productThumbnail.setOnMouseClicked((MouseEvent event1)
-                    -> 
-                    {
-                        MainTabPane.getSelectionModel().select(1);
-                        productPhoto.setImage(prod.getImage());
-                        priceTag.setText(prod.getPrice() + " KR");
-                        nameTag.setText(prod.getName());
+                    -> {
+
+                MainTabPane.getSelectionModel().select(1);
+                productPhoto.setImage(prod.getImage());
+                priceTag.setText(prod.getPrice() + " KR");
+                nameTag.setText(prod.getName());
+
             });
 
             productThumbnail.setOnMouseExited((MouseEvent event1)
-                    -> 
-                    {
-                        productThumbnail.setOpacity(1);
-                        productThumbnail.setCursor(Cursor.DEFAULT);
+                    -> {
+                productThumbnail.setOpacity(1);
+                productThumbnail.setCursor(Cursor.DEFAULT);
             });
+            
             productThumbnail.setMaxSize(220, 245);
             productThumbnail.setMinSize(220, 245);
             productThumbnail.setAlignment(Pos.BOTTOM_CENTER);
-            productThumbnail.setStyle("-fx-background-color: #FFFFFF");
+            productThumbnail.getStyleClass().add("product-thumbnail");
             productThumbnail.setPrefSize(220, 245);
 
             //Produktbillede modificeres og indsættes i GUI
@@ -769,14 +788,16 @@ public class FXMLDocumentController implements Initializable
 
             //Køb knap modificieres og indsættes i GUI
             productThumbnail.add(buyButton, colCount, rowsInThumb);
-            buyButton.setStyle("-fx-base: #52cc14; -fx-font-weight: bold");
+            buyButton.getStyleClass().add("buy-button");
+            //buyButton.setStyle("-fx-base: #52cc14; -fx-font-weight: bold");
             buyButton.setMinSize(220, 45);
             buyButton.setAlignment(Pos.CENTER);
             buyButton.setOnAction((ActionEvent event1)
-                    -> 
-                    {
-                        Webshop.getInstance().addItem(prod, 1, "Small");
+                    -> {
+                Webshop.getInstance().addItem(prod, 1, "Small");
+                
             });
+
 
         }
 
@@ -796,8 +817,7 @@ public class FXMLDocumentController implements Initializable
         String gender = genderCMB.getValue().toString();
         Double price = parseDouble(setPriceField.getText());
 
-        if (name != null && category != null && gender != null)
-        {
+        if (name != null && category != null && gender != null) {
             Webshop.getInstance().createProduct(name, category, gender, price);
             setNameField.clear();
             setPriceField.clear();
@@ -813,6 +833,40 @@ public class FXMLDocumentController implements Initializable
     {
         MainTabPane.getSelectionModel().select(0);
     }
+//
+//    public void showOrderList()
+//    {
+//        orderProducts = Webshop.getInstance().getShoppingBasketItems();
+//        createOrderList();
+//
+//        orderPic.setCellValueFactory(new PropertyValueFactory<>("productpic"));
+//        orderName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+//        orderStr.setCellValueFactory(new PropertyValueFactory<>("productsize"));
+//        orderColor.setCellValueFactory(new PropertyValueFactory<>("productcolor"));
+//        orderAmount.setCellValueFactory(new PropertyValueFactory<>("itemAmount"));
+//        orderPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
+//        orderBtn.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+//        btnCol.setSortable(false);
+//        btnCol.setMinWidth(35);
+//        System.out.println(obsOrderProductList);
+//        orderTable.setItems(obsOrderProductList);
+//
+//        btnCol.setCellValueFactory((TableColumn.CellDataFeatures<Record, Boolean> p)
+//                -> new SimpleBooleanProperty(p.getValue() != null));
+//
+//        btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell());
+//
+//        productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+//            //Check whether item is selected and set value of selected item to Label
+//            if (productTable.getSelectionModel().getSelectedItem() != null) {
+//                productIdLabel.setText(productTable.getSelectionModel().getSelectedItem().getProductId() + "");
+//                editNameField.setText(productTable.getSelectionModel().getSelectedItem().getName());
+//                editCategoryCMB.setValue(productTable.getSelectionModel().getSelectedItem().getCategory());
+//                editGenderCMB.setValue(productTable.getSelectionModel().getSelectedItem().getGender());
+//                editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getPrice() + "");
+//            }
+//        });
+//    }
 
     public void showBasketList()
     {
