@@ -282,6 +282,27 @@
                         </AnchorPane>
                     </content>
                 </Tab>
+            <Tab text="Manage orders">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="manageOrderTable" layoutX="110.0" layoutY="96.0" prefHeight="555.0" prefWidth="646.0">
+                          <columns>
+                            <TableColumn fx:id="orderIdCol" prefWidth="75.0" text="ID" />
+                            <TableColumn fx:id="orderDateCol" prefWidth="134.20419311523438" text="Dato" />
+                              <TableColumn fx:id="orderCustomerCol" prefWidth="193.61257934570312" text="Kunde" />
+                              <TableColumn fx:id="orderPriceCol" prefWidth="110.8341064453125" text="Pris" />
+                              <TableColumn fx:id="orderStatusCol" prefWidth="129.7841796875" text="Status" />
+                          </columns>
+                        </TableView>
+                        <Label fx:id="orderIdLabel" layoutX="1084.0" layoutY="86.0" text="Order ID" />
+                        <Button layoutX="887.0" layoutY="209.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" text="Shipped" />
+                        <Button layoutX="1097.0" layoutY="204.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" text="Afhentet" />
+                        <Button layoutX="1293.0" layoutY="202.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" text="Anulleret" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
             </tabs>
         </TabPane>
     </children>

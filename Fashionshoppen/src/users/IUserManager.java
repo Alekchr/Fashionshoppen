@@ -33,7 +33,7 @@ public interface IUserManager
 
     List<Item> getShoppingBasketItems();
     
-    void storeOrder(int payment_option, String firstName, String lastName, String email, String streetName, 
+    void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName, 
             String houseNumber, String zipCode, String shippingCity);
 
 }

@@ -14,8 +14,8 @@ public class ServerRequest
 {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
-    String user = "aleksander";
-    String password = "a123456LA";
+    String user = "postgres";
+    String password = "Snuden123";
     Connection con = null;
     ResultSet rs;
     Statement st;
@@ -248,6 +248,47 @@ public class ServerRequest
         return rs;
     }
 
+    public void editOrderStatus(int orderId, String status){
+        query = "UPDATE orders SET status = '" + status + "' WHERE order_id = '" + orderId + "';";
+        runQuery(query);
+    }
+    
+    public ResultSet getOrders(){
+        query = "SELECT * FROM orders";
+        try{
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
+    
+    public ResultSet getCustomerNameFromId(int userId){
+        query = "SELECT firstname, lastname FROM users WHERE user_id = '" + userId + "';";
+        try{
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        
+        return rs;
+    }
+    
+    public ResultSet selectAddressFromId(int userId){
+        query = "SELECT * FROM address WHERE user_id = '" + userId + "';";
+        try{
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return rs;
+    }
+    
     public void storeOrder(Order order, int customer_id)
     {
         query = "INSERT INTO orders (order_date, price, shippingcharge, finalprice, paymentOption, customer_id)"

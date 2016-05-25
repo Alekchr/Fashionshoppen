@@ -180,7 +180,7 @@ public class UserManager implements IUserManager
     }
     
     @Override
-    public void storeOrder(int payment_option, String firstName, String lastName, String email, String streetName, 
+    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName, 
             String houseNumber, String zipcode, String shippingCity) //Address skal have autoudfyld.
     {
         StringBuilder sb = new StringBuilder();
