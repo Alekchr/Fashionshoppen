@@ -1,4 +1,4 @@
-package Domain;
+package products;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

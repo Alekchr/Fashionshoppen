@@ -71,9 +71,6 @@ public class Product
         return gender;
     }
     
-    public Double getPrice(){
-        return productPrice;
-    }
 
     public int getProductId()
     {
@@ -88,11 +85,6 @@ public class Product
     public String getProductName()
     {
         return productName;
-    }
-
-    public void setProductName(String productName)
-    {
-        this.productName = productName;
     }
 
     public double getProductPrice()

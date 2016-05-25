@@ -137,10 +137,6 @@ public class UserManager implements IUserManager
         return onlineUser.getShoppingBasketItems();
     }
 
-    public Order getShoppingBasket()
-    {
-        return onlineUser.findShoppingBasket();
-    }
 
     @Override
     public void addItem(Product product, int quantity, String size)
@@ -185,7 +181,7 @@ public class UserManager implements IUserManager
             String houseNumber, String zipcode, String shippingCity) //Address skal have autoudfyld.
     {
         StringBuilder sb = new StringBuilder();
-        sb.append(onlineUser.getShoppingBasketItems().toString().split(";"));
+        sb.append(onlineUser.findShoppingBasket().toString().split(";"));
         onlineUser.findShoppingBasket().setPayment_option(payment_option);
         onlineUser.setFirstName(firstName); onlineUser.setLastName(lastName); onlineUser.setEmail(email);
         onlineUser.setAddress(new Address(onlineUser.getUser_id(), streetName, houseNumber, zipcode, shippingCity));
