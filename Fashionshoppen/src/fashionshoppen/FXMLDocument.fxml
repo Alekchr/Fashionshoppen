@@ -29,13 +29,13 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="1820.0" style="-fx-background-color: WHITE;">
                             <children>
-                                <Label fx:id="LblLogin" layoutX="1406.0" layoutY="51.0" onMouseClicked="#handleLogin" text="Login" />
+                                <Label fx:id="LblLogin" layoutX="1406.0" layoutY="51.0" onMouseClicked="#handleLogin" text="Login" AnchorPane.topAnchor="51.0" />
                                 <Label layoutX="1463.0" layoutY="51.0" onMouseClicked="#handleShowBasket" text="Indkøbskurv" /> 
                                 <TextField fx:id="TFsearch" layoutX="289.0" layoutY="48.0" prefHeight="29.0" prefWidth="223.0" promptText="Søg efter produkt" />
-                                <Button fx:id="searchBtn" layoutX="538.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleSearch" text="Søg" />
+                                <Button fx:id="searchBtn" layoutX="538.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleButtonSearch" text="Søg" />
                                 <CheckBox fx:id="womanCB" layoutX="43.0" layoutY="192.0" mnemonicParsing="false" text="Kvinde" />
                                 <CheckBox fx:id="unisexCB" layoutX="199.0" layoutY="192.0" mnemonicParsing="false" text="Unisex" />
-                                <CheckBox fx:id="manCB" layoutX="123.0" layoutY="192.0" mnemonicParsing="false" text="Herre" />
+                                <CheckBox fx:id="manCB" layoutX="123.0" layoutY="192.0" mnemonicParsing="false" text="Herre" AnchorPane.leftAnchor="123.0" />
                                 <CheckBox layoutX="43.0" layoutY="305.0" mnemonicParsing="false" text="Nyheder" />
                                 <CheckBox fx:id="jacketsCB" layoutX="43.0" layoutY="343.0" mnemonicParsing="false" text="Jakker og frakker" />
                                 <CheckBox fx:id="tshirtCB" layoutX="43.0" layoutY="380.0" mnemonicParsing="false" text="T-shirts" />
@@ -124,6 +124,12 @@
                                         <TextField fx:id="regPW1" layoutX="235.0" layoutY="211.0" promptText="Password" />
                                         <TextField fx:id="regPW2" layoutX="235.0" layoutY="256.0" promptText="Bekræft Password" />
                                         <Button fx:id="BTNRegister" layoutX="269.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleRegister" text="Opret bruger" />
+                              <Label fx:id="deniedEmailLabel" layoutX="415.0" layoutY="171.0" text="E-mailen er ikke gyldig" textFill="RED" />
+                              <Label fx:id="deniedAllFieldsLabel" layoutX="402.0" layoutY="303.0" text="Du har ikke udfyldt alle felter" textFill="RED" />
+                              <Label fx:id="deniedPassMatchLabel" layoutX="420.0" layoutY="261.0" text="Kode matcher ikke" textFill="RED" />
+                              <Label fx:id="deniedPassLabel" layoutX="420.0" layoutY="216.0" text="Koden skal indeholde min. 8 tegn" textFill="RED" />
+                              <Label fx:id="deniedFirstNameLabel" layoutX="420.0" layoutY="75.0" text="Fornavn skal udfyldes" textFill="RED" />
+                              <Label fx:id="deniedLastNameLabel" layoutX="420.0" layoutY="123.0" text="Efternavn skal udfyldes" textFill="RED" />
                               
                                     </children>
                                 </Pane>
@@ -145,7 +151,7 @@
                                     <columns>
                                         <TableColumn fx:id="basketPic" prefWidth="149.0" text="Produkt billede" />
                                         <TableColumn fx:id="basketName" minWidth="0.0" prefWidth="349.0" text="Produkt navn" />
-                                        <TableColumn fx:id="basketStr" prefWidth="82.0" text="Størrelse." />
+                                        <TableColumn fx:id="basketSize" prefWidth="82.0" text="Størrelse" />
                                         <TableColumn fx:id="basketAmount" minWidth="0.0" prefWidth="65.0" text="Antal" />
                                         <TableColumn fx:id="basketPrice" prefWidth="157.0" text="Pris" />
                                         <TableColumn fx:id="basketBtn" minWidth="0.0" prefWidth="72.0" text="Fjern" />

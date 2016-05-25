@@ -19,15 +19,15 @@ public class Order
     private double shippingCharge;
     private double finalPrice;
     private String payment_option;
-    private String Status;
+    private String status;
     private ArrayList<Item> items;
 
-    public Order(int customer_id, Address shippingAddress, String Status)
+    public Order(int customer_id, Address shippingAddress, String status)
     {
         this.customer_id = customer_id;
         this.shippingAddress = shippingAddress;
         this.items = new ArrayList();
-        
+        this.status = status;
         order_date = new Date().toString();
     }
 
@@ -136,15 +136,16 @@ public class Order
         this.order_date = order_date;
     }
 
-    public String getStatus()
+    public void setStatus(String status)
     {
-        return Status;
+        this.status = status;
     }
 
-    public void setStatus(String Status)
+    public String getStatus()
     {
-        this.Status = Status;
+        return status;
     }
+
 
     public ArrayList<Item> getItems()
     {
@@ -166,11 +167,6 @@ public class Order
         }
     }
 
- 
-    public void addItem()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
         
     public void removeItem(Item item) {
         items.remove(item);

@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.security.MessageDigest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.List;
 
 import services.*;
+import users.IUserManager;
 import users.UserManager;
 
 public final class Webshop {
@@ -27,7 +27,7 @@ public final class Webshop {
     private static Webshop instance = null;
     ProductCatalog catalog;
     Product product;
-    UserManager um;
+    IUserManager um;
     ServicesFacade sf;
     MessageDigest md;
     private int orderID;
@@ -168,7 +168,7 @@ public final class Webshop {
 
     public void loginUser(String email, String password)
     {
-        um.checkUserType(email, password);
+        um.loginUser(email, password);
     }
 
     public void displayProduct(Product product)
@@ -176,10 +176,7 @@ public final class Webshop {
         this.product = product;
     }
 
-    public void createProduct(Product product)
-    {
 
-    }
 
     public Product getProduct()
     {
@@ -192,10 +189,7 @@ public final class Webshop {
             um.createGuestUser();
 
         }
-        if (!um.userHasBasket()) {
-            //um.createOrder(orderID++);
-        }
-        
+   
         if (!um.userHasBasket())
         {
             um.createBasket(orderID++);

@@ -46,28 +46,17 @@ public class ServerRequest
 
     public void browseCategory(String query, String name)
     {
-        try
-        {
-            String finalQuery;
-            if (name.isEmpty())
-            {
-                finalQuery = query;
-            }
-            else
-            {
-                finalQuery = query + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
-            }
-            rs = runRSQuery(finalQuery);
 
-            while (rs.next())
-            {
-                System.out.println(rs.getString(2) + rs.getString(3) + rs.getDouble(5));
-            }
-        }
-        catch (SQLException ex)
+        String finalQuery;
+        if (name.isEmpty())
         {
-            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, ex);
+            finalQuery = query;
         }
+        else
+        {
+            finalQuery = query + "' AND LOWER(product_name) LIKE LOWER('%" + name + "%')";
+        }
+        rs = runRSQuery(finalQuery);
 
     }
 
@@ -75,20 +64,6 @@ public class ServerRequest
     {
         query = "SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER('%" + name + "%')";
         runRSQuery(query);
-        try
-        {
-
-            while (rs.next())
-            {
-                System.out.println(rs.getString(2) + rs.getString(3) + rs.getDouble(5));
-            }
-
-        }
-        catch (SQLException e)
-        {
-            Logger.getLogger(ServerRequest.class.getName()).log(Level.SEVERE, null, e);
-        }
-
         return rs;
     }
 
@@ -189,7 +164,7 @@ public class ServerRequest
             rs = st.executeQuery(query);
             if (rs == null)
             {
-                query = "SELECT * FROM users WHERE user_id = '" + user_id + "'";
+                query = "SELECT * FROM customer WHERE user_id = '" + user_id + "'";
                 rs = st.executeQuery(query);
             }
         }

@@ -3,9 +3,11 @@ package services;
 
 public interface OrderStatus {
     
-    String SHOPPING_BASKET = "SHIPPED";
-    String NOT_CONFIRMED = "NOT CONFIRMED";
-    String SHIPPED = "SHIPPED";
-    String RECEIVED = "RECEIVED";
+    String SHOPPING_BASKET = "IKKE GENNEMFØRT";
+    String NOT_CONFIRMED = "GENNEMFØRT";
+    String SHIPPED_TO_CUSTOMER = "SENDT TIL KUNDE";
+    String SHIPPED_TO_STORE = "SENDT TIL BUTIK";
+    String RECEIVED = "MODTAGET I BUTIK";
     
 }
+    
