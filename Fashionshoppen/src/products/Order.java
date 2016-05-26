@@ -21,6 +21,7 @@ public class Order
     private String payment_option;
     private String status;
     private ArrayList<Item> items;
+    private int totalPrice;
 
     public Order(int customer_id, Address shippingAddress, String status)
     {
@@ -157,7 +158,14 @@ public class Order
         this.items = items;
     }
 
-    
+    public double getTotalPrice(){
+        
+        for(Item item: getItems())
+        {
+            
+        }
+        return totalPrice;
+    }
     
     public void changeAmount(Item item, int amount) {
         for(Item i : items) {

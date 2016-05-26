@@ -16,7 +16,7 @@ public class UserManager implements IUserManager
 
     private User onlineUser;
     private MessageDigest md;
-    
+    private ServicesFacade sf = new ServicesFacade();
     
 
     public UserManager()
@@ -137,10 +137,6 @@ public class UserManager implements IUserManager
         return onlineUser.getShoppingBasketItems();
     }
 
-    public Order getShoppingBasket()
-    {
-        return onlineUser.findShoppingBasket();
-    }
 
     @Override
     public void addItem(Product product, int quantity, String size)
@@ -191,6 +187,7 @@ public class UserManager implements IUserManager
         onlineUser.setAddress(new Address(onlineUser.getUser_id(), streetName, houseNumber, zipcode, shippingCity));
         onlineUser.findShoppingBasket().setShippingAddress(onlineUser.getAddress());
         onlineUser.findShoppingBasket().setStatus(OrderStatus.NOT_CONFIRMED);
+        sf.storeOrder(onlineUser.findShoppingBasket(), onlineUser.getUser_id());
         
     }
 

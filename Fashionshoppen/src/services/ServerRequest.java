@@ -291,7 +291,7 @@ public class ServerRequest
     
     public void storeOrder(Order order, int customer_id)
     {
-        query = "INSERT INTO orders (order_date, price, shippingcharge, finalprice, paymentOption, customer_id)"
+        query = "INSERT INTO orders (order_date, price, shippingcharge, finalprice, paymentoption, user_id)"
                 + "VALUES ( '" + order.getOrder_date() + "', '" + order.getPrice() + "', '" + order.getShippingCharge()
                 + "', '" + order.getFinalPrice() + "', '" + order.getPayment_option() + "', '" + customer_id + "')";
         order.getOrder_date();
