@@ -18,7 +18,7 @@ public abstract class User
     private String password;
     int accesslvl;
     protected Address address;
-    ServicesFacade sf = new ServicesFacade();
+    IServerRequest sf = new IServerRequest();
     protected int access;
 
     protected Map<Integer, Order> orders;
@@ -96,6 +96,7 @@ public abstract class User
         orders.put(orderID, new Order(orderID, address, OrderStatus.SHOPPING_BASKET));
     }
 
+    
     public Order findShoppingBasket()
     {
         for (Order order : orders.values())
@@ -115,9 +116,9 @@ public abstract class User
     }
 
 
-    public void addItem(Product product, int quantity, String size)
+    public void addItem(Product product, int amount, String size)
     {
-        findShoppingBasket().addItem(product, quantity, size);
+        findShoppingBasket().addItem(product, amount, size);
     }
 
     public void changeAmount(Item item, int amount)
@@ -156,7 +157,12 @@ public abstract class User
         this.access = access;
     }
     
+    public void saveGuestCustomer(String firstName, String lastName, String email, String streetName, 
+            String houseNumber, String zipcode, String shippingCity)
+    {
+    Customer customer = new Customer(firstName, lastName, email, streetName);
+    sf.saveGuestCustomer(firstName, lastName, email, streetName, houseNumber, zipcode, shippingCity);
     
-    
+    }
 
 }

@@ -90,8 +90,7 @@ public class ServerRequest
 
         runQuery(query);
 
-        query = "INSERT INTO customer (user_id, phone) VALUES ('" + findUserID(email) + "',"
-                + " ' ' )";
+        query = "INSERT INTO customer (user_id) VALUES ('" + findUserID(email) + "')";
 
         runQuery(query);
 
@@ -101,6 +100,22 @@ public class ServerRequest
 
     }
 
+    public void saveGuestCustomer(String firstName, String lastName, String email, String streetName, 
+            String houseNumber, String zipcode, String shippingCity){
+        query = "INSERT INTO users (firstname, lastname, email) VALUES (" + "'"
+                + firstName + "', " + "'" + lastName + "', " + "'" + email + "')"; 
+        runQuery(query);
+        
+        query = "INSERT INTO customer (user_id) VALUES ('" + findUserID(email) + "')";
+
+        runQuery(query);
+        
+        query = "INSERT INTO address (user_id, streetname, housenumber, zipcode, city) VALUES ('"
+                + findUserID(email) + "', '" + streetName + "', '" + houseNumber + "', '" + zipcode + "', '" + shippingCity + "')";
+        
+        runQuery(query);
+    }
+    
     public ResultSet findCustomerAddress(String email)
     {     //Returnerer et resultset, som bruges til at oprette en instans
         //af addresse til den bruger der har logget ind.
@@ -289,12 +304,12 @@ public class ServerRequest
         return rs;
     }
     
-    public void storeOrder(Order order, int customer_id)
+    public void storeOrder(Order order, int user_id)
     {
-        query = "INSERT INTO orders (order_date, price, shippingcharge, finalprice, paymentOption, customer_id)"
+        query = "INSERT INTO orders (order_date, price, shippingcharge, finalprice, paymentOption, user_id, status)"
                 + "VALUES ( '" + order.getOrder_date() + "', '" + order.getPrice() + "', '" + order.getShippingCharge()
-                + "', '" + order.getFinalPrice() + "', '" + order.getPayment_option() + "', '" + customer_id + "')";
-        order.getOrder_date();
+                + "', '" + order.getFinalPrice() + "', '" + order.getPayment_option() + "', '" + user_id + "', '" + "CONFIRMED" + "');";
+        runQuery(query);
 
     }
 

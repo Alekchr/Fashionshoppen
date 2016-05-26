@@ -139,9 +139,9 @@ public class UserManager implements IUserManager
 
 
     @Override
-    public void addItem(Product product, int quantity, String size)
+    public void addItem(Product product, int amount, String size)
     {
-        onlineUser.addItem(product, quantity, size);
+        onlineUser.addItem(product, amount, size);
     }
 
     @Override
@@ -181,13 +181,27 @@ public class UserManager implements IUserManager
             String houseNumber, String zipcode, String shippingCity) //Address skal have autoudfyld.
     {
         StringBuilder sb = new StringBuilder();
-        sb.append(onlineUser.findShoppingBasket().toString().split(";"));
+        for(Item item:onlineUser.getShoppingBasketItems()){
+        onlineUser.findShoppingBasket().setTotalPrice(item.getItemPrice());
+        sb.append(item.getProduct().getProductId());
+        sb.append(item.getAmount());
+        }
+         
         onlineUser.findShoppingBasket().setPayment_option(payment_option);
+        onlineUser.saveGuestCustomer(firstName, lastName, email, streetName, 
+            houseNumber, zipcode, shippingCity);
         onlineUser.setFirstName(firstName); onlineUser.setLastName(lastName); onlineUser.setEmail(email);
+        onlineUser.setUser_id(onlineUser.sf.findUserID(email));
         onlineUser.setAddress(new Address(onlineUser.getUser_id(), streetName, houseNumber, zipcode, shippingCity));
         onlineUser.findShoppingBasket().setShippingAddress(onlineUser.getAddress());
-        onlineUser.findShoppingBasket().setStatus(OrderStatus.NOT_CONFIRMED);
         
+       
+        double orderPrice = onlineUser.findShoppingBasket().getPrice();
+        onlineUser.findShoppingBasket().updateFinalPrice(orderPrice,onlineUser.findShoppingBasket().getShippingCharge());       
+        System.out.println("" + onlineUser.getUser_id());
+        System.out.println("" + onlineUser.findShoppingBasket().getOrder_date());
+        onlineUser.sf.storeOrder(onlineUser.findShoppingBasket(), onlineUser.getUser_id());
+        onlineUser.findShoppingBasket().setStatus(OrderStatus.CONFIRMED);
     }
 
 }

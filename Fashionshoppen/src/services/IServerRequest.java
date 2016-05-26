@@ -9,22 +9,22 @@ import products.Order;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class ServicesFacade {
+public final class IServerRequest {
 
-    private static ServicesFacade instance = null;
+    private static IServerRequest instance = null;
     public ServerRequest sr;
     
 
-    public ServicesFacade()
+    public IServerRequest()
     {
         sr = new ServerRequest();
     }
 
-    public static ServicesFacade getInstance()
+    public static IServerRequest getInstance()
     {
 
         if (instance == null) {
-            instance = new ServicesFacade();
+            instance = new IServerRequest();
         }
 
         return instance;
@@ -122,6 +122,18 @@ public final class ServicesFacade {
     public ResultSet selectAddressFromId(int userId){
         ResultSet rs = sr.selectAddressFromId(userId);
         return rs;
+    }
+    
+    public int findUserID(String email) 
+    {
+    return sr.findUserID(email);
+    }
+    
+    
+    public void saveGuestCustomer(String firstName, String lastName, String email, String streetName, 
+            String houseNumber, String zipcode, String shippingCity){
+    sr.saveGuestCustomer(firstName, lastName, email, streetName, 
+            houseNumber, zipcode, shippingCity);
     }
         
     

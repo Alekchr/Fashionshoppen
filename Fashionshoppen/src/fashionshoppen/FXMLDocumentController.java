@@ -872,6 +872,7 @@ public class FXMLDocumentController implements Initializable
                                 Webshop.getInstance().getShoppingBasketItems().get(i).setAmount(e.getNewValue());
                                 Webshop.getInstance().getShoppingBasketItems().get(i).updateItemPrice();
                                 updateBasketList();
+                                
                             }
                         }
                     }

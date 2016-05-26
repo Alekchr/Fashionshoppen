@@ -1,4 +1,3 @@
-
 package products;
 
 import users.Address;
@@ -6,22 +5,19 @@ import users.Address;
 import java.util.Date;
 import java.util.ArrayList;
 
-
 public class Order
 {
 
     private int customer_id;
     private int order_id;
-    private String customerName;
     private String order_date;
-    private double price;
+    public double price;
     private Address shippingAddress;
     private double shippingCharge;
     private double finalPrice;
     private String payment_option;
     private String status;
     private ArrayList<Item> items;
-    private int totalPrice;
 
     public Order(int customer_id, Address shippingAddress, String status)
     {
@@ -29,26 +25,26 @@ public class Order
         this.shippingAddress = shippingAddress;
         this.items = new ArrayList();
         this.status = status;
-        order_date = new Date().toString();
+        this.order_date = new Date().toString();
+        
     }
 
-    public void setCustomerName(String name){
-        this.customerName = name;
-    }
-    
-    public String getCustomerName(){
-        return customerName;
+    public void setCustomerId(int customer_id)
+    {
+        this.customer_id = customer_id;
     }
 
-    
-    public void addItem(Product product, int quantity, String size) {
-        items.add(new Item(product, quantity, size));
+    public int getCustomer_id()
+    {
+        return customer_id;
     }
-    
-    public void totalPrice(){
-    
-    
+
+    public void addItem(Product product, int amount, String size)
+    {
+        items.add(new Item(product, amount, size));
     }
+
+
 
     public void finishOrder(Order order)
     {
@@ -67,7 +63,7 @@ public class Order
 
     public String getOrder_date()
     {
-        return order_date;
+        return this.order_date;
     }
 
     public void setOrder_date(Date order_date)
@@ -95,11 +91,9 @@ public class Order
         this.shippingAddress = shippingAddress;
     }
 
-
-
     public double getShippingCharge()
     {
-        return shippingCharge;
+        return this.shippingCharge;
     }
 
     public void setShippingCharge(double shippingCharge)
@@ -117,6 +111,11 @@ public class Order
         this.finalPrice = finalPrice;
     }
 
+        public void updateFinalPrice(double totalPrice, double shippingCharge)
+    {
+        setFinalPrice(totalPrice + shippingCharge);
+    }
+        
     public String getPayment_option()
     {
         return payment_option;
@@ -147,7 +146,6 @@ public class Order
         return status;
     }
 
-
     public ArrayList<Item> getItems()
     {
         return items;
@@ -158,25 +156,26 @@ public class Order
         this.items = items;
     }
 
-    public double getTotalPrice(){
-        
-        for(Item item: getItems())
-        {
-            
-        }
-        return totalPrice;
+    public void setTotalPrice(double itemPrice)
+    {
+       this.price += itemPrice;
+       
     }
-    
-    public void changeAmount(Item item, int amount) {
-        for(Item i : items) {
-            if (item.equals(i)) {
+
+    public void changeAmount(Item item, int amount)
+    {
+        for (Item i : items)
+        {
+            if (item.equals(i))
+            {
                 item.setAmount(amount);
             }
         }
     }
 
-        
-    public void removeItem(Item item) {
+    public void removeItem(Item item)
+    {
         items.remove(item);
     }
+
 }
