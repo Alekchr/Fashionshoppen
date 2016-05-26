@@ -196,12 +196,17 @@ public class ServerRequest
 //        query = "INSERT INTO TABLE orders ()"
 //    
 //    }
-    public void createProduct(String name, String category, String gender, Double price)
+    public void createProduct(String name, String category, String gender, Double price, String description, String imagePath)
     {
 
-        query = "INSERT INTO products(product_name, product_category, product_gender, product_price) VALUES('" + name + "', '" + category + "', '" + gender + "', '" + price + "');";
+        query = "INSERT INTO products(product_name, product_category, product_gender, product_price, product_information, image_path) VALUES('" + name + "', '" + category + "', '" + gender + "', '" + price + "', '" + description + "', '"+ imagePath +"');";
         runQuery(query);
 
+    }
+    
+    public void editProductDescription(int productId, String description){
+        query = "UPDATE products SET product_information = '" + description + "' WHERE product_id = '" + productId + "';";
+        runQuery(query);
     }
 
     public void editProductName(int productId, String name)
@@ -230,7 +235,7 @@ public class ServerRequest
 
     public void editProductPicture(int productId, String imagePath)
     {
-        query = "UPDATE products SET product_image_path = '" + imagePath + "' WHERE product_id = '" + productId + "';";
+        query = "UPDATE products SET image_path = '" + imagePath + "' WHERE product_id = '" + productId + "';";
         runQuery(query);
     }
 

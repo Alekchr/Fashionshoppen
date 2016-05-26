@@ -36,9 +36,9 @@ public final class ServicesFacade {
         return rs;
     }
 
-    public void createProduct(String name, String category, String gender, Double price)
+    public void createProduct(String name, String category, String gender, Double price, String description, String imagePath)
     {
-        sr.createProduct(name, category, gender, price);
+        sr.createProduct(name, category, gender, price, description, imagePath);
     }
     
     public void deleteProduct(int productId){
@@ -76,6 +76,10 @@ public final class ServicesFacade {
         return sr.findCustomerAddress(email);
     }
 
+    public void editProductDescription(int productId, String description){
+        sr.editProductDescription(productId, description);
+    }
+            
     public void editProductName(int productId, String productName)
     {
         sr.editProductName(productId, productName);
