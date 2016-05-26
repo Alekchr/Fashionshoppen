@@ -10,7 +10,6 @@ public class ProductCatalog {
 
     ServicesFacade sf = new ServicesFacade();
     Product product;
-    Connection con;
     ResultSet productResultSet;
     ArrayList products;
 
