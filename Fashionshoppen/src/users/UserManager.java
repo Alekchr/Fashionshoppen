@@ -198,8 +198,6 @@ public class UserManager implements IUserManager
        
         double orderPrice = onlineUser.findShoppingBasket().getPrice();
         onlineUser.findShoppingBasket().updateFinalPrice(orderPrice,onlineUser.findShoppingBasket().getShippingCharge());       
-        System.out.println("" + onlineUser.getUser_id());
-        System.out.println("" + onlineUser.findShoppingBasket().getOrder_date());
         onlineUser.sf.storeOrder(onlineUser.findShoppingBasket(), onlineUser.getUser_id());
         onlineUser.findShoppingBasket().setStatus(OrderStatus.CONFIRMED);
     }
