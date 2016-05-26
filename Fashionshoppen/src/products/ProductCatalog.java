@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import services.ServicesFacade;
+import services.IServerRequest;
 
 public class ProductCatalog {
 
-    ServicesFacade sf = new ServicesFacade();
+    IServerRequest sf = new IServerRequest();
     Product product;
     Connection con;
     ResultSet productResultSet;

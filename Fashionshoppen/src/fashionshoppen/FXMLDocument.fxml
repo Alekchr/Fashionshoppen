@@ -142,7 +142,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab text="Manage Order">
+                <Tab text="Manage Basket">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
@@ -162,7 +162,7 @@
                                         <TableColumn fx:id="basketBtn" minWidth="0.0" prefWidth="72.0" text="Fjern" />
                                     </columns>
                                 </TableView>
-                        <Button fx:id="acceptBasket" layoutX="587.0" layoutY="827.0" mnemonicParsing="false" onAction="#handleBasketAccept" prefHeight="26.0" prefWidth="258.0" text="Bestil Varer" />
+                        <Button fx:id="acceptBasket" layoutX="14.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleBasketAccept" prefHeight="26.0" prefWidth="258.0" text="Bestil Varer" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -195,7 +195,7 @@
                         <RadioButton fx:id="cardPayment" layoutX="691.0" layoutY="484.0" mnemonicParsing="false" text="Betal med kreditkort" />
                         <RadioButton fx:id="storePayment" layoutX="1091.0" layoutY="484.0" mnemonicParsing="false" text="Betal i butikken" />
                         <RadioButton fx:id="paypalPayment" layoutX="889.0" layoutY="484.0" mnemonicParsing="false" text="Betaling med paypal" />
-                        <Button fx:id="endOrder" layoutX="849.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleEndOrder" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
+                        <Button fx:id="endOrder" layoutX="833.0" layoutY="519.0" mnemonicParsing="false" onAction="#handleEndOrder" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
                      </children></AnchorPane>
                     </content>
                 </Tab>

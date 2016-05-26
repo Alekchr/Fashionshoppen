@@ -1024,14 +1024,18 @@ public class FXMLDocumentController implements Initializable {
                 for (int i = 0; i < basketProducts.size(); i++) {
                     Item selectedItem = basketTable.getSelectionModel().getSelectedItem();
 
-                    if (selectedItem.equals(Webshop.getInstance().getShoppingBasketItems().get(i))) {
-                        System.out.println("asdasdad");
-                        Webshop.getInstance().getShoppingBasketItems().get(i).setAmount(e.getNewValue());
-                        Webshop.getInstance().getShoppingBasketItems().get(i).updateItemPrice();
-                        updateBasketList();
+                            if (selectedItem.equals(Webshop.getInstance().getShoppingBasketItems().get(i)))
+                            {
+                                System.out.println("asdasdad");
+                                Webshop.getInstance().getShoppingBasketItems().get(i).setAmount(e.getNewValue());
+                                Webshop.getInstance().getShoppingBasketItems().get(i).updateItemPrice();
+                                updateBasketList();
+                                
+                            }
+                        }
                     }
-                }
-            }
+                
+            
         });
 
     }

@@ -123,6 +123,18 @@ public final class ServicesFacade {
         ResultSet rs = sr.selectAddressFromId(userId);
         return rs;
     }
+    
+    public int findUserID(String email) 
+    {
+    return sr.findUserID(email);
+    }
+    
+    
+    public void saveGuestCustomer(String firstName, String lastName, String email, String streetName, 
+            String houseNumber, String zipcode, String shippingCity){
+    sr.saveGuestCustomer(firstName, lastName, email, streetName, 
+            houseNumber, zipcode, shippingCity);
+    }
         
     
 }

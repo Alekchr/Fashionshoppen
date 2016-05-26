@@ -99,7 +99,6 @@ public final class Webshop {
                 newOrder.setFinalPrice(rs.getDouble("finalprice"));
                 newOrder.setStatus(rs.getString("status"));
                 newOrder.setCustomer_id(rs.getInt("user_id"));
-                newOrder.setCustomerName(getCustomerNameFromId(rs.getInt("user_id")));
                 newOrder.setOrder_date(rs.getDate("order_date").toString());
                 orders.add(newOrder);
             }
