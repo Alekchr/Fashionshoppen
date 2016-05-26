@@ -15,7 +15,7 @@ public final class ServicesFacade {
     public ServerRequest sr;
     
 
-    public ServicesFacade()
+    private ServicesFacade()
     {
         sr = new ServerRequest();
     }

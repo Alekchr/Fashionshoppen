@@ -51,9 +51,18 @@ public class Order
         return this.order_date;
     }
 
+
     public double getPrice()
     {
         return price;
+
+    }
+
+
+
+    public Address getShippingAddress()
+    {
+        return shippingAddress;
     }
 
     public void setShippingAddress(Address shippingAddress)

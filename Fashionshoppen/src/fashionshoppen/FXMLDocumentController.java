@@ -63,7 +63,7 @@ import javafx.stage.Stage;
 
 public class FXMLDocumentController implements Initializable {
 
-    
+    //<editor-fold>
     static private Comparator<Product> sortByName;
     static private Comparator<Product> sortByPrice;
     static private Comparator<Product> sortByCategory;
@@ -86,7 +86,9 @@ public class FXMLDocumentController implements Initializable {
     private ObservableList<Item> obsBasketList;
     private ObservableList<String> sizes = FXCollections.observableArrayList("Small", "Medium", "Large", "X-Large");
     private ObservableList<Integer> amount = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-//<editor-fold>
+    //</editor-fold> 
+    
+    //<editor-fold>
     @FXML
     private Pane RegisterPane;
     @FXML

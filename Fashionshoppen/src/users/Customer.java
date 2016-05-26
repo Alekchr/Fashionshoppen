@@ -1,12 +1,9 @@
 package users;
 
-import products.Order;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import static services.AccessLevel.CUSTOMER_ACCESS;
-import services.OrderStatus;
 import services.ServicesFacade;
 
 public class Customer extends User
@@ -32,8 +29,6 @@ public class Customer extends User
 
     }
 
-
-
     public void setPhoneNr(String phoneNr)
     {
         this.phoneNr = phoneNr;
@@ -41,14 +36,8 @@ public class Customer extends User
 
 
 
-    public String getPhoneNr()
-    {
-        return phoneNr;
-    }
-
     public void registerUser(String firstName, String lastName, String email, String password)
     {
-
         ServicesFacade.getInstance().registerUser(firstName, lastName, email, password);
     }
 
@@ -91,12 +80,4 @@ public class Customer extends User
         return customer;
     }
 
-
-    
-
-    
-    
-    
-
-    
 }

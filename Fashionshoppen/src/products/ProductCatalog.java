@@ -8,7 +8,6 @@ import services.ServicesFacade;
 
 public class ProductCatalog {
 
-    ServicesFacade sf = new ServicesFacade();
     Product product;
     ResultSet productResultSet;
     ArrayList products;
@@ -17,7 +16,7 @@ public class ProductCatalog {
     //ResultSettet bruges i showproducts til at oprette array af products.
     public ResultSet getProducts()
     {
-        ResultSet rs = sf.getProducts();
+        ResultSet rs = ServicesFacade.getInstance().getProducts();
         return rs;
     }
 
