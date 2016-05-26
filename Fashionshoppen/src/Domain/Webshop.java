@@ -28,7 +28,7 @@ public final class Webshop {
     ProductCatalog catalog;
     Product product;
     IUserManager um;
-    IServerRequest sf;
+    ServicesFacade sf;
     MessageDigest md;
     private int orderID;
 
@@ -37,7 +37,7 @@ public final class Webshop {
 
         catalog = new ProductCatalog();
         um = new UserManager();
-        sf = new IServerRequest();
+        sf = new ServicesFacade();
 
     }
 

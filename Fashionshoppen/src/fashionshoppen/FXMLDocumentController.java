@@ -17,6 +17,9 @@ import javafx.scene.layout.Pane;
 
 import Domain.Webshop;
 import com.sun.prism.impl.Disposer.Record;
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.io.File;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
@@ -49,6 +52,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
@@ -58,16 +62,29 @@ import products.Item;
 import products.Order;
 
 import services.PaymentOptions;
+import static java.lang.Integer.parseInt;
+import static java.lang.Integer.parseInt;
+import static java.lang.Integer.parseInt;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextArea;
+import javax.swing.JFileChooser;
 
-public class FXMLDocumentController implements Initializable
-{
+public class FXMLDocumentController implements Initializable {
 
+    static private Comparator<Product> sortByName;
+    static private Comparator<Product> sortByPrice;
+    static private Comparator<Product> sortByCategory;
     private final int REMOVE_PRODUCT = 1;
     private final int REMOVE_BASKET_PRODUCT = 2;
     private HashMap<CheckBox, String> cbMapGender;
     private HashMap<CheckBox, String> cbMapCategory;
     private ArrayList<Product> products;
     private ArrayList<Order> orders;
+    private ArrayList<CheckBox> sortCBArray;
 
     private List<Item> basketProducts;
 
@@ -76,7 +93,7 @@ public class FXMLDocumentController implements Initializable
     private ObservableList<Item> obsBasketList;
     private ObservableList<String> sizes = FXCollections.observableArrayList("Small", "Medium", "Large", "X-Large");
     private ObservableList<Integer> amount = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-
+//<editor-fold>
     @FXML
     private Pane RegisterPane;
     @FXML
@@ -223,6 +240,51 @@ public class FXMLDocumentController implements Initializable
     private Label orderIdLabel;
     @FXML
     private TableView<Order> manageOrderTable;
+    @FXML
+    private CheckBox jacketsCB;
+    @FXML
+    private CheckBox jeansCB;
+    @FXML
+    private CheckBox shirtsCB;
+    @FXML
+    private CheckBox pantsCB;
+    @FXML
+    private CheckBox shortsCB;
+    @FXML
+    private RadioButton homeDelivery;
+    @FXML
+    private RadioButton storeDelivery;
+    @FXML
+    private Button endOrder;
+    @FXML
+    private Label deniedEmailLabel;
+    @FXML
+    private Label deniedAllFieldsLabel;
+    @FXML
+    private Label deniedPassMatchLabel;
+    @FXML
+    private Label deniedPassLabel;
+    @FXML
+    private Label deniedFirstNameLabel;
+    @FXML
+    private Label deniedLastNameLabel;
+    //</editor-fold> 
+    @FXML
+    private CheckBox sortPriceCB;
+    @FXML
+    private CheckBox sortNameCB;
+    @FXML
+    private CheckBox sortCatCB;
+    @FXML
+    private TextArea setProductDescriptionTA;
+    @FXML
+    private TextArea editProductDescriptionTA;
+    @FXML
+    private Button editProductImage;
+    @FXML
+    private Button setProductImage;
+    @FXML
+    private Tab ManageOrdersTab;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -230,15 +292,39 @@ public class FXMLDocumentController implements Initializable
 
         cbMapGender = new HashMap();
         cbMapCategory = new HashMap();
+        sortCBArray = new ArrayList();
+
+        sortCBArray.add(sortNameCB);
+        sortCBArray.add(sortPriceCB);
+        sortCBArray.add(sortCatCB);
+        sortCBArray.stream().forEach((cb) -> {
+            cb.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                handleSearch();
+            });
+        });
+
+        TFsearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+            {
+                handleSearch();
+            }
+
+        });
 
         productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-//        productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-//        productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 
         productWindow.setPrefColumns(5);
         productWindow.setVgap(25);
         productWindow.setHgap(25);
+
+        deniedEmailLabel.setVisible(false);
+        deniedAllFieldsLabel.setVisible(false);
+        deniedPassMatchLabel.setVisible(false);
+        deniedPassLabel.setVisible(false);
+        deniedFirstNameLabel.setVisible(false);
+        deniedLastNameLabel.setVisible(false);
 
         //Fylder products array op med alle produkter
         products = Webshop.getInstance().createProductsArray();
@@ -254,6 +340,22 @@ public class FXMLDocumentController implements Initializable
         //Kategori checkboxe puttes i map med deres values
         cbMapCategory.put(tshirtCB, "t-shirt");
         cbMapCategory.put(kjoleCB, "kjole");
+        cbMapCategory.put(shirtsCB, "skjorte");
+        cbMapCategory.put(pantsCB, "bukser");
+        cbMapCategory.put(jeansCB, "jeans");
+        cbMapCategory.put(shortsCB, "shorts");
+
+        cbMapCategory.keySet().stream().forEach((cb) -> {
+            cb.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                handleSearch();
+            });
+        });
+
+        cbMapGender.keySet().stream().forEach((cb) -> {
+            cb.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                handleSearch();
+            });
+        });
 
         categoryCMB.getItems().addAll("kjole", "t-shirt");
         genderCMB.getItems().addAll("herre", "dame", "unisex");
@@ -268,8 +370,7 @@ public class FXMLDocumentController implements Initializable
 
         //Nedenstående metodekald sørger for at alle produkter bliver vist
         //som default når applikationen starter.
-        filter();
-        handleSearch(new ActionEvent());
+        handleButtonSearch(new ActionEvent());
     }
 
     @FXML
@@ -293,12 +394,9 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void handleBasketAccept(ActionEvent event)
     {
-        if (Webshop.getInstance().userHasShoppingBasket())
-        {
+        if (Webshop.getInstance().userHasShoppingBasket()) {
             MainTabPane.getSelectionModel().select(4);
-        }
-        else
-        {
+        } else {
             System.out.println("Din kurv er tom, så du kan ikke tjekke ud.");
         }
     }
@@ -314,12 +412,9 @@ public class FXMLDocumentController implements Initializable
         String email = orderEmail.getText();
         String payment_option = getPaymentOption();
 
-        if (!orderEmail.getText().equals(orderEmailCheck.getText()))
-        {
+        if (!orderEmail.getText().equals(orderEmailCheck.getText())) {
             System.out.println("De 2 emails du indtastede matcher ikke hinanden.");
-        }
-        else
-        {
+        } else {
             Webshop.getInstance().storeOrder(payment_option, firstName, lastName, email, street, lastName, zip, city);
         }
 
@@ -328,16 +423,11 @@ public class FXMLDocumentController implements Initializable
     String getPaymentOption()
     {
         String payment_option;
-        if (paypalPayment.isSelected())
-        {
+        if (paypalPayment.isSelected()) {
             payment_option = PaymentOptions.PAYPAL;
-        }
-        else if (cardPayment.isSelected())
-        {
+        } else if (cardPayment.isSelected()) {
             payment_option = PaymentOptions.CREDIT_CARD;
-        }
-        else
-        {
+        } else {
             payment_option = PaymentOptions.IN_STORE;
         }
 
@@ -355,8 +445,25 @@ public class FXMLDocumentController implements Initializable
     {
     }
 
-    public class ButtonCell extends TableCell<Record, Boolean>
+    @FXML
+    private void handleFileChooser(ActionEvent event)
     {
+        
+        System.setProperty("apple.awt.fileDialogForDirectories", "true");
+        FileDialog fd = new FileDialog(new Frame(), "Choose a file", FileDialog.LOAD);
+        fd.setDirectory("jonas.home");
+        fd.setVisible(true);
+        String filename = fd.getDirectory();
+        File selectedPath = new File(filename);
+        if (filename == null) {
+            System.out.println("error");
+        } else {
+            System.out.println("You chose " + filename);
+        }
+        System.setProperty("apple.awt.fileDialogForDirectories", "true");
+    }
+
+    public class ButtonCell extends TableCell<Record, Boolean> {
 
         final Button cellButton = new Button("Slet");
 
@@ -366,19 +473,15 @@ public class FXMLDocumentController implements Initializable
             cellButton.setStyle("-fx-base: #FF0000; -fx-font-weight: bold");
             cellButton.setMinWidth(70);
             cellButton.setOnAction((ActionEvent t)
-                    -> 
-                    {
+                    -> {
 
-                        if (function == REMOVE_PRODUCT)
-                        {
-                            Product currentProduct = (Product) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
-                            removeProduct(currentProduct);
-                        }
-                        else if (function == REMOVE_BASKET_PRODUCT)
-                        {
-                            Item currentItem = (Item) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
-                            removeBasketItem(currentItem);
-                        }
+                if (function == REMOVE_PRODUCT) {
+                    Product currentProduct = (Product) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                    removeProduct(currentProduct);
+                } else if (function == REMOVE_BASKET_PRODUCT) {
+                    Item currentItem = (Item) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                    removeBasketItem(currentItem);
+                }
 
             });
         }
@@ -388,13 +491,11 @@ public class FXMLDocumentController implements Initializable
         protected void updateItem(Boolean t, boolean empty)
         {
             super.updateItem(t, empty);
-            if (!empty)
-            {
+            if (!empty) {
                 setGraphic(cellButton);
             }
 
-            if (empty)
-            {
+            if (empty) {
                 setGraphic(null);
             }
         }
@@ -412,10 +513,8 @@ public class FXMLDocumentController implements Initializable
     {
 
         obsBasketList.remove(currentItem);
-        for (int i = 0; i < basketProducts.size(); i++)
-        {
-            if (currentItem == Webshop.getInstance().getShoppingBasketItems().get(i))
-            {
+        for (int i = 0; i < basketProducts.size(); i++) {
+            if (currentItem == Webshop.getInstance().getShoppingBasketItems().get(i)) {
                 Webshop.getInstance().removeItem(Webshop.getInstance().getShoppingBasketItems().get(i));
             }
         }
@@ -431,20 +530,59 @@ public class FXMLDocumentController implements Initializable
 
     }
 
+    static {
+        sortByName = new Comparator<Product>() {
+
+            @Override
+            public int compare(Product o1, Product o2)
+            {
+                return o1.getName().compareTo(o2.getName());
+            }
+        };
+
+        sortByPrice = new Comparator<Product>() {
+
+            @Override
+            public int compare(Product o1, Product o2)
+            {
+                Double d1 = o1.getProductPrice();
+                Double d2 = o2.getProductPrice();
+                return d1.compareTo(d2);
+            }
+        };
+
+        sortByCategory = new Comparator<Product>() {
+
+            @Override
+            public int compare(Product o1, Product o2)
+            {
+
+                return o1.getCategory().compareTo(o2.getCategory());
+            }
+        };
+
+    }
+
+    public void sortByName(ArrayList al)
+    {
+        Collections.sort(al, sortByName);
+    }
+
+    public void sortByPrice(ArrayList al)
+    {
+        Collections.sort(al, sortByPrice);
+    }
+
+    public void sortByCategory(ArrayList al)
+    {
+        Collections.sort(al, sortByCategory);
+    }
+
     @FXML
     private void handleShowBasket(MouseEvent event)
     {
-
         MainTabPane.getSelectionModel().select(3);
-        if (Webshop.getInstance().userHasShoppingBasket())
-        {
-            showBasketList();
-        }
-        else
-        {
-            System.out.println("Du har ikke tilføjet nogle produkter til din indkøbskurv");
-        }
-
+        showBasketList();
     }
 
     @FXML
@@ -463,18 +601,53 @@ public class FXMLDocumentController implements Initializable
         String firstName = regFirstName.getText();
         String lastName = regLastName.getText();
         String email = regEmail.getText();
-        if (regPW1.getText().equals(regPW2.getText()))
-        {
+        String pass = regPW1.getText();
+        String confirmPass = regPW2.getText();
+        Boolean validEmail;
+
+        if (!email.contains("@") || !(email.contains(".com") || email.contains(".dk"))) {
+            deniedEmailLabel.setVisible(true);
+            validEmail = false;
+        } else {
+            deniedEmailLabel.setVisible(false);
+            validEmail = true;
+        }
+
+        if (firstName.isEmpty()) {
+            deniedFirstNameLabel.setVisible(true);
+        } else {
+            deniedFirstNameLabel.setVisible(false);
+        }
+
+        if (lastName.isEmpty()) {
+            deniedLastNameLabel.setVisible(true);
+        } else {
+            deniedLastNameLabel.setVisible(false);
+        }
+
+        if (pass.length() < 8) {
+            deniedPassLabel.setVisible(true);
+        } else {
+            deniedPassLabel.setVisible(false);
+        }
+
+        if (!pass.equals(confirmPass)) {
+            deniedPassMatchLabel.setVisible(true);
+        } else {
+            deniedPassMatchLabel.setVisible(false);
+        }
+
+        if (regPW1.getText().equals(regPW2.getText()) && !regPW1.getText().isEmpty() && !regPW2.getText().isEmpty() && !firstName.isEmpty() && !lastName.isEmpty() && validEmail) {
             String password = regPW1.getText();
 
             Webshop.getInstance().registerCustomer(firstName, lastName, email, password);
+            deniedAllFieldsLabel.setVisible(false);
+            RegisterPane.setVisible(false);
+        } else if (pass.isEmpty() || confirmPass.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
+            deniedAllFieldsLabel.setVisible(true);
+        } else {
+            deniedAllFieldsLabel.setVisible(false);
         }
-        else
-        {
-
-        }
-
-        RegisterPane.setVisible(false);
 
     }
 
@@ -482,7 +655,7 @@ public class FXMLDocumentController implements Initializable
     {
 
         products = Webshop.getInstance().createProductsArray();
-        handleSearch(new ActionEvent());
+        handleButtonSearch(new ActionEvent());
 
     }
 
@@ -490,8 +663,7 @@ public class FXMLDocumentController implements Initializable
     {
 
         ObservableList<Product> tempProdList = FXCollections.observableArrayList();
-        for (Product prod : products)
-        {
+        for (Product prod : products) {
             tempProdList.add(prod);
         }
 
@@ -499,12 +671,12 @@ public class FXMLDocumentController implements Initializable
 
     }
 
+//    
     public void createBasketList()
     {
 
         ObservableList<Item> tempBasketList = FXCollections.observableArrayList();
-        for (Item item : basketProducts)
-        {
+        for (Item item : basketProducts) {
             tempBasketList.add(item);
         }
 
@@ -515,8 +687,7 @@ public class FXMLDocumentController implements Initializable
     public void createManageOrderList()
     {
         ObservableList<Order> tempOrderList = FXCollections.observableArrayList();
-        for (Order order : orders)
-        {
+        for (Order order : orders) {
             tempOrderList.add(order);
         }
         obsManageOrderList = tempOrderList;
@@ -550,19 +721,15 @@ public class FXMLDocumentController implements Initializable
 
         btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell(REMOVE_PRODUCT));
 
-        productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue)
-                -> 
-                {
-                    //Check whether item is selected and set value of selected item to Label
-                    if (productTable.getSelectionModel().getSelectedItem() != null)
-                    {
-                        productIdLabel.setText(productTable.getSelectionModel().getSelectedItem().getProductId() + "");
-                        editNameField.setText(productTable.getSelectionModel().getSelectedItem().getName());
-                        editCategoryCMB.setValue(productTable.getSelectionModel().getSelectedItem().getCategory());
-                        editGenderCMB.setValue(productTable.getSelectionModel().getSelectedItem().getGender());
-                        editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getProductPrice() + "");
-                    }
-                    btnCol.setCellFactory((TableColumn<Record, Boolean> p) -> new ButtonCell(REMOVE_PRODUCT));
+        productTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            //Check whether item is selected and set value of selected item to Label
+            if (productTable.getSelectionModel().getSelectedItem() != null) {
+                productIdLabel.setText(productTable.getSelectionModel().getSelectedItem().getProductId() + "");
+                editNameField.setText(productTable.getSelectionModel().getSelectedItem().getName());
+                editCategoryCMB.setValue(productTable.getSelectionModel().getSelectedItem().getCategory());
+                editGenderCMB.setValue(productTable.getSelectionModel().getSelectedItem().getGender());
+                editPriceField.setText(productTable.getSelectionModel().getSelectedItem().getProductPrice() + "");
+            }
 
         });
     }
@@ -575,7 +742,6 @@ public class FXMLDocumentController implements Initializable
         orderPriceCol.setCellValueFactory(new PropertyValueFactory<>("finalPrice"));
         orderStatusCol.setCellValueFactory(new PropertyValueFactory<>("Status"));
         manageOrderTable.setItems(obsManageOrderList);
-
     }
 
     @FXML
@@ -589,7 +755,7 @@ public class FXMLDocumentController implements Initializable
     //hvilke checkboxes der er valgt samt hvad der er skrevet i søg
     private ArrayList filter()
     {
-        String st = TFsearch.getText(); //Får text fra søgefelt - skal bruges til at filtrere på navn
+        String searchString = TFsearch.getText().toLowerCase(); //Får text fra søgefelt - skal bruges til at filtrere på navn
 
         ArrayList<Product> productsToReturn = new ArrayList(); //ArrayList som fyldes op med de filtrerede resultater og returneres til handleSearch()
 
@@ -598,20 +764,16 @@ public class FXMLDocumentController implements Initializable
 
         //For loop som tjekker om køn checkboxes er checked.
         //Hvis checkboxe er checked indsættes keysettenes values i en string separeret med ";"
-        for (CheckBox cb : cbMapGender.keySet())
-        {
-            if (cb.isSelected())
-            {
+        for (CheckBox cb : cbMapGender.keySet()) {
+            if (cb.isSelected()) {
                 genderString += cbMapGender.get(cb) + ";";
             }
         }
 
         //For loop som tjekker om kategori checkboxes er checked
         //Hvis checkboxe er checked indsættes keysettenes values i en string separeret med ";"
-        for (CheckBox cb : cbMapCategory.keySet())
-        {
-            if (cb.isSelected())
-            {
+        for (CheckBox cb : cbMapCategory.keySet()) {
+            if (cb.isSelected()) {
                 categoryString += cbMapCategory.get(cb) + ";";
             }
         }
@@ -620,27 +782,21 @@ public class FXMLDocumentController implements Initializable
         String[] genderStrings = genderString.split(";");
         String[] categoryStrings = categoryString.split(";");
 
-        if (genderString.isEmpty() != true && categoryString.isEmpty() != true)
-        { //Bliver kaldt hvis der både er valgt køn og kategori
-            for (int i = 0; i < products.size(); i++)
-            {
+        if (genderString.isEmpty() != true && categoryString.isEmpty() != true) { //Bliver kaldt hvis der både er valgt køn og kategori
+            for (int i = 0; i < products.size(); i++) {
                 Boolean genderMatch = false;
                 Boolean categoryMatch = false;
                 Webshop.getInstance().displayProduct((Product) products.get(i));
 
-                for (int k = 0; k < genderStrings.length; k++)
-                { //looper igennem genderStrings array og tjekker om valgte køn matcher produkters
+                for (int k = 0; k < genderStrings.length; k++) { //looper igennem genderStrings array og tjekker om valgte køn matcher produkters
 
-                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k]))
-                    {
+                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k])) {
                         genderMatch = true;
                     }
 
-                    for (int j = 0; j < categoryStrings.length; j++)
-                    { //looper igennem categoryStrings array og tjekker om valgte kategorier matcher produkters
+                    for (int j = 0; j < categoryStrings.length; j++) { //looper igennem categoryStrings array og tjekker om valgte kategorier matcher produkters
 
-                        if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[j]))
-                        {
+                        if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[j])) {
                             categoryMatch = true;
                         }
 
@@ -648,8 +804,7 @@ public class FXMLDocumentController implements Initializable
 
                 }
 
-                if (genderMatch && categoryMatch)
-                { //Bliver kaldt hvis både valgte køn og kategorier matcher samme produkt
+                if (genderMatch && categoryMatch && products.get(i).getName().toLowerCase().contains(searchString)) { //Bliver kaldt hvis både valgte køn og kategorier matcher samme produkt
                     productsToReturn.add(Webshop.getInstance().getProduct()); //Produktet bliver tilføjet til ArrayList
                 }
 
@@ -657,62 +812,71 @@ public class FXMLDocumentController implements Initializable
                 categoryMatch = false;
             }
 
-        }
-        else if (genderString.isEmpty() != true)
-        { //Bliver kaldt hvis der kun er valgt køn
-            for (int i = 0; i < products.size(); i++)
-            {
+        } else if (genderString.isEmpty() != true) { //Bliver kaldt hvis der kun er valgt køn
+            for (int i = 0; i < products.size(); i++) {
                 Webshop.getInstance().displayProduct((Product) products.get(i));
 
-                for (int k = 0; k < genderStrings.length; k++)
-                {
-                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k]))
-                    {
+                for (int k = 0; k < genderStrings.length; k++) {
+                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k]) && products.get(i).getName().toLowerCase().contains(searchString)) {
                         productsToReturn.add(Webshop.getInstance().getProduct());
                     }
                 }
 
             }
-        }
-        else if (categoryString.isEmpty() != true)
-        { //Bliver kaldt hvis der kun er kategori
-            for (int i = 0; i < products.size(); i++)
-            {
+        } else if (categoryString.isEmpty() != true) { //Bliver kaldt hvis der kun er kategori
+            for (int i = 0; i < products.size(); i++) {
                 Webshop.getInstance().displayProduct((Product) products.get(i));
-                for (int k = 0; k < categoryStrings.length; k++)
-                {
-                    if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[k]))
-                    {
+                for (int k = 0; k < categoryStrings.length; k++) {
+                    if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[k]) && products.get(i).getName().toLowerCase().contains(searchString)) {
                         productsToReturn.add(Webshop.getInstance().getProduct());
                     }
                 }
             }
-        }
-        else
-        { //Bliver kaldt hvis intet er valgt, og returnerer alle produkter uden filter
-            for (int i = 0; i < products.size(); i++)
-            {
-                Webshop.getInstance().displayProduct((Product) products.get(i));
-                productsToReturn.add(Webshop.getInstance().getProduct());
-
+        } else { //Bliver kaldt hvis intet er valgt, og returnerer alle produkter uden filter
+            for (int i = 0; i < products.size(); i++) {
+                if (products.get(i).getName().toLowerCase().contains(searchString)) {
+                    Webshop.getInstance().displayProduct((Product) products.get(i));
+                    productsToReturn.add(Webshop.getInstance().getProduct());
+                }
             }
 
         }
         return productsToReturn;
     }
 
-//        
+    private void handleLiveSearch(ChangeListener CL)
+    {
+        handleSearch();
+    }
+
     @FXML
-    private void handleSearch(ActionEvent event)
+    private void handleButtonSearch(ActionEvent e)
+    {
+        handleSearch();
+    }
+
+    private void handleSearch()
     {
         ArrayList<Product> productsToReturn = filter();
+
+        if (sortNameCB.isSelected()) {
+            sortByName(productsToReturn);
+        }
+
+        if (sortPriceCB.isSelected()) {
+            sortByPrice(productsToReturn);
+        }
+
+        if (sortCatCB.isSelected()) {
+            sortByCategory(productsToReturn);
+        }
+
         productWindow.getChildren().clear();
 
         int colCount = 0;
         int rowsInThumb = 0;
 
-        for (Product prod : productsToReturn)
-        { //Looper igennem de filtrerede produkter
+        for (Product prod : productsToReturn) { //Looper igennem de filtrerede produkter
 
             //GUI elementer instantieres for produkt
             Label priceLabel = new Label(prod.getProductPrice() + " KR");
@@ -725,8 +889,7 @@ public class FXMLDocumentController implements Initializable
             productWindow.setPadding(new Insets(30, 0, 0, 30));
             colCount++;
 
-            productThumbnail.setOnMouseEntered(new EventHandler<MouseEvent>()
-            {
+            productThumbnail.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event)
                 {
@@ -737,21 +900,19 @@ public class FXMLDocumentController implements Initializable
             });
 
             productThumbnail.setOnMouseClicked((MouseEvent event1)
-                    -> 
-                    {
+                    -> {
 
-                        MainTabPane.getSelectionModel().select(1);
-                        productPhoto.setImage(prod.getImage());
-                        priceTag.setText(prod.getProductPrice() + " KR");
-                        nameTag.setText(prod.getName());
+                MainTabPane.getSelectionModel().select(1);
+                productPhoto.setImage(prod.getImage());
+                priceTag.setText(prod.getProductPrice() + " KR");
+                nameTag.setText(prod.getName());
 
             });
 
             productThumbnail.setOnMouseExited((MouseEvent event1)
-                    -> 
-                    {
-                        productThumbnail.setOpacity(1);
-                        productThumbnail.setCursor(Cursor.DEFAULT);
+                    -> {
+                productThumbnail.setOpacity(1);
+                productThumbnail.setCursor(Cursor.DEFAULT);
             });
 
             productThumbnail.setMaxSize(220, 245);
@@ -789,9 +950,8 @@ public class FXMLDocumentController implements Initializable
             buyButton.setMinSize(220, 45);
             buyButton.setAlignment(Pos.CENTER);
             buyButton.setOnAction((ActionEvent event1)
-                    -> 
-                    {
-                        Webshop.getInstance().addItem(prod, 1, "Small");
+                    -> {
+                Webshop.getInstance().addItem(prod, 1, "Small");
 
             });
 
@@ -813,13 +973,12 @@ public class FXMLDocumentController implements Initializable
         String gender = genderCMB.getValue().toString();
         Double price = parseDouble(setPriceField.getText());
 
-        if (name != null && category != null && gender != null)
-        {
+        if (name != null && category != null && gender != null) {
             Webshop.getInstance().createProduct(name, category, gender, price);
             setNameField.clear();
             setPriceField.clear();
             refreshTable();
-            handleSearch(new ActionEvent());
+            handleButtonSearch(new ActionEvent());
 
         }
 
@@ -831,16 +990,17 @@ public class FXMLDocumentController implements Initializable
         MainTabPane.getSelectionModel().select(0);
     }
 
-    public void updateBasketList(){
-    basketProducts = Webshop.getInstance().getShoppingBasketItems();
-    createBasketList();
-    basketTable.setItems(obsBasketList);
-    
+    public void updateBasketList()
+    {
+        basketProducts = Webshop.getInstance().getShoppingBasketItems();
+        createBasketList();
+        basketTable.setItems(obsBasketList);
+
     }
-    
+
     public void showBasketList()
     {
-        
+
         basketTable.setEditable(true);
         basketName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         basketPrice.setCellValueFactory(new PropertyValueFactory<>("itemPrice"));
@@ -859,12 +1019,10 @@ public class FXMLDocumentController implements Initializable
         basketSize.setCellFactory(ComboBoxTableCell.forTableColumn(sizes));
         basketAmount.setCellFactory(ComboBoxTableCell.forTableColumn(amount));
         basketAmount.setOnEditCommit((TableColumn.CellEditEvent<Item, Integer> e)
-                -> 
-                {
-                    {
-                        for (int i = 0; i < basketProducts.size(); i++)
-                        {
-                            Item selectedItem = basketTable.getSelectionModel().getSelectedItem();
+                -> {
+            {
+                for (int i = 0; i < basketProducts.size(); i++) {
+                    Item selectedItem = basketTable.getSelectionModel().getSelectedItem();
 
                             if (selectedItem.equals(Webshop.getInstance().getShoppingBasketItems().get(i)))
                             {
@@ -876,6 +1034,8 @@ public class FXMLDocumentController implements Initializable
                             }
                         }
                     }
+                
+            
         });
 
     }

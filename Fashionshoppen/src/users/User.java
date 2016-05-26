@@ -18,7 +18,7 @@ public abstract class User
     private String password;
     int accesslvl;
     protected Address address;
-    IServerRequest sf = new IServerRequest();
+    ServicesFacade sf = new ServicesFacade();
     protected int access;
 
     protected Map<Integer, Order> orders;
@@ -99,10 +99,12 @@ public abstract class User
     
     public Order findShoppingBasket()
     {
+
         for (Order order : orders.values())
         {
             if (order.getStatus().equals(OrderStatus.SHOPPING_BASKET))
             {
+                System.out.println("Order ikke null");
                 return order;
             }
 

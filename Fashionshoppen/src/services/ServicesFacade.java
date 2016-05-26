@@ -9,22 +9,22 @@ import products.Order;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class IServerRequest {
+public final class ServicesFacade {
 
-    private static IServerRequest instance = null;
+    private static ServicesFacade instance = null;
     public ServerRequest sr;
     
 
-    public IServerRequest()
+    public ServicesFacade()
     {
         sr = new ServerRequest();
     }
 
-    public static IServerRequest getInstance()
+    public static ServicesFacade getInstance()
     {
 
         if (instance == null) {
-            instance = new IServerRequest();
+            instance = new ServicesFacade();
         }
 
         return instance;

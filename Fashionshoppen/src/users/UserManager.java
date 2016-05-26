@@ -16,7 +16,7 @@ public class UserManager implements IUserManager
 
     private User onlineUser;
     private MessageDigest md;
-    
+    private ServicesFacade sf = new ServicesFacade();
     
 
     public UserManager()
