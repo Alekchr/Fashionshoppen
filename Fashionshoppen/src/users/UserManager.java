@@ -191,14 +191,14 @@ public class UserManager implements IUserManager
         onlineUser.saveGuestCustomer(firstName, lastName, email, streetName, 
             houseNumber, zipcode, shippingCity);
         onlineUser.setFirstName(firstName); onlineUser.setLastName(lastName); onlineUser.setEmail(email);
-        onlineUser.setUser_id(onlineUser.sf.findUserID(email));
+        onlineUser.setUser_id(onlineUser.getGuestUser_id(email));
         onlineUser.setAddress(new Address(onlineUser.getUser_id(), streetName, houseNumber, zipcode, shippingCity));
         onlineUser.findShoppingBasket().setShippingAddress(onlineUser.getAddress());
         
        
         double orderPrice = onlineUser.findShoppingBasket().getPrice();
         onlineUser.findShoppingBasket().updateFinalPrice(orderPrice,onlineUser.findShoppingBasket().getShippingCharge());       
-        onlineUser.sf.storeOrder(onlineUser.findShoppingBasket(), onlineUser.getUser_id());
+        onlineUser.storeOrder();
         onlineUser.findShoppingBasket().setStatus(OrderStatus.CONFIRMED);
     }
 

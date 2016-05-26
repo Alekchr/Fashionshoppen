@@ -14,8 +14,8 @@ public class ServerRequest
 {
 
     String url = "jdbc:postgresql://localhost:5432/Fashionshoppen";
-    String user = "postgres";
-    String password = "Snuden123";
+    String user = "aleksander";
+    String password = "a123456LA";
     Connection con = null;
     ResultSet rs;
     Statement st;

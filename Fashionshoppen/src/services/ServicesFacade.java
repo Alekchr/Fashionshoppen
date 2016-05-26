@@ -7,7 +7,7 @@ package services;
 
 import products.Order;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+
 
 public final class ServicesFacade {
 
@@ -109,9 +109,9 @@ public final class ServicesFacade {
     }
     
     public ResultSet getOrders(){
-        ResultSet rs = sr.getOrders();
+        return sr.getOrders();
 
-        return rs;
+        
     }
     
         public ResultSet getCustomerNameFromId(int userId){

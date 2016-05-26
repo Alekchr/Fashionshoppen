@@ -11,7 +11,7 @@ package services;
  */
 public interface PaymentOptions
 {
-    String CREDIT_CARD = "asd";
-    String PAYPAL = "asd";
-    String IN_STORE = "asd";
+    String CREDIT_CARD = "CREDIT_CARD";
+    String PAYPAL = "PAYPAL";
+    String IN_STORE = "IN_STORE";
 }

@@ -25,11 +25,11 @@ import users.UserManager;
 public final class Webshop {
 
     private static Webshop instance = null;
-    ProductCatalog catalog;
-    Product product;
-    IUserManager um;
-    ServicesFacade sf;
-    MessageDigest md;
+    private ProductCatalog catalog;
+    private Product product;
+    private IUserManager um;
+    private ServicesFacade sf;
+    private MessageDigest md;
     private int orderID;
 
     private Webshop()

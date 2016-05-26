@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import static services.AccessLevel.CUSTOMER_ACCESS;
 import services.OrderStatus;
+import services.ServicesFacade;
 
 public class Customer extends User
 {
@@ -48,7 +49,7 @@ public class Customer extends User
     public void registerUser(String firstName, String lastName, String email, String password)
     {
 
-        sf.registerUser(firstName, lastName, email, password);
+        ServicesFacade.getInstance().registerUser(firstName, lastName, email, password);
     }
 
     public Customer loginUser(User user)     //Når en bruger logges ind gemmes alle deres oplysninger, 
@@ -58,7 +59,7 @@ public class Customer extends User
         try
         {
 
-            ResultSet rs = sf.loginUser(user.getEmail(), user.getPassword());
+            ResultSet rs = ServicesFacade.getInstance().loginUser(user.getEmail(), user.getPassword());
             while (rs.next())
             {
                 customer.setFirstName(rs.getString("firstname"));
@@ -68,14 +69,14 @@ public class Customer extends User
                 customer.setUser_id(rs.getInt("user_id"));
             }
 
-            rs = sf.loginCustomer(customer.getEmail());
+            rs = ServicesFacade.getInstance().loginCustomer(customer.getEmail());
 
             while (rs.next())
             {
                 customer.setPhoneNr(rs.getString("phone"));
             }
 
-            rs = sf.getCustomerAddress(customer.getEmail());
+            rs = ServicesFacade.getInstance().getCustomerAddress(customer.getEmail());
 
             while (rs.next())
             {
@@ -90,18 +91,7 @@ public class Customer extends User
         return customer;
     }
 
-    public Order findShoppingBasket()
-    {
-        for (Order order : orders.values())
-        {
-            if (order.getStatus() == OrderStatus.SHOPPING_BASKET)
-            {
-                return order;
-            }
 
-        }
-        return null;
-    }
     
 
     

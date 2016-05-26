@@ -120,14 +120,14 @@
                                 <Label layoutX="275.0" layoutY="248.0" text="Ikke Medlem?" />
 
                                 <Label fx:id="LblNewReg" layoutX="278.0" layoutY="269.0" onMouseClicked="#handleCreateCustomer" text="Opret bruger" underline="true" />
-                                <Pane fx:id="RegisterPane" prefHeight="447.0" prefWidth="640.0" style="-fx-background-color: WHITE;">
+                                <Pane fx:id="RegisterPane" prefHeight="1026.0" prefWidth="1863.0" style="-fx-background-color: WHITE;">
                            
                                           <children>
                                         <TextField fx:id="regFirstName" layoutX="235.0" layoutY="70.0" promptText="Fornavn" />
                                         <TextField fx:id="regLastName" layoutX="235.0" layoutY="118.0" promptText="Efternavn" />
                                         <TextField fx:id="regEmail" layoutX="235.0" layoutY="166.0" promptText="Email" />
                                         <Button fx:id="BTNRegister" layoutX="269.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleRegister" text="Opret bruger" />
-                              <Label fx:id="deniedEmailLabel" layoutX="415.0" layoutY="171.0" text="E-mailen er ikke gyldig" textFill="RED" />
+                              <Label fx:id="deniedEmailLabel" layoutX="420.0" layoutY="171.0" text="E-mailen er ikke gyldig" textFill="RED" />
                               <Label fx:id="deniedAllFieldsLabel" layoutX="402.0" layoutY="303.0" text="Du har ikke udfyldt alle felter" textFill="RED" />
                               <Label fx:id="deniedPassMatchLabel" layoutX="420.0" layoutY="261.0" text="Kode matcher ikke" textFill="RED" />
                               <Label fx:id="deniedPassLabel" layoutX="420.0" layoutY="216.0" text="Koden skal indeholde min. 8 tegn" textFill="RED" />
@@ -171,31 +171,41 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="orderFirstName" layoutX="690.0" layoutY="150.0" prefHeight="26.0" prefWidth="215.0" />
+                        <TextField fx:id="orderFirstName" layoutX="690.0" layoutY="150.0" prefHeight="26.0" prefWidth="213.0" />
                         <TextField fx:id="orderLastName" layoutX="690.0" layoutY="223.0" prefHeight="26.0" prefWidth="215.0" />
                         <TextField fx:id="orderStreet" layoutX="690.0" layoutY="289.0" prefHeight="26.0" prefWidth="215.0" />
-                        <Label layoutX="691.0" layoutY="127.0" text="Fornavn" />
+                        <Label layoutX="691.0" layoutY="127.0" text="Fornavn:" />
                         <Label layoutX="691.0" layoutY="197.0" text="Efternavn:" />
                         <Label layoutX="691.0" layoutY="263.0" text="Addresse:" />
                         <TextField fx:id="orderZip" layoutX="691.0" layoutY="348.0" prefHeight="26.0" prefWidth="123.0" />
-                        <Label layoutX="691.0" layoutY="323.0" text="Postnummer:" />
+                        <Label layoutX="691.0" layoutY="323.0" text="Postnr.:" />
                         <TextField fx:id="orderCity" layoutX="691.0" layoutY="408.0" prefHeight="26.0" prefWidth="215.0" />
                         <Label layoutX="691.0" layoutY="383.0" text="By:" />
                         <TextField fx:id="orderEmail" layoutX="1002.0" layoutY="150.0" prefHeight="26.0" prefWidth="215.0" />
                         <Label layoutX="1002.0" layoutY="127.0" text="Email:" />
                         <TextField fx:id="orderEmailCheck" layoutX="1002.0" layoutY="223.0" prefHeight="26.0" prefWidth="215.0" />
                         <Label layoutX="1002.0" layoutY="197.0" text="Gentag email:" />
-                        <RadioButton fx:id="homeDelivery" layoutX="1002.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleHomeDelivery" text="Levering til egen addresse">
+                        <RadioButton fx:id="homeDelivery" layoutX="1002.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleHomeDelivery" text="Levering til egen addresse">
                            <toggleGroup>
                               <ToggleGroup fx:id="pickupChoice" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="storeDelivery" layoutX="1002.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleStoreDelivery" text="Afhentning i butik" toggleGroup="$pickupChoice" />
-                        <ComboBox fx:id="storeChoice" layoutX="1002.0" layoutY="348.0" prefHeight="26.0" prefWidth="215.0" promptText="Vælg butik" />
-                        <RadioButton fx:id="cardPayment" layoutX="691.0" layoutY="484.0" mnemonicParsing="false" text="Betal med kreditkort" />
-                        <RadioButton fx:id="storePayment" layoutX="1091.0" layoutY="484.0" mnemonicParsing="false" text="Betal i butikken" />
-                        <RadioButton fx:id="paypalPayment" layoutX="889.0" layoutY="484.0" mnemonicParsing="false" text="Betaling med paypal" />
-                        <Button fx:id="endOrder" layoutX="833.0" layoutY="519.0" mnemonicParsing="false" onAction="#handleEndOrder" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
+                        <RadioButton fx:id="storeDelivery" layoutX="1002.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleStoreDelivery" text="Afhentning i butik" toggleGroup="$pickupChoice" />
+                        <ComboBox fx:id="storeChoice" layoutX="1002.0" layoutY="404.0" prefHeight="26.0" prefWidth="215.0" promptText="Vælg butik" />
+                        <RadioButton fx:id="cardPayment" layoutX="690.0" layoutY="501.0" mnemonicParsing="false" text="Betal med kreditkort" />
+                        <RadioButton fx:id="storePayment" layoutX="1090.0" layoutY="501.0" mnemonicParsing="false" text="Betal i butikken" />
+                        <RadioButton fx:id="paypalPayment" layoutX="888.0" layoutY="501.0" mnemonicParsing="false" text="Betaling med paypal" />
+                        <Button fx:id="endOrder" layoutX="833.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleEndOrder" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
+                        <Label fx:id="orderFirstNameLabel" layoutX="781.0" layoutY="127.0" text="Fornavn skal udfyldes" textFill="#e80000" />
+                        <Label fx:id="orderLastNameLabel" layoutX="779.0" layoutY="197.0" text="Efternavn skal udfyldes" textFill="#ff0101" />
+                        <Label fx:id="orderAddressLabel" layoutX="779.0" layoutY="263.0" text="Addresse skal udfyldes" textFill="#f20000" />
+                        <Label fx:id="orderZipLabel" layoutX="780.0" layoutY="323.0" text="Postnummer skal udfyldes" textFill="#f40000" />
+                        <Label fx:id="orderCityLabel" layoutX="780.0" layoutY="383.0" text="By skal udfyldes" textFill="RED" />
+                        <Label fx:id="orderEmailLabel1" layoutX="1135.0" layoutY="127.0" text="Email  er ikke gyldig" textFill="#e80000" />
+                        <Label fx:id="orderEmailLabel2" layoutX="1135.0" layoutY="197.0" text="Email skal udfyldes igen" textFill="#e80000" />
+                        <Label fx:id="orderDeliveryLabel" layoutX="1002.0" layoutY="302.0" text="Du har ikke valgt hvor dine produkter skal leveres" textFill="#e80000" />
+                        <Label fx:id="orderPaymentMethod" layoutX="822.0" layoutY="468.0" text="Vælg venligst den ønskede betalingsmetode" textFill="#e80000" />
+                        <Label fx:id="orderErrorLabel" layoutX="857.0" layoutY="553.0" text="Du har ikke udfyldt alle felter" textFill="#e80000" />
                      </children></AnchorPane>
                     </content>
                 </Tab>

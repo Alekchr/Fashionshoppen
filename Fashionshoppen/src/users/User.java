@@ -18,7 +18,7 @@ public abstract class User
     private String password;
     int accesslvl;
     protected Address address;
-    ServicesFacade sf = new ServicesFacade();
+    
     protected int access;
 
     protected Map<Integer, Order> orders;
@@ -49,6 +49,12 @@ public abstract class User
     {
         this.user_id = user_id;
     }
+    
+    public int getGuestUser_id(String email)
+    {
+        return ServicesFacade.getInstance().findUserID(email);
+    }
+    
 
     public String getFirstName()
     {
@@ -163,8 +169,13 @@ public abstract class User
             String houseNumber, String zipcode, String shippingCity)
     {
     Customer customer = new Customer(firstName, lastName, email, streetName);
-    sf.saveGuestCustomer(firstName, lastName, email, streetName, houseNumber, zipcode, shippingCity);
+    ServicesFacade.getInstance().saveGuestCustomer(firstName, lastName, email, streetName, houseNumber, zipcode, shippingCity);
     
+    }
+    
+    public void storeOrder()
+    {
+        ServicesFacade.getInstance().storeOrder(this.findShoppingBasket(), this.getUser_id());
     }
 
 }

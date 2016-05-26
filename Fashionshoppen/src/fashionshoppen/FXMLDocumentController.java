@@ -80,11 +80,14 @@ public class FXMLDocumentController implements Initializable {
     static private Comparator<Product> sortByCategory;
     private final int REMOVE_PRODUCT = 1;
     private final int REMOVE_BASKET_PRODUCT = 2;
+    private final String HOME_DELIVERY = "Home delivery";
+    private final String STORE_DELIVERY = "Store delivery";
     private HashMap<CheckBox, String> cbMapGender;
     private HashMap<CheckBox, String> cbMapCategory;
     private ArrayList<Product> products;
     private ArrayList<Order> orders;
     private ArrayList<CheckBox> sortCBArray;
+    String deliveryMethod;
 
     private List<Item> basketProducts;
 
@@ -219,7 +222,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private ToggleGroup pickupChoice;
     @FXML
-    private ComboBox<?> storeChoice;
+    private ComboBox storeChoice;
     @FXML
     private RadioButton cardPayment;
     @FXML
@@ -268,7 +271,7 @@ public class FXMLDocumentController implements Initializable {
     private Label deniedFirstNameLabel;
     @FXML
     private Label deniedLastNameLabel;
-    //</editor-fold> 
+    
     @FXML
     private CheckBox sortPriceCB;
     @FXML
@@ -285,7 +288,29 @@ public class FXMLDocumentController implements Initializable {
     private Button setProductImage;
     @FXML
     private Tab ManageOrdersTab;
+    @FXML
+    private Label orderFirstNameLabel;
+    @FXML
+    private Label orderLastNameLabel;
+    @FXML
+    private Label orderAddressLabel;
+    @FXML
+    private Label orderZipLabel;
+    @FXML
+    private Label orderCityLabel;
+    @FXML
+    private Label orderEmailLabel1;
+    @FXML
+    private Label orderEmailLabel2;
+    @FXML
+    private Label orderPaymentMethod;
+    @FXML
+    private Label orderErrorLabel;
+    @FXML
+    private Label orderDeliveryLabel;
 
+    //</editor-fold> 
+    
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -319,13 +344,27 @@ public class FXMLDocumentController implements Initializable {
         productWindow.setVgap(25);
         productWindow.setHgap(25);
 
+        deniedFirstNameLabel.setVisible(false);
+        deniedLastNameLabel.setVisible(false);
         deniedEmailLabel.setVisible(false);
         deniedAllFieldsLabel.setVisible(false);
         deniedPassMatchLabel.setVisible(false);
         deniedPassLabel.setVisible(false);
-        deniedFirstNameLabel.setVisible(false);
-        deniedLastNameLabel.setVisible(false);
-
+        
+        orderFirstNameLabel.setVisible(false);
+        orderLastNameLabel.setVisible(false);
+        orderEmailLabel1.setVisible(false);
+        orderEmailLabel2.setVisible(false);
+        orderErrorLabel.setVisible(false);
+        orderAddressLabel.setVisible(false);
+        orderZipLabel.setVisible(false);
+        orderCityLabel.setVisible(false);
+        orderPaymentMethod.setVisible(false);
+        orderDeliveryLabel.setVisible(false);
+        
+        storeChoice.setVisible(false);
+        storeChoice.getItems().addAll("Nyborgvej 23, Odense", "Oluf bagers gade 77, Odense C", "");
+        
         //Fylder products array op med alle produkter
         products = Webshop.getInstance().createProductsArray();
 
@@ -401,6 +440,15 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+    public void showLabel(String input, Label label)
+        {
+        if (input.isEmpty()) {
+            label.setVisible(true);
+        } else {
+            label.setVisible(false);
+        }
+        }
+    
     @FXML
     private void handleEndOrder(ActionEvent event)
     {
@@ -411,7 +459,38 @@ public class FXMLDocumentController implements Initializable {
         String city = orderCity.getText();
         String email = orderEmail.getText();
         String payment_option = getPaymentOption();
+        Boolean validEmail;
 
+        
+        
+        if (!email.contains("@") || !(email.contains(".com") || email.contains(".dk"))) {
+            orderEmailLabel1.setVisible(true);
+            validEmail = false;
+        } else {
+            orderEmailLabel1.setVisible(false);
+            validEmail = true;
+        }
+        showLabel(firstName, orderFirstNameLabel);
+        showLabel(lastName, orderLastNameLabel);
+        showLabel(street, orderAddressLabel);
+        showLabel(zip, orderZipLabel);
+        showLabel(city, orderCityLabel);
+        showLabel(payment_option, orderPaymentMethod);
+        showLabel(deliveryMethod, orderDeliveryLabel);
+
+        if (regPW1.getText().equals(regPW2.getText()) && !regPW1.getText().isEmpty() && !regPW2.getText().isEmpty() && !firstName.isEmpty() && !lastName.isEmpty() && validEmail) {
+            String password = regPW1.getText();
+
+            
+            deniedAllFieldsLabel.setVisible(false);
+            RegisterPane.setVisible(false);
+        } else if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()) {
+            deniedAllFieldsLabel.setVisible(true);
+        } else {
+            deniedAllFieldsLabel.setVisible(false);
+        }
+        
+        
         if (!orderEmail.getText().equals(orderEmailCheck.getText())) {
             System.out.println("De 2 emails du indtastede matcher ikke hinanden.");
         } else {
@@ -419,6 +498,7 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
+
 
     String getPaymentOption()
     {
@@ -437,30 +517,32 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleHomeDelivery(ActionEvent event)
     {
+        deliveryMethod = HOME_DELIVERY;
     }
 
     @FXML
-    private void handleStoreDelivery(ActionEvent event
-    )
+    private void handleStoreDelivery(ActionEvent event)
     {
+        deliveryMethod = STORE_DELIVERY;
+        storeChoice.setVisible(true);
     }
 
     @FXML
     private void handleFileChooser(ActionEvent event)
     {
         
-        System.setProperty("apple.awt.fileDialogForDirectories", "true");
-        FileDialog fd = new FileDialog(new Frame(), "Choose a file", FileDialog.LOAD);
-        fd.setDirectory("jonas.home");
-        fd.setVisible(true);
-        String filename = fd.getDirectory();
-        File selectedPath = new File(filename);
-        if (filename == null) {
-            System.out.println("error");
-        } else {
-            System.out.println("You chose " + filename);
+          JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle("Vælg hvilken fil med lån du vil åbne.");
+        int returnVal = chooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            System.out.println("You chose to open this file: "
+                    + chooser.getSelectedFile().getName());
+ 
+            String filesname = chooser.getSelectedFile().getName();
+ 
         }
-        System.setProperty("apple.awt.fileDialogForDirectories", "true");
     }
 
     public class ButtonCell extends TableCell<Record, Boolean> {
@@ -595,6 +677,8 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
+
+    
     @FXML
     private void handleRegister(ActionEvent event)
     {
@@ -612,18 +696,8 @@ public class FXMLDocumentController implements Initializable {
             deniedEmailLabel.setVisible(false);
             validEmail = true;
         }
-
-        if (firstName.isEmpty()) {
-            deniedFirstNameLabel.setVisible(true);
-        } else {
-            deniedFirstNameLabel.setVisible(false);
-        }
-
-        if (lastName.isEmpty()) {
-            deniedLastNameLabel.setVisible(true);
-        } else {
-            deniedLastNameLabel.setVisible(false);
-        }
+        showLabel(firstName, deniedFirstNameLabel);
+        showLabel(lastName, deniedLastNameLabel);
 
         if (pass.length() < 8) {
             deniedPassLabel.setVisible(true);

@@ -3,6 +3,7 @@ package users;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import static services.AccessLevel.EMPLOYEE_ACCESS;
+import services.ServicesFacade;
 
 public class Employee extends User
 {
@@ -25,7 +26,7 @@ public class Employee extends User
         Employee employee = null;
         try
         {
-            ResultSet rs = sf.loginUser(user.getEmail(), user.getPassword());
+            ResultSet rs = ServicesFacade.getInstance().loginUser(user.getEmail(), user.getPassword());
             while (rs.next())
             {
                 employee = new Employee(rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("password"));
