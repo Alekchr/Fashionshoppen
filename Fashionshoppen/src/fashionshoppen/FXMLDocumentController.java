@@ -17,20 +17,12 @@ import javafx.scene.layout.Pane;
 
 import Domain.Webshop;
 import com.sun.prism.impl.Disposer.Record;
-import java.awt.FileDialog;
-import java.awt.Frame;
 import java.io.File;
 import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -46,38 +38,36 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
-import javafx.util.Callback;
-import javafx.util.converter.DefaultStringConverter;
 import products.Item;
 import products.Order;
 
 import services.PaymentOptions;
 import static java.lang.Integer.parseInt;
-import static java.lang.Integer.parseInt;
-import static java.lang.Integer.parseInt;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextArea;
-import javax.swing.JFileChooser;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 
 public class FXMLDocumentController implements Initializable {
 
+    
     static private Comparator<Product> sortByName;
     static private Comparator<Product> sortByPrice;
     static private Comparator<Product> sortByCategory;
+    private String path = "";
     private final int REMOVE_PRODUCT = 1;
     private final int REMOVE_BASKET_PRODUCT = 2;
     private final String HOME_DELIVERY = "Home delivery";
@@ -308,6 +298,10 @@ public class FXMLDocumentController implements Initializable {
     private Label orderErrorLabel;
     @FXML
     private Label orderDeliveryLabel;
+    @FXML
+    private Text productDescriptionView;
+    @FXML
+    private Button productPageBuyButton;
 
     //</editor-fold> 
     
@@ -337,6 +331,25 @@ public class FXMLDocumentController implements Initializable {
 
         });
 
+        productPageBuyButton.getStyleClass().add("buy-button");
+        
+        productPageBuyButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event)
+                {
+                    productPageBuyButton.setCursor(Cursor.HAND);
+                }
+
+            });
+        
+        productPageBuyButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event)
+                {
+                    productPageBuyButton.setCursor(Cursor.HAND);
+                }
+
+            });
         productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 
@@ -396,10 +409,10 @@ public class FXMLDocumentController implements Initializable {
             });
         });
 
-        categoryCMB.getItems().addAll("kjole", "t-shirt");
+        categoryCMB.getItems().addAll("kjole", "t-shirt", "jeans", "skjorter", "bukser", "shorts", "jakker");
         genderCMB.getItems().addAll("herre", "dame", "unisex");
 
-        editCategoryCMB.getItems().addAll("kjole", "t-shirt");
+        editCategoryCMB.getItems().addAll("kjole", "t-shirt", "jeans", "skjorter", "bukser", "shorts", "jakker");
         editGenderCMB.getItems().addAll("herre", "dame", "unisex");
 
         createProductList();
@@ -420,11 +433,15 @@ public class FXMLDocumentController implements Initializable {
         String gender = editGenderCMB.getValue().toString();
         String category = editCategoryCMB.getValue().toString();
         Double price = parseDouble(editPriceField.getText());
+        String description = editProductDescriptionTA.getText();
+        String imagePath = path;
 
         Webshop.getInstance().editProductName(productID, name);
         Webshop.getInstance().editProductCategory(productID, category);
         Webshop.getInstance().editProductGender(productID, gender);
         Webshop.getInstance().editProductPrice(productID, price);
+        Webshop.getInstance().editProductDescription(productID, description);
+        Webshop.getInstance().editProductPicture(productID, imagePath);
 
         refreshTable();
 
@@ -530,19 +547,16 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleFileChooser(ActionEvent event)
     {
+        path = "";
+        Stage stage = (Stage) MainTabPane.getScene().getWindow();
         
-          JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setDialogTitle("Vælg hvilken fil med lån du vil åbne.");
-        int returnVal = chooser.showOpenDialog(null);
-        if (returnVal == JFileChooser.APPROVE_OPTION)
-        {
-            System.out.println("You chose to open this file: "
-                    + chooser.getSelectedFile().getName());
- 
-            String filesname = chooser.getSelectedFile().getName();
- 
-        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().addAll(
+                new ExtensionFilter("All Files", "*.*"));
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        path = selectedFile.getAbsolutePath();
+
     }
 
     public class ButtonCell extends TableCell<Record, Boolean> {
@@ -980,6 +994,16 @@ public class FXMLDocumentController implements Initializable {
                 productPhoto.setImage(prod.getImage());
                 priceTag.setText(prod.getProductPrice() + " KR");
                 nameTag.setText(prod.getName());
+                productDescriptionView.setText(prod.getDescription());
+                productPageBuyButton.setOnAction(new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent event)
+                    {
+                        Webshop.getInstance().addItem(prod, 1, "Small");
+                        
+                    }
+                    
+                });
 
             });
 
@@ -1046,9 +1070,11 @@ public class FXMLDocumentController implements Initializable {
         String category = categoryCMB.getValue().toString();
         String gender = genderCMB.getValue().toString();
         Double price = parseDouble(setPriceField.getText());
+        String description = setProductDescriptionTA.getText();
+        String imagePath = path;
 
         if (name != null && category != null && gender != null) {
-            Webshop.getInstance().createProduct(name, category, gender, price);
+            Webshop.getInstance().createProduct(name, category, gender, price, description, imagePath);
             setNameField.clear();
             setPriceField.clear();
             refreshTable();
@@ -1098,18 +1124,16 @@ public class FXMLDocumentController implements Initializable {
                 for (int i = 0; i < basketProducts.size(); i++) {
                     Item selectedItem = basketTable.getSelectionModel().getSelectedItem();
 
-                            if (selectedItem.equals(Webshop.getInstance().getShoppingBasketItems().get(i)))
-                            {
-                                System.out.println("asdasdad");
-                                Webshop.getInstance().getShoppingBasketItems().get(i).setAmount(e.getNewValue());
-                                Webshop.getInstance().getShoppingBasketItems().get(i).updateItemPrice();
-                                updateBasketList();
-                                
-                            }
-                        }
+                    if (selectedItem.equals(Webshop.getInstance().getShoppingBasketItems().get(i))) {
+                        System.out.println("asdasdad");
+                        Webshop.getInstance().getShoppingBasketItems().get(i).setAmount(e.getNewValue());
+                        Webshop.getInstance().getShoppingBasketItems().get(i).updateItemPrice();
+                        updateBasketList();
+
                     }
-                
-            
+                }
+            }
+
         });
 
     }

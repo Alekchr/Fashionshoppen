@@ -95,12 +95,12 @@
                                     </font>
                                 </Label>
                                 
-                                <Text layoutX="467.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOREM IPSUM DOLOR LOREM IPSUM DOLOR LOREM IPSUM DOLOR LOREM IPSUM DOLOR LOREM IPSUM DOLOR LOREM IPSUM DOLOR" wrappingWidth="212.4803466796875">
+                                <Text fx:id="productDescriptionView" layoutX="467.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOREM IPSUM DOLOR LOREM IPSUM DOLOR LOREM IPSUM DOLOR LOREM IPSUM DOLOR LOREM IPSUM DOLOR LOREM IPSUM DOLOR" wrappingWidth="212.4803466796875">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Text>
-                                <ComboBox layoutX="473.0" layoutY="411.0" prefWidth="150.0" promptText="Farve" />
+                        <Button fx:id="productPageBuyButton" layoutX="51.0" layoutY="451.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="588.0" text="LÆG I KURV" />
                             </children>
                         </AnchorPane>
                     </content>

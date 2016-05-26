@@ -1,80 +1,84 @@
-
 package products;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javafx.scene.image.*;
 import javax.imageio.ImageIO;
 
+public class Product implements Comparable<Product> {
 
-public class Product implements Comparable<Product>
-{
     private int productId;
     private String productName;
     private double productPrice;
     private String category;
     private String gender;
+    private String description;
     private WritableImage writableImg;
-    
 
-    public Product(String productName, String gender, String category, double productPrice, String imagePath)
+    public Product(String productName, String gender, String category, double productPrice, String description, String imagePath)
     {
         this.productName = productName;
         this.gender = gender;
         this.category = category;
         this.productPrice = productPrice;
-        this.writableImg = createImage(imagePath);
-        
-        
+        this.description = description;
+
+        if (imagePath != null) {
+            this.writableImg = createImage(imagePath);
+        }
+
     }
-    
-    public Product(int Id){
-        
+
+    public Product(int Id)
+    {
+
     }
-    
-    public WritableImage getImage(){
+
+    public WritableImage getImage()
+    {
         return writableImg;
     }
-    
-    
+
     //createImage() er en metode som returnerer WritableImage ud fra imagePath.
     //Image er den størrelse som det er, og skal resizes i controller.
-    public WritableImage createImage(String imagePath){
-                        BufferedImage bf = null;
-                try {
-                    bf = ImageIO.read(new File(imagePath));
-                } catch (IOException ex) {
-                    System.out.println("Image failed to load.");
-                }
+    public WritableImage createImage(String imagePath)
+    {
+        BufferedImage bf = null;
+        try {
+            bf = ImageIO.read(new File(imagePath));
+        } catch (IOException ex) {
+            System.out.println("Image failed to load.");
+        }
 
-                WritableImage wr = null;
-                if (bf != null) {
-                    wr = new WritableImage(bf.getWidth(), bf.getHeight());
-                    PixelWriter pw = wr.getPixelWriter();
-                    for (int x = 0; x < bf.getWidth(); x++) {
-                        for (int y = 0; y < bf.getHeight(); y++) {
-                            pw.setArgb(x, y, bf.getRGB(x, y));
-                        }
-                    }
+        WritableImage wr = null;
+        if (bf != null) {
+            wr = new WritableImage(bf.getWidth(), bf.getHeight());
+            PixelWriter pw = wr.getPixelWriter();
+            for (int x = 0; x < bf.getWidth(); x++) {
+                for (int y = 0; y < bf.getHeight(); y++) {
+                    pw.setArgb(x, y, bf.getRGB(x, y));
                 }
-                return wr;
+            }
+        }
+        return wr;
 
     }
 
-    public String getName(){
+    public String getName()
+    {
         return productName;
     }
-    
-    public String getCategory(){
+
+    public String getCategory()
+    {
         return category;
     }
-    
-    public String getGender(){
+
+    public String getGender()
+    {
         return gender;
     }
-    
 
     public int getProductId()
     {
@@ -84,6 +88,10 @@ public class Product implements Comparable<Product>
     public void setProduct_id(int productId)
     {
         this.productId = productId;
+    }
+    
+    public String getDescription(){
+        return description;
     }
 
     public String getProductName()
@@ -100,19 +108,16 @@ public class Product implements Comparable<Product>
     {
         this.productPrice = productPrice;
     }
-    
-    
-    
-    
-    public Product getProduct(String name){
-        
-        if(name.equalsIgnoreCase(productName)){
+
+    public Product getProduct(String name)
+    {
+
+        if (name.equalsIgnoreCase(productName)) {
             return null;
-        }
-        else{
+        } else {
             return this;
         }
-        
+
     }
 
     @Override
@@ -120,6 +125,5 @@ public class Product implements Comparable<Product>
     {
         return 1;
     }
-    
-    
+
 }

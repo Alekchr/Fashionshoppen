@@ -34,17 +34,10 @@ public class ProductCatalog {
     {
             productResultSet = getProducts();
             products = new ArrayList();
-            String pathString = "";
         try {
               
             while (productResultSet.next()) {
-                
-                if(productResultSet.getString("product_category").equals("kjole")){
-                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/dressplaceholder.png";
-                } else {
-                    pathString = "/Users/jonaspedersen/github folder/Fashionshoppen/Fashionshoppen/src/placeholder1.png";
-                }
-                product = new Product(productResultSet.getString("product_name"), productResultSet.getString("product_gender"), productResultSet.getString("product_category"), productResultSet.getDouble("product_price"), pathString);
+                product = new Product(productResultSet.getString("product_name"), productResultSet.getString("product_gender"), productResultSet.getString("product_category"), productResultSet.getDouble("product_price"),productResultSet.getString("product_information"), productResultSet.getString("image_path"));
                 product.setProduct_id(productResultSet.getInt("product_id"));
                 products.add(product);
             }

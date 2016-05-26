@@ -115,14 +115,18 @@ public final class Webshop {
         return um.getShoppingBasketItems();
     }
 
-    public void createProduct(String name, String category, String gender, Double price)
+    public void createProduct(String name, String category, String gender, Double price, String description, String imagePath)
     {
-        sf.createProduct(name, category, gender, price);
+        sf.createProduct(name, category, gender, price, description, imagePath);
     }
 
     public void deleteProduct(int productId)
     {
         sf.deleteProduct(productId);
+    }
+    
+    public void editProductDescription(int productId, String description){
+        sf.editProductDescription(productId, description);
     }
 
     public void editProductName(int productId, String productName)
