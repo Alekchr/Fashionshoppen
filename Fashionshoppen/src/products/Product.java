@@ -9,7 +9,7 @@ import javafx.scene.image.*;
 import javax.imageio.ImageIO;
 
 
-public class Product
+public class Product implements Comparable<Product>
 {
     private int productId;
     private String productName;
@@ -27,6 +27,10 @@ public class Product
         this.productPrice = productPrice;
         this.writableImg = createImage(imagePath);
         
+        
+    }
+    
+    public Product(int Id){
         
     }
     
@@ -110,7 +114,12 @@ public class Product
         }
         
     }
-    
 
+    @Override
+    public int compareTo(Product o)
+    {
+        return 1;
+    }
+    
     
 }

@@ -4,12 +4,14 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
@@ -64,6 +66,9 @@
                                         <TilePane fx:id="productWindow" prefHeight="799.0" prefWidth="1264.0" />
                                     </content>
                                 </ScrollPane>
+                        <CheckBox fx:id="sortPriceCB" layoutX="298.0" layoutY="105.0" mnemonicParsing="false" text="Pris" />
+                        <CheckBox fx:id="sortNameCB" layoutX="365.0" layoutY="105.0" mnemonicParsing="false" text="Navn" />
+                        <CheckBox fx:id="sortCatCB" layoutX="440.0" layoutY="105.0" mnemonicParsing="false" text="Kategori" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -110,19 +115,17 @@
                                     </font>
                                 </Label>
                                 <TextField fx:id="LoginEmail" layoutX="235.0" layoutY="105.0" promptText="Email" />
-                                <TextField fx:id="LoginPW" layoutX="235.0" layoutY="153.0" promptText="Password" />
+                        <PasswordField fx:id="LoginPW" layoutX="235.0" layoutY="148.0" promptText="Password" />
                                 <Button fx:id="BTNLogin" layoutX="287.0" layoutY="192.0" mnemonicParsing="false" onAction="#handleLoginUser" text="Log ind" />
                                 <Label layoutX="275.0" layoutY="248.0" text="Ikke Medlem?" />
 
                                 <Label fx:id="LblNewReg" layoutX="278.0" layoutY="269.0" onMouseClicked="#handleCreateCustomer" text="Opret bruger" underline="true" />
-                                <Pane fx:id="RegisterPane" layoutX="82.0" layoutY="33.0" prefHeight="447.0" prefWidth="640.0" style="-fx-background-color: WHITE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <Pane fx:id="RegisterPane" prefHeight="447.0" prefWidth="640.0" style="-fx-background-color: WHITE;">
                            
-                                    <children>
+                                          <children>
                                         <TextField fx:id="regFirstName" layoutX="235.0" layoutY="70.0" promptText="Fornavn" />
                                         <TextField fx:id="regLastName" layoutX="235.0" layoutY="118.0" promptText="Efternavn" />
                                         <TextField fx:id="regEmail" layoutX="235.0" layoutY="166.0" promptText="Email" />
-                                        <TextField fx:id="regPW1" layoutX="235.0" layoutY="211.0" promptText="Password" />
-                                        <TextField fx:id="regPW2" layoutX="235.0" layoutY="256.0" promptText="Bekræft Password" />
                                         <Button fx:id="BTNRegister" layoutX="269.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleRegister" text="Opret bruger" />
                               <Label fx:id="deniedEmailLabel" layoutX="415.0" layoutY="171.0" text="E-mailen er ikke gyldig" textFill="RED" />
                               <Label fx:id="deniedAllFieldsLabel" layoutX="402.0" layoutY="303.0" text="Du har ikke udfyldt alle felter" textFill="RED" />
@@ -130,8 +133,10 @@
                               <Label fx:id="deniedPassLabel" layoutX="420.0" layoutY="216.0" text="Koden skal indeholde min. 8 tegn" textFill="RED" />
                               <Label fx:id="deniedFirstNameLabel" layoutX="420.0" layoutY="75.0" text="Fornavn skal udfyldes" textFill="RED" />
                               <Label fx:id="deniedLastNameLabel" layoutX="420.0" layoutY="123.0" text="Efternavn skal udfyldes" textFill="RED" />
+                              <PasswordField fx:id="regPW2" layoutX="234.0" layoutY="256.0" promptText="Password" />
+                              <PasswordField fx:id="regPW1" layoutX="234.0" layoutY="211.0" promptText="Password" />
                               
-                                    </children>
+                                          </children>
                                 </Pane>
                             </children>
                         </AnchorPane>
@@ -194,7 +199,7 @@
                      </children></AnchorPane>
                     </content>
                 </Tab>
-                <Tab text="Manage products">
+                <Tab fx:id="ManageOrdersTab" text="Manage products">
                     <content>
                         <AnchorPane fx:id="manageProductsPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
@@ -208,42 +213,42 @@
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="770.0" layoutY="82.0" prefHeight="43.0" prefWidth="249.0" text="Ændre produkt">
+                                <Label layoutX="778.0" layoutY="44.0" prefHeight="43.0" prefWidth="249.0" text="Ændre produkt">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="1250.0" layoutY="82.0" prefHeight="43.0" prefWidth="249.0" text="Tilføj produkt">
+                                <Label layoutX="1346.0" layoutY="35.0" prefHeight="43.0" prefWidth="249.0" text="Tilføj produkt">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
                                 </Label>
-                                <Button fx:id="addProductBtn" layoutX="1250.0" layoutY="762.0" mnemonicParsing="false" onAction="#handleAddProduct" prefHeight="60.0" prefWidth="132.0" text="Tilføj produkt" />
-                                <Button fx:id="saveChangesBtn" layoutX="778.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="60.0" prefWidth="132.0" text="Gem" />
-                                <TextField fx:id="setNameField" layoutX="1244.0" layoutY="216.0" prefHeight="45.0" prefWidth="314.0" />
-                                <Label layoutX="1246.0" layoutY="178.0" prefHeight="29.0" prefWidth="312.0" text="Produkt navn">
+                                <Button fx:id="addProductBtn" layoutX="1341.0" layoutY="868.0" mnemonicParsing="false" onAction="#handleAddProduct" prefHeight="60.0" prefWidth="132.0" text="Tilføj produkt" />
+                                <Button fx:id="saveChangesBtn" layoutX="781.0" layoutY="874.0" mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="60.0" prefWidth="132.0" text="Gem" />
+                                <TextField fx:id="setNameField" layoutX="1340.0" layoutY="169.0" prefHeight="45.0" prefWidth="314.0" promptText="Produkt navn" />
+                                <Label layoutX="1342.0" layoutY="131.0" prefHeight="29.0" prefWidth="312.0" text="Produkt navn">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="1246.0" layoutY="295.0" prefHeight="29.0" prefWidth="312.0" text="Kategori">
+                                <Label layoutX="1342.0" layoutY="248.0" prefHeight="29.0" prefWidth="312.0" text="Kategori">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="1248.0" layoutY="419.0" prefHeight="29.0" prefWidth="312.0" text="Køn">
+                                <Label layoutX="1344.0" layoutY="372.0" prefHeight="29.0" prefWidth="312.0" text="Køn">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="setPriceField" layoutX="1246.0" layoutY="574.0" prefHeight="45.0" prefWidth="314.0" />
-                                <Label layoutX="1248.0" layoutY="536.0" prefHeight="29.0" prefWidth="312.0" text="Pris">
+                                <TextField fx:id="setPriceField" layoutX="1342.0" layoutY="527.0" prefHeight="45.0" prefWidth="314.0" promptText="Pris" />
+                                <Label layoutX="1344.0" layoutY="489.0" prefHeight="29.0" prefWidth="312.0" text="Pris">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
-                                <ComboBox fx:id="categoryCMB" layoutX="1247.0" layoutY="340.0" prefHeight="37.0" prefWidth="315.0" promptText="Kategori" />
-                                <ComboBox fx:id="genderCMB" layoutX="1250.0" layoutY="466.0" prefHeight="37.0" prefWidth="315.0" promptText="Køn" />
+                                <ComboBox fx:id="categoryCMB" layoutX="1343.0" layoutY="293.0" prefHeight="37.0" prefWidth="315.0" promptText="Kategori" />
+                                <ComboBox fx:id="genderCMB" layoutX="1346.0" layoutY="419.0" prefHeight="37.0" prefWidth="315.0" promptText="Køn" />
                                 <GridPane fx:id="productList" layoutX="620.0" layoutY="403.0" prefHeight="40.0" prefWidth="513.0">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -258,32 +263,46 @@
                                         <TableColumn fx:id="btnCol" prefWidth="77.0" />
                                     </columns>
                                 </TableView>
-                                <TextField fx:id="editNameField" layoutX="765.0" layoutY="224.0" prefHeight="45.0" prefWidth="314.0" />
-                                <Label layoutX="767.0" layoutY="186.0" prefHeight="29.0" prefWidth="312.0" text="Produkt navn">
+                                <TextField fx:id="editNameField" layoutX="773.0" layoutY="186.0" prefHeight="45.0" prefWidth="314.0" promptText="Produkt navn" />
+                                <Label layoutX="775.0" layoutY="148.0" prefHeight="29.0" prefWidth="312.0" text="Produkt navn">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="766.0" layoutY="301.0" prefHeight="29.0" prefWidth="312.0" text="Kategori">
+                                <Label layoutX="774.0" layoutY="263.0" prefHeight="29.0" prefWidth="312.0" text="Kategori">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="768.0" layoutY="425.0" prefHeight="29.0" prefWidth="312.0" text="Køn">
+                                <Label layoutX="776.0" layoutY="387.0" prefHeight="29.0" prefWidth="312.0" text="Køn">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="editPriceField" layoutX="766.0" layoutY="580.0" prefHeight="45.0" prefWidth="314.0" />
-                                <Label layoutX="768.0" layoutY="542.0" prefHeight="29.0" prefWidth="312.0" text="Pris">
+                                <TextField fx:id="editPriceField" layoutX="774.0" layoutY="542.0" prefHeight="45.0" prefWidth="314.0" promptText="Pris" />
+                                <Label layoutX="776.0" layoutY="504.0" prefHeight="29.0" prefWidth="312.0" text="Pris">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
-                                <ComboBox fx:id="editCategoryCMB" layoutX="767.0" layoutY="346.0" prefHeight="37.0" prefWidth="315.0" promptText="Kategori" />
-                                <ComboBox fx:id="editGenderCMB" layoutX="770.0" layoutY="472.0" prefHeight="37.0" prefWidth="315.0" promptText="Køn" />
-                                <Label layoutX="766.0" layoutY="139.0" text="Produkt ID:" />
-                                <Label fx:id="productIdLabel" layoutX="860.0" layoutY="140.0" text="ID" />
+                                <ComboBox fx:id="editCategoryCMB" layoutX="775.0" layoutY="308.0" prefHeight="37.0" prefWidth="315.0" promptText="Kategori" />
+                                <ComboBox fx:id="editGenderCMB" layoutX="778.0" layoutY="434.0" prefHeight="37.0" prefWidth="315.0" promptText="Køn" />
+                                <Label layoutX="774.0" layoutY="101.0" text="Produkt ID:" />
+                                <Label fx:id="productIdLabel" layoutX="868.0" layoutY="102.0" text="ID" />
+                        <TextArea fx:id="setProductDescriptionTA" layoutX="1342.0" layoutY="621.0" prefHeight="200.0" prefWidth="318.0" promptText="Produktbeskrivelse" />
+                        <Label layoutX="1346.0" layoutY="593.0" text="Produktbeskrivelse">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="editProductDescriptionTA" layoutX="771.0" layoutY="628.0" prefHeight="200.0" prefWidth="318.0" promptText="Produktbeskrivelse" />
+                        <Label layoutX="775.0" layoutY="600.0" text="Produktbeskrivelse">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="editProductImage" layoutX="772.0" layoutY="837.0" mnemonicParsing="false" onAction="#handleFileChooser" text="Vælg produktfoto" />
+                        <Button fx:id="setProductImage" layoutX="1344.0" layoutY="827.0" mnemonicParsing="false" onAction="#handleFileChooser" text="Vælg produktfoto" />
                             </children>
                         </AnchorPane>
                     </content>
