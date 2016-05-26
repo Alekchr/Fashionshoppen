@@ -41,13 +41,5 @@ public class Employee extends User
         return employee;
     }
 
-    public void registerUser(String firstName, String lastName, String email, String password)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    public void manageOrder(){
-        
-    }
     
 }

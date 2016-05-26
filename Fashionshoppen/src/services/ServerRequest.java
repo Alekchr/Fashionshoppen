@@ -75,9 +75,9 @@ public class ServerRequest
         return rs;
     }
 
-    public void deleteProduct(int productId)
+    public void deleteProduct(int product_id)
     {
-        query = "DELETE FROM products WHERE product_id = " + productId;
+        query = "DELETE FROM products WHERE product_id = " + product_id;
         runQuery(query);
     }
 
@@ -204,38 +204,38 @@ public class ServerRequest
 
     }
     
-    public void editProductDescription(int productId, String description){
-        query = "UPDATE products SET product_information = '" + description + "' WHERE product_id = '" + productId + "';";
+    public void editProductDescription(int product_id, String description){
+        query = "UPDATE products SET product_information = '" + description + "' WHERE product_id = '" + product_id + "';";
         runQuery(query);
     }
 
-    public void editProductName(int productId, String name)
+    public void editProductName(int product_id, String name)
     {
-        query = "UPDATE products SET product_name = '" + name + "' WHERE product_id = '" + productId + "';";
+        query = "UPDATE products SET product_name = '" + name + "' WHERE product_id = '" + product_id + "';";
         runQuery(query);
     }
 
-    public void editProductCategory(int productId, String category)
+    public void editProductCategory(int product_id, String category)
     {
-        query = "UPDATE products SET product_category = '" + category + "' WHERE product_id = '" + productId + "';";
+        query = "UPDATE products SET product_category = '" + category + "' WHERE product_id = '" + product_id + "';";
         runQuery(query);
     }
 
-    public void editProductGender(int productId, String gender)
+    public void editProductGender(int product_id, String gender)
     {
-        query = "UPDATE products SET product_gender = '" + gender + "' WHERE product_id = '" + productId + "';";
+        query = "UPDATE products SET product_gender = '" + gender + "' WHERE product_id = '" + product_id + "';";
         runQuery(query);
     }
 
-    public void editProductPrice(int productId, Double price)
+    public void editProductPrice(int product_id, Double price)
     {
-        query = "UPDATE products SET product_price = '" + price + "' WHERE product_id = '" + productId + "';";
+        query = "UPDATE products SET product_price = '" + price + "' WHERE product_id = '" + product_id + "';";
         runQuery(query);
     }
 
-    public void editProductPicture(int productId, String imagePath)
+    public void editProductPicture(int product_id, String imagePath)
     {
-        query = "UPDATE products SET image_path = '" + imagePath + "' WHERE product_id = '" + productId + "';";
+        query = "UPDATE products SET image_path = '" + imagePath + "' WHERE product_id = '" + product_id + "';";
         runQuery(query);
     }
 
@@ -268,8 +268,8 @@ public class ServerRequest
         return rs;
     }
 
-    public void editOrderStatus(int orderId, String status){
-        query = "UPDATE orders SET status = '" + status + "' WHERE order_id = '" + orderId + "';";
+    public void editOrderStatus(int order_id, String status){
+        query = "UPDATE orders SET status = '" + status + "' WHERE order_id = '" + order_id + "';";
         runQuery(query);
     }
     
@@ -286,8 +286,8 @@ public class ServerRequest
         return rs;
     }
     
-    public ResultSet getCustomerNameFromId(int userId){
-        query = "SELECT firstname, lastname FROM users WHERE user_id = '" + userId + "';";
+    public ResultSet getCustomerNameFromId(int user_id){
+        query = "SELECT firstname, lastname FROM users WHERE user_id = '" + user_id + "';";
         try{
             st = con.createStatement();
             rs = st.executeQuery(query);
@@ -298,8 +298,8 @@ public class ServerRequest
         return rs;
     }
     
-    public ResultSet selectAddressFromId(int userId){
-        query = "SELECT * FROM address WHERE user_id = '" + userId + "';";
+    public ResultSet selectAddressFromId(int user_id){
+        query = "SELECT * FROM address WHERE user_id = '" + user_id + "';";
         try{
             st = con.createStatement();
             rs = st.executeQuery(query);

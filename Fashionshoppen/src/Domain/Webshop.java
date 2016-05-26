@@ -37,7 +37,6 @@ public final class Webshop {
 
         catalog = new ProductCatalog();
         um = new UserManager();
-        sf = new ServicesFacade();
 
     }
 
@@ -59,7 +58,7 @@ public final class Webshop {
     }
     
         public Address selectAddressFromId(int userId){
-        ResultSet rs = sf.selectAddressFromId(userId);
+        ResultSet rs = ServicesFacade.getInstance().selectAddressFromId(userId);
         Address addr = new Address(0, "dummy", "dummy", "dummy", "dummy");
         try{
             while(rs.next()){
@@ -76,7 +75,7 @@ public final class Webshop {
     }
 
         public String getCustomerNameFromId(int userId){
-        ResultSet rs = sf.getCustomerNameFromId(userId);
+        ResultSet rs = ServicesFacade.getInstance().getCustomerNameFromId(userId);
         String customerName = "";
         try{
             rs.next();
@@ -89,7 +88,7 @@ public final class Webshop {
         
     public ArrayList createOrdersArray()
     {
-        ResultSet rs = sf.getOrders();
+        ResultSet rs = ServicesFacade.getInstance().getOrders();
         ArrayList<Order> orders = new ArrayList();
         try {
             while (rs.next()) {
@@ -117,51 +116,51 @@ public final class Webshop {
 
     public void createProduct(String name, String category, String gender, Double price, String description, String imagePath)
     {
-        sf.createProduct(name, category, gender, price, description, imagePath);
+        ServicesFacade.getInstance().createProduct(name, category, gender, price, description, imagePath);
     }
 
     public void deleteProduct(int productId)
     {
-        sf.deleteProduct(productId);
+        ServicesFacade.getInstance().deleteProduct(productId);
     }
     
     public void editProductDescription(int productId, String description){
-        sf.editProductDescription(productId, description);
+        ServicesFacade.getInstance().editProductDescription(productId, description);
     }
 
     public void editProductName(int productId, String productName)
     {
-        sf.editProductName(productId, productName);
+        ServicesFacade.getInstance().editProductName(productId, productName);
     }
 
     public void editProductCategory(int productId, String productCategory)
     {
-        sf.editProductCategory(productId, productCategory);
+        ServicesFacade.getInstance().editProductCategory(productId, productCategory);
     }
 
     public void editProductGender(int productId, String productGender)
     {
-        sf.editProductGender(productId, productGender);
+        ServicesFacade.getInstance().editProductGender(productId, productGender);
     }
 
     public void editProductPrice(int productId, Double price)
     {
-        sf.editProductPrice(productId, price);
+        ServicesFacade.getInstance().editProductPrice(productId, price);
     }
 
     public void editProductPicture(int productId, String imagePath)
     {
-        sf.editProductPicture(productId, imagePath);
+        ServicesFacade.getInstance().editProductPicture(productId, imagePath);
     }
 
     public void browseCategory(String category, String name)
     {
-        sf.browseCategory(category, name);
+        ServicesFacade.getInstance().browseCategory(category, name);
     }
 
     public void browseProductName(String name)
     {
-        sf.browseProductName(name);
+        ServicesFacade.getInstance().browseProductName(name);
     }
 
     public void registerCustomer(String firstName, String lastName, String email, String password)
@@ -206,7 +205,7 @@ public final class Webshop {
 
     public void editOrderStatus(int orderId, String status)
     {
-        sf.editOrderStatus(orderId, status);
+        ServicesFacade.getInstance().editOrderStatus(orderId, status);
     }
 
 

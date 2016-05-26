@@ -44,13 +44,6 @@ public class Order
         items.add(new Item(product, amount, size));
     }
 
-
-
-    public void finishOrder(Order order)
-    {
-        items.toString();
-    }
-
     public int getOrder_id()
     {
         return order_id;
@@ -66,20 +59,13 @@ public class Order
         return this.order_date;
     }
 
-    public void setOrder_date(Date order_date)
-    {
-        this.order_date = order_date.toString();
-    }
 
     public double getPrice()
     {
         return price;
     }
 
-    public void setPrice(double price)
-    {
-        this.price = price;
-    }
+
 
     public Address getShippingAddress()
     {
