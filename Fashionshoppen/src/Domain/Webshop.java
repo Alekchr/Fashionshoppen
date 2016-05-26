@@ -25,10 +25,10 @@ import users.UserManager;
 public final class Webshop {
 
     private static Webshop instance = null;
-    private ProductCatalog catalog;
+    private final ProductCatalog catalog;
+    private final IUserManager um;
+    private final ServicesFacade sf;
     private Product product;
-    private IUserManager um;
-    private ServicesFacade sf;
     private MessageDigest md;
     private int orderID;
 
@@ -57,17 +57,18 @@ public final class Webshop {
         return products;
 
     }
-    
-        public Address selectAddressFromId(int userId){
+
+    public Address selectAddressFromId(int userId)
+    {
         ResultSet rs = sf.selectAddressFromId(userId);
         Address addr = new Address(0, "dummy", "dummy", "dummy", "dummy");
-        try{
-            while(rs.next()){
-            addr.setCustomer_id(rs.getInt("user_id"));
-            addr.setStreetName(rs.getString("streetname"));
-            addr.setHouseNumber(rs.getString("housenumber"));
-            addr.setZipCode(rs.getString("zipcode"));
-            addr.setCity(rs.getString("city"));
+        try {
+            while (rs.next()) {
+                addr.setCustomer_id(rs.getInt("user_id"));
+                addr.setStreetName(rs.getString("streetname"));
+                addr.setHouseNumber(rs.getString("housenumber"));
+                addr.setZipCode(rs.getString("zipcode"));
+                addr.setCity(rs.getString("city"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,18 +76,19 @@ public final class Webshop {
         return addr;
     }
 
-        public String getCustomerNameFromId(int userId){
+    public String getCustomerNameFromId(int userId)
+    {
         ResultSet rs = sf.getCustomerNameFromId(userId);
         String customerName = "";
-        try{
+        try {
             rs.next();
             customerName = rs.getString("firstname") + " " + rs.getString("lastname");
-        } catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return customerName;
     }
-        
+
     public ArrayList createOrdersArray()
     {
         ResultSet rs = sf.getOrders();
@@ -124,8 +126,9 @@ public final class Webshop {
     {
         sf.deleteProduct(productId);
     }
-    
-    public void editProductDescription(int productId, String description){
+
+    public void editProductDescription(int productId, String description)
+    {
         sf.editProductDescription(productId, description);
     }
 
@@ -154,16 +157,6 @@ public final class Webshop {
         sf.editProductPicture(productId, imagePath);
     }
 
-    public void browseCategory(String category, String name)
-    {
-        sf.browseCategory(category, name);
-    }
-
-    public void browseProductName(String name)
-    {
-        sf.browseProductName(name);
-    }
-
     public void registerCustomer(String firstName, String lastName, String email, String password)
     {
         um.createUser(firstName, lastName, email, password);
@@ -179,8 +172,6 @@ public final class Webshop {
         this.product = product;
     }
 
-
-
     public Product getProduct()
     {
         return product;
@@ -192,15 +183,12 @@ public final class Webshop {
             um.createGuestUser();
 
         }
-   
-        if (!um.userHasBasket())
-        {
+
+        if (!um.userHasBasket()) {
             um.createBasket(orderID++);
             um.addItem(product, amount, size);
         } else {
             um.addItem(product, amount, size);
-
-            System.out.println("item was added to basket");
         }
     }
 
@@ -209,8 +197,7 @@ public final class Webshop {
         sf.editOrderStatus(orderId, status);
     }
 
-
-    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName, 
+    public void storeOrder(String payment_option, String firstName, String lastName, String email, String streetName,
             String houseNumber, String zipCode, String shippingCity) //Address skal have autoudfyld.
     {
         um.storeOrder(payment_option, firstName, lastName, email, streetName, houseNumber, zipCode, shippingCity);
@@ -221,9 +208,9 @@ public final class Webshop {
     {
         return um.userHasBasket();
     }
-    
+
     public void removeItem(Item item)
     {
-    um.removeItem(item);
+        um.removeItem(item);
     }
 }

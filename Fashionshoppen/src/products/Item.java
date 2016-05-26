@@ -24,11 +24,6 @@ public class Item
         return product;
     }
 
-    public void setProduct(Product product)
-    {
-        this.product = product;
-    }
-
     public int getAmount()
     {
         return amount;
@@ -37,21 +32,6 @@ public class Item
     public void setAmount(int amount)
     {
         this.amount = amount;
-    }
-
-    public String getSize()
-    {
-        return size;
-    }
-
-    public void setSize(String size)
-    {
-        this.size = size;
-    }
-
-    public String getProductName()
-    {
-        return this.productName;
     }
     
         public double getItemPrice()

@@ -13,12 +13,6 @@ public class ProductCatalog {
     ResultSet productResultSet;
     ArrayList products;
 
-    public ProductCatalog()
-    {
-        
-
-    }
-
     //getProducts() er en metode som returnerer ResultSet fra servicelaget
     //ResultSettet bruges i showproducts til at oprette array af products.
     public ResultSet getProducts()

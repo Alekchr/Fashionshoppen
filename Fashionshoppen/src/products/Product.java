@@ -6,7 +6,7 @@ import java.io.IOException;
 import javafx.scene.image.*;
 import javax.imageio.ImageIO;
 
-public class Product implements Comparable<Product> {
+public class Product {
 
     private int productId;
     private String productName;
@@ -27,11 +27,6 @@ public class Product implements Comparable<Product> {
         if (imagePath != null) {
             this.writableImg = createImage(imagePath);
         }
-
-    }
-
-    public Product(int Id)
-    {
 
     }
 
@@ -94,36 +89,9 @@ public class Product implements Comparable<Product> {
         return description;
     }
 
-    public String getProductName()
-    {
-        return productName;
-    }
-
     public double getProductPrice()
     {
         return productPrice;
-    }
-
-    public void setProductPrice(double productPrice)
-    {
-        this.productPrice = productPrice;
-    }
-
-    public Product getProduct(String name)
-    {
-
-        if (name.equalsIgnoreCase(productName)) {
-            return null;
-        } else {
-            return this;
-        }
-
-    }
-
-    @Override
-    public int compareTo(Product o)
-    {
-        return 1;
     }
 
 }

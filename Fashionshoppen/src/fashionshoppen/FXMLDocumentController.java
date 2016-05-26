@@ -108,12 +108,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField regPW2;
     @FXML
-    private Tab TabMainpage;
-    @FXML
-    private Label LblLogin;
-    @FXML
-    private Button searchBtn;
-    @FXML
     private TilePane productWindow;
     @FXML
     private Tab TabLogin;
@@ -261,7 +255,6 @@ public class FXMLDocumentController implements Initializable {
     private Label deniedFirstNameLabel;
     @FXML
     private Label deniedLastNameLabel;
-    
     @FXML
     private CheckBox sortPriceCB;
     @FXML
@@ -272,12 +265,6 @@ public class FXMLDocumentController implements Initializable {
     private TextArea setProductDescriptionTA;
     @FXML
     private TextArea editProductDescriptionTA;
-    @FXML
-    private Button editProductImage;
-    @FXML
-    private Button setProductImage;
-    @FXML
-    private Tab ManageOrdersTab;
     @FXML
     private Label orderFirstNameLabel;
     @FXML
@@ -331,25 +318,18 @@ public class FXMLDocumentController implements Initializable {
 
         });
 
+        
         productPageBuyButton.getStyleClass().add("buy-button");
         
-        productPageBuyButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    productPageBuyButton.setCursor(Cursor.HAND);
-                }
-
-            });
+        productPageBuyButton.setOnMouseEntered((MouseEvent event) -> {
+            productPageBuyButton.setCursor(Cursor.HAND);
+        });
         
-        productPageBuyButton.setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    productPageBuyButton.setCursor(Cursor.HAND);
-                }
-
-            });
+        productPageBuyButton.setOnMouseExited((MouseEvent event) -> {
+            productPageBuyButton.setCursor(Cursor.HAND);
+        });
+        
+        
         productWindowScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
         productWindowScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 
@@ -627,35 +607,15 @@ public class FXMLDocumentController implements Initializable {
     }
 
     static {
-        sortByName = new Comparator<Product>() {
+        sortByName = (Product o1, Product o2) -> o1.getName().compareTo(o2.getName());
 
-            @Override
-            public int compare(Product o1, Product o2)
-            {
-                return o1.getName().compareTo(o2.getName());
-            }
+        sortByPrice = (Product o1, Product o2) -> {
+            Double d1 = o1.getProductPrice();
+            Double d2 = o2.getProductPrice();
+            return d1.compareTo(d2);
         };
 
-        sortByPrice = new Comparator<Product>() {
-
-            @Override
-            public int compare(Product o1, Product o2)
-            {
-                Double d1 = o1.getProductPrice();
-                Double d2 = o2.getProductPrice();
-                return d1.compareTo(d2);
-            }
-        };
-
-        sortByCategory = new Comparator<Product>() {
-
-            @Override
-            public int compare(Product o1, Product o2)
-            {
-
-                return o1.getCategory().compareTo(o2.getCategory());
-            }
-        };
+        sortByCategory = (Product o1, Product o2) -> o1.getCategory().compareTo(o2.getCategory());
 
     }
 
@@ -751,9 +711,9 @@ public class FXMLDocumentController implements Initializable {
     {
 
         ObservableList<Product> tempProdList = FXCollections.observableArrayList();
-        for (Product prod : products) {
+        products.stream().forEach((prod) -> {
             tempProdList.add(prod);
-        }
+        });
 
         obsProductList = tempProdList;
 
@@ -764,9 +724,9 @@ public class FXMLDocumentController implements Initializable {
     {
 
         ObservableList<Item> tempBasketList = FXCollections.observableArrayList();
-        for (Item item : basketProducts) {
+        basketProducts.stream().forEach((item) -> {
             tempBasketList.add(item);
-        }
+        });
 
         obsBasketList = tempBasketList;
 
@@ -775,9 +735,9 @@ public class FXMLDocumentController implements Initializable {
     public void createManageOrderList()
     {
         ObservableList<Order> tempOrderList = FXCollections.observableArrayList();
-        for (Order order : orders) {
+        orders.stream().forEach((order) -> {
             tempOrderList.add(order);
-        }
+        });
         obsManageOrderList = tempOrderList;
     }
 
@@ -876,20 +836,17 @@ public class FXMLDocumentController implements Initializable {
                 Boolean categoryMatch = false;
                 Webshop.getInstance().displayProduct((Product) products.get(i));
 
-                for (int k = 0; k < genderStrings.length; k++) { //looper igennem genderStrings array og tjekker om valgte køn matcher produkters
-
-                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k])) {
+                for (String genderString1 : genderStrings) {
+                    //looper igennem genderStrings array og tjekker om valgte køn matcher produkters
+                    if (Webshop.getInstance().getProduct().getGender().equals(genderString1)) {
                         genderMatch = true;
                     }
-
-                    for (int j = 0; j < categoryStrings.length; j++) { //looper igennem categoryStrings array og tjekker om valgte kategorier matcher produkters
-
-                        if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[j])) {
+                    for (String categoryString1 : categoryStrings) {
+                        //looper igennem categoryStrings array og tjekker om valgte kategorier matcher produkters
+                        if (Webshop.getInstance().getProduct().getCategory().equals(categoryString1)) {
                             categoryMatch = true;
                         }
-
                     }
-
                 }
 
                 if (genderMatch && categoryMatch && products.get(i).getName().toLowerCase().contains(searchString)) { //Bliver kaldt hvis både valgte køn og kategorier matcher samme produkt
@@ -904,8 +861,8 @@ public class FXMLDocumentController implements Initializable {
             for (int i = 0; i < products.size(); i++) {
                 Webshop.getInstance().displayProduct((Product) products.get(i));
 
-                for (int k = 0; k < genderStrings.length; k++) {
-                    if (Webshop.getInstance().getProduct().getGender().equals(genderStrings[k]) && products.get(i).getName().toLowerCase().contains(searchString)) {
+                for (String genderString1 : genderStrings) {
+                    if (Webshop.getInstance().getProduct().getGender().equals(genderString1) && products.get(i).getName().toLowerCase().contains(searchString)) {
                         productsToReturn.add(Webshop.getInstance().getProduct());
                     }
                 }
@@ -914,8 +871,8 @@ public class FXMLDocumentController implements Initializable {
         } else if (categoryString.isEmpty() != true) { //Bliver kaldt hvis der kun er kategori
             for (int i = 0; i < products.size(); i++) {
                 Webshop.getInstance().displayProduct((Product) products.get(i));
-                for (int k = 0; k < categoryStrings.length; k++) {
-                    if (Webshop.getInstance().getProduct().getCategory().equals(categoryStrings[k]) && products.get(i).getName().toLowerCase().contains(searchString)) {
+                for (String categoryString1 : categoryStrings) {
+                    if (Webshop.getInstance().getProduct().getCategory().equals(categoryString1) && products.get(i).getName().toLowerCase().contains(searchString)) {
                         productsToReturn.add(Webshop.getInstance().getProduct());
                     }
                 }
@@ -977,14 +934,9 @@ public class FXMLDocumentController implements Initializable {
             productWindow.setPadding(new Insets(30, 0, 0, 30));
             colCount++;
 
-            productThumbnail.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event)
-                {
-                    productThumbnail.setOpacity(0.8);
-                    productThumbnail.setCursor(Cursor.HAND);
-                }
-
+            productThumbnail.setOnMouseEntered((MouseEvent event) -> {
+                productThumbnail.setOpacity(0.8);
+                productThumbnail.setCursor(Cursor.HAND);
             });
 
             productThumbnail.setOnMouseClicked((MouseEvent event1)
@@ -995,14 +947,9 @@ public class FXMLDocumentController implements Initializable {
                 priceTag.setText(prod.getProductPrice() + " KR");
                 nameTag.setText(prod.getName());
                 productDescriptionView.setText(prod.getDescription());
-                productPageBuyButton.setOnAction(new EventHandler<ActionEvent>(){
-                    @Override
-                    public void handle(ActionEvent event)
-                    {
-                        Webshop.getInstance().addItem(prod, 1, "Small");
-                        
-                    }
-                    
+                
+                productPageBuyButton.setOnAction((ActionEvent event) -> {
+                    Webshop.getInstance().addItem(prod, 1, "Small");
                 });
 
             });

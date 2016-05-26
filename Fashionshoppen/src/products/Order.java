@@ -29,27 +29,12 @@ public class Order
         
     }
 
-    public void setCustomerId(int customer_id)
-    {
-        this.customer_id = customer_id;
-    }
-
-    public int getCustomer_id()
-    {
-        return customer_id;
-    }
-
     public void addItem(Product product, int amount, String size)
     {
         items.add(new Item(product, amount, size));
     }
 
 
-
-    public void finishOrder(Order order)
-    {
-        items.toString();
-    }
 
     public int getOrder_id()
     {
@@ -66,24 +51,9 @@ public class Order
         return this.order_date;
     }
 
-    public void setOrder_date(Date order_date)
-    {
-        this.order_date = order_date.toString();
-    }
-
     public double getPrice()
     {
         return price;
-    }
-
-    public void setPrice(double price)
-    {
-        this.price = price;
-    }
-
-    public Address getShippingAddress()
-    {
-        return shippingAddress;
     }
 
     public void setShippingAddress(Address shippingAddress)
@@ -94,11 +64,6 @@ public class Order
     public double getShippingCharge()
     {
         return this.shippingCharge;
-    }
-
-    public void setShippingCharge(double shippingCharge)
-    {
-        this.shippingCharge = shippingCharge;
     }
 
     public double getFinalPrice()
@@ -149,11 +114,6 @@ public class Order
     public ArrayList<Item> getItems()
     {
         return items;
-    }
-
-    public void setItems(ArrayList<Item> items)
-    {
-        this.items = items;
     }
 
     public void setTotalPrice(double itemPrice)
