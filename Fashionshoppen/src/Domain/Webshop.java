@@ -17,6 +17,8 @@ import java.security.MessageDigest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import javafx.scene.control.CheckBox;
 
 import services.*;
 import users.IUserManager;
@@ -27,7 +29,7 @@ public final class Webshop {
     private static Webshop instance = null;
     private final ProductCatalog catalog;
     private final IUserManager um;
-    private Product product;
+    //private Product product;
     private MessageDigest md;
     private int orderID;
 
@@ -48,6 +50,10 @@ public final class Webshop {
 
         return instance;
     }
+    
+    public void showProducts(){
+        catalog.showProducts();
+    }
 
     public ArrayList createProductsArray()
     {
@@ -55,8 +61,9 @@ public final class Webshop {
         return products;
 
     }
-    
-        public Address selectAddressFromId(int userId){
+
+    public Address selectAddressFromId(int userId)
+    {
         ResultSet rs = ServicesFacade.getInstance().selectAddressFromId(userId);
         Address addr = new Address(0, "dummy", "dummy", "dummy", "dummy");
         try {
@@ -73,7 +80,8 @@ public final class Webshop {
         return addr;
     }
 
-        public String getCustomerNameFromId(int userId){
+    public String getCustomerNameFromId(int userId)
+    {
         ResultSet rs = ServicesFacade.getInstance().getCustomerNameFromId(userId);
         String customerName = "";
         try {
@@ -108,6 +116,59 @@ public final class Webshop {
 
     }
 
+    private ArrayList filter(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        return catalog.filter(genderBoxes, categoryBoxes, inputString);
+    }
+
+    public ArrayList getProductName(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        ArrayList returnedProducts = filter(genderBoxes, categoryBoxes, inputString);
+        return catalog.getProductName(returnedProducts);
+    }
+
+    public ArrayList getProductPrice(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        ArrayList returnedProducts = filter(genderBoxes, categoryBoxes, inputString);
+        return catalog.getProductPrice(returnedProducts);
+    }
+
+    public ArrayList getProductDescription(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        ArrayList returnedProducts = filter(genderBoxes, categoryBoxes, inputString);
+        return catalog.getProductName(returnedProducts);
+    }
+
+    public ArrayList getProductImage(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        ArrayList returnedProducts = filter(genderBoxes, categoryBoxes, inputString);
+        return catalog.getProductImage(returnedProducts);
+    }
+
+    public ArrayList getProductCategory(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        ArrayList returnedProducts = filter(genderBoxes, categoryBoxes, inputString);
+        return catalog.getProductCategory(returnedProducts);
+    }
+
+    public ArrayList imagePathToReturn(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        ArrayList returnedProducts = filter(genderBoxes, categoryBoxes, inputString);
+        return catalog.imagePathToReturn(returnedProducts);
+    }
+
+    public ArrayList getProductGender(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        ArrayList returnedProducts = filter(genderBoxes, categoryBoxes, inputString);
+        return catalog.getProductGender(returnedProducts);
+    }
+
+    public ArrayList getProductId(Map<CheckBox, String> genderBoxes, Map<CheckBox, String> categoryBoxes, String inputString)
+    {
+        ArrayList returnedProducts = filter(genderBoxes, categoryBoxes, inputString);
+        return catalog.getProductId(returnedProducts);
+    }
+
     public List<Item> getShoppingBasketItems()
     {
         return um.getShoppingBasketItems();
@@ -122,8 +183,9 @@ public final class Webshop {
     {
         ServicesFacade.getInstance().deleteProduct(productId);
     }
-    
-    public void editProductDescription(int productId, String description){
+
+    public void editProductDescription(int productId, String description)
+    {
         ServicesFacade.getInstance().editProductDescription(productId, description);
     }
 
@@ -172,18 +234,10 @@ public final class Webshop {
         um.loginUser(email, password);
     }
 
-    public void displayProduct(Product product)
+    public void addItem(String productName, String gender, String category, double productPrice, String description, String imagePath, int amount, String size)
     {
-        this.product = product;
-    }
-
-    public Product getProduct()
-    {
-        return product;
-    }
-
-    public void addItem(Product product, int amount, String size)
-    {
+        Product product = new Product(productName, gender, category, productPrice, description, imagePath);
+        System.out.println(product.getName());
         if (!um.isUserLoggedIn()) {
             um.createGuestUser();
 

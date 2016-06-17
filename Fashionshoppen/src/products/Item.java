@@ -19,6 +19,9 @@ public class Item
 
     }
 
+    public String getName(){
+        return productName;
+    }
     public Product getProduct()
     {
         return product;

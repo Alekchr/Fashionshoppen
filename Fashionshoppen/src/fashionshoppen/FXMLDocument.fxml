@@ -192,9 +192,12 @@
                         </RadioButton>
                         <RadioButton fx:id="storeDelivery" layoutX="1002.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleStoreDelivery" text="Afhentning i butik" toggleGroup="$pickupChoice" />
                         <ComboBox fx:id="storeChoice" layoutX="1002.0" layoutY="404.0" prefHeight="26.0" prefWidth="215.0" promptText="Vælg butik" />
-                        <RadioButton fx:id="cardPayment" layoutX="690.0" layoutY="501.0" mnemonicParsing="false" text="Betal med kreditkort" />
-                        <RadioButton fx:id="storePayment" layoutX="1090.0" layoutY="501.0" mnemonicParsing="false" text="Betal i butikken" />
-                        <RadioButton fx:id="paypalPayment" layoutX="888.0" layoutY="501.0" mnemonicParsing="false" text="Betaling med paypal" />
+                        <RadioButton fx:id="cardPayment" layoutX="690.0" layoutY="501.0" mnemonicParsing="false" text="Betal med kreditkort">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="paymentChoice" />
+                           </toggleGroup></RadioButton>
+                        <RadioButton fx:id="storePayment" layoutX="1090.0" layoutY="501.0" mnemonicParsing="false" text="Betal i butikken" toggleGroup="$paymentChoice" />
+                        <RadioButton fx:id="paypalPayment" layoutX="888.0" layoutY="501.0" mnemonicParsing="false" text="Betaling med paypal" toggleGroup="$paymentChoice" />
                         <Button fx:id="endOrder" layoutX="833.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleEndOrder" prefHeight="26.0" prefWidth="239.0" text="Afslut bestilling" />
                         <Label fx:id="orderFirstNameLabel" layoutX="781.0" layoutY="127.0" text="Fornavn skal udfyldes" textFill="#e80000" />
                         <Label fx:id="orderLastNameLabel" layoutX="779.0" layoutY="197.0" text="Efternavn skal udfyldes" textFill="#ff0101" />
@@ -323,9 +326,9 @@
                      <children>
                         <TableView fx:id="manageOrderTable" layoutX="110.0" layoutY="96.0" prefHeight="555.0" prefWidth="646.0">
                           <columns>
-                            <TableColumn fx:id="orderIdCol" prefWidth="75.0" text="ID" />
-                            <TableColumn fx:id="orderDateCol" prefWidth="134.20419311523438" text="Dato" />
-                              <TableColumn fx:id="orderCustomerCol" prefWidth="193.61257934570312" text="Kunde" />
+                            <TableColumn fx:id="orderIdCol" prefWidth="113.00003051757812" text="Order ID" />
+                            <TableColumn fx:id="orderDateCol" prefWidth="132.0" text="Dato" />
+                              <TableColumn fx:id="orderCustomerCol" prefWidth="159.0" text="Kunde ID" />
                               <TableColumn fx:id="orderPriceCol" prefWidth="110.8341064453125" text="Pris" />
                               <TableColumn fx:id="orderStatusCol" prefWidth="129.7841796875" text="Status" />
                           </columns>

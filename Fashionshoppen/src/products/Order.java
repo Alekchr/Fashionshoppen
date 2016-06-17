@@ -34,7 +34,9 @@ public class Order
         items.add(new Item(product, amount, size));
     }
 
-
+    public int getCustomer_id(){
+        return customer_id;
+    }
 
     public int getOrder_id()
     {

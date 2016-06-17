@@ -14,6 +14,7 @@ public class Product {
     private String category;
     private String gender;
     private String description;
+    private String imagePath;
     private WritableImage writableImg;
 
     public Product(String productName, String gender, String category, double productPrice, String description, String imagePath)
@@ -23,7 +24,7 @@ public class Product {
         this.category = category;
         this.productPrice = productPrice;
         this.description = description;
-
+        this.imagePath = imagePath;
         if (imagePath != null) {
             this.writableImg = createImage(imagePath);
         }
@@ -58,6 +59,10 @@ public class Product {
         }
         return wr;
 
+    }
+    
+    public String getImagePath(){
+        return imagePath;
     }
 
     public String getName()
